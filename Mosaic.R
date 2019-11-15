@@ -12,17 +12,20 @@
 library("seqinr")
 
 ### Selection for genes ###################################################################################################################################
-fastaFiles <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/==3Homologues_10/", 
-                                       pattern = "*.fasta"))              # Makes a dataframe where the first column is a list of fasta gene files
+# If on my own computer:
 fastaFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes"))
-
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
-
-fastaFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10", 
-                              fastaFiles$File_name, sep = "/")            # Creates a file pathway for each gene
 fastaFiles$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes", 
                               fastaFiles$File_name, sep = "/")            # Creates a file pathway for each gene
 
+# If in the office:
+setwd("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/")
+fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/"))              # Makes a dataframe where the first column is a list of fasta gene files
+colnames(fastaFiles) <- "File_name"                                       # Changes the column name
+fastaFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10", 
+                              fastaFiles$File_name, sep = "/")            # Creates a file pathway for each gene
+
+####
 ten_seq <- function(gene) {                                               # Function that checks if there are 10 sequences in the gene file
   if (nrow(gene) == 20) {                                                 # Checks if there's 20 rows because odd rows are names and even rows are seq.
     print("You may continue")
@@ -60,7 +63,7 @@ for(row in 1:nrow(fastaFiles)) {
                            "ID:LMPCFIAF_01940__Erwinia tasmaniensis__ET1-99", "ID:MLHGDOMH_01877__Mixta calida__DSM_22759",
                            "ID:MHMNNPCM_01846__Mixta gaviniae__DSM_22758", "ID:MEFHALAL_00346__Pantoea agglomerans__NBRC_102470",
                            "ID:KOGPCAHI_00156__Pantoea septica__LMG_5345", "ID:IBJKPIAN_01672__Tatumella ptyseos__NCTC11468")
-                                                                          # Renames the species names so they aren't ridiculously long
+    # Renames the species names so they aren't ridiculously long
     
     count <- gene_length(gene_file)
     if(count == 10) {                                                     # If all 10 are of similar lengths, then continue
@@ -76,18 +79,8 @@ for(row in 1:nrow(fastaFiles)) {
   }
 }
 
-
-#
-
-### reading in the distance matrix #########
-library("tidyverse")
-library("readxl")
-test <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/Test_csv", header = FALSE)
-
-
-
-
-# ClustalW in R
+### Aligning genes ########################################################################################################################################
+# Using ClustalW in R
 
 test_fasta <- msa::msaClustalW(inputSeqs = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/37304_prs.fasta", maxiters = 100, 
                                type = "dna")
@@ -96,3 +89,15 @@ print(test_fasta, show = "complete")
 
 mytest_fasta <- msa::msaClustalW(inputSeqs = genes, maxiters = 100, type = "dna")
 print(mytest_fasta, show = "complete")
+### Distance matrices #####################################################################################################################################
+
+
+
+
+
+
+#
+### reading in the distance matrix #########
+library("tidyverse")
+library("readxl")
+test <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/Test_csv", header = FALSE)
