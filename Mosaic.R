@@ -13,6 +13,7 @@ library("seqinr")
 
 ### Selection for genes ###################################################################################################################################
 # If on my own computer:
+setwd("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/")
 fastaFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes"))
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
 fastaFiles$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes", 
@@ -81,14 +82,26 @@ for(row in 1:nrow(fastaFiles)) {
 
 ### Aligning genes ########################################################################################################################################
 # Using ClustalW in R
+# my computer:
+test_fasta <- msa::msaClustalW(inputSeqs = "4Organize/37305_ispE.fasta", maxiters = 100, type = "dna", order = "input")
 
-test_fasta <- msa::msaClustalW(inputSeqs = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/37304_prs.fasta", maxiters = 100, 
-                               type = "dna")
+
+
 print(test_fasta, show = "complete")
+writeXStringSet(unmasked(test_fasta), file="test.fasta")
+ ### WORKED!
+
+
+
 # Worked, but has no names n
 
-mytest_fasta <- msa::msaClustalW(inputSeqs = genes, maxiters = 100, type = "dna")
+mytest_fasta <- msa::msaClustalW(inputSeqs = gene_file, maxiters = 100, type = "dna")
 print(mytest_fasta, show = "complete")
+
+
+test_align <- clustal
+
+
 ### Distance matrices #####################################################################################################################################
 
 
