@@ -1,8 +1,3 @@
-# 1. Check no more than 10 sequences
-# 2. Change structure so that sequences in one column and corresponding names in second column
-# 3. Change names
-# 4. Check gene length
-
 ## I used the terminal in BioLinux to change the extensions from .fna to .fasta
 #       for f in *.fna
 #       do
@@ -14,7 +9,7 @@ library("seqinr")
 ### Selection for genes ###################################################################################################################################
 # If on my own computer:
 setwd("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/")
-fastaFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes"))
+fastaFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes", pattern = ".fasta"))
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
 fastaFiles$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes", 
                               fastaFiles$File_name, sep = "/")            # Creates a file pathway for each gene
@@ -79,28 +74,25 @@ for(row in 1:nrow(fastaFiles)) {
     }
   }
 }
+rm(gene_file, count, path, row, twenty)
 
 ### Aligning genes ########################################################################################################################################
 # Using ClustalW in R
-# my computer:
-test_fasta <- msa::msaClustalW(inputSeqs = "4Organize/37305_ispE.fasta", maxiters = 100, type = "dna", order = "input")
+fastaFilesOrg <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/4Organize/", pattern = ".fasta"))
+colnames(fastaFilesOrg) <- "File_name"                                       # Changes the column name
+fastaFilesOrg$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/4Organize/", 
+                                 fastaFilesOrg$File_name, sep = "/")            # Creates a file pathway for each gene
 
-
-
-print(test_fasta, show = "complete")
-writeXStringSet(unmasked(test_fasta), file="test.fasta")
- ### WORKED!
-
-
-
-# Worked, but has no names n
-
-mytest_fasta <- msa::msaClustalW(inputSeqs = gene_file, maxiters = 100, type = "dna")
-print(mytest_fasta, show = "complete")
-
-
-test_align <- clustal
-
+for(row in 1:nrow(fastaFilesOrg)) {
+  path <- fastaFilesOrg$Path_name[row]
+  file <- fastaFilesOrg$File_name[row]
+  
+  align <- msa::msaClustalW(inputSeqs = path, maxiters = 100, type = "dna",
+                            order = "input")
+  writeXStringSet(unmasked(align), file = paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/5Aligned/", 
+                                                file, sep = ""))
+}
+rm(align, file, path, row)
 
 ### Distance matrices #####################################################################################################################################
 
