@@ -80,7 +80,7 @@ rm(gene_file, count, path, row, twenty)
 # Using ClustalW in R
 fastaFilesOrg <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/4Organize/", pattern = ".fasta"))
 colnames(fastaFilesOrg) <- "File_name"                                       # Changes the column name
-fastaFilesOrg$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/4Organize/", 
+fastaFilesOrg$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/4Organize", 
                                  fastaFilesOrg$File_name, sep = "/")            # Creates a file pathway for each gene
 
 for(row in 1:nrow(fastaFilesOrg)) {
@@ -93,6 +93,22 @@ for(row in 1:nrow(fastaFilesOrg)) {
                                                 file, sep = ""))
 }
 rm(align, file, path, row)
+
+library("msa")
+aligned <- msaConvert(align, type="seqinr::alignment")
+check <- base::as.data.frame(aligned$seq)
+colnames(check) <- "sequences"
+
+
+
+gene_check <- readDNAStringSet(fastaFiles$Path_name[2])
+align_check <- msa::msaClustalW(inputSeqs = gene_check, maxiters = 100, type = "dna", order = "input")
+aligned_check <- msaConvert(align_check, type = "seqinr::alignment")
+aligned_check$seq
+
+
+
+
 
 ### Distance matrices #####################################################################################################################################
 
