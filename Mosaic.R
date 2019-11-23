@@ -5,6 +5,8 @@
 #       done
 
 library("seqinr")
+library("msa")
+library("tidyverse")
 
 ### Selection for genes ###################################################################################################################################
 # If on my own computer:
@@ -30,7 +32,7 @@ ten_seq <- function(gene) {                                               # Func
     print("Not this gene")
   }
 }
-
+#
 gene_length <- function(gene_file) {                                      # Function that checks for similar gene lengths
   count = 0
   for(row in 1:nrow(gene_file)) {
@@ -85,30 +87,25 @@ fastaFilesOrg$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biolo
 
 for(row in 1:nrow(fastaFilesOrg)) {
   path <- fastaFilesOrg$Path_name[row]
-  file <- fastaFilesOrg$File_name[row]
   
-  align <- msa::msaClustalW(inputSeqs = path, maxiters = 100, type = "dna",
-                            order = "input")
-  writeXStringSet(unmasked(align), file = paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/5Aligned/", 
-                                                file, sep = ""))
+  gene_file <- readDNAStringSet(path)
+  
+  align <- msa::msaClustalW(inputSeqs = gene_file, maxiters = 100, type = "dna", order = "input")
+  alignConv <- msaConvert(align, type = "seqinr::alignment")
+  
+  alignFA <- base::as.data.frame(matrix(ncol = 2, nrow = 10))
+  colnames(alignFA) <- c("sequences", "species")
+  alignFA$sequences <- alignConv$seq
+  alignFA$species <- alignConv$nam
+  
+  write.fasta(sequences = as.list(alignFA$sequences),
+              names = alignFA$species,
+              file.out = paste("5Aligned/", fastaFilesOrg$File_name[row],
+                               sep = ''),
+              open = "w", nbchar = 10000, as.string = TRUE)
 }
-rm(align, file, path, row)
-
-library("msa")
-aligned <- msaConvert(align, type="seqinr::alignment")
-check <- base::as.data.frame(aligned$seq)
-colnames(check) <- "sequences"
-
-
-
-gene_check <- readDNAStringSet(fastaFiles$Path_name[2])
-align_check <- msa::msaClustalW(inputSeqs = gene_check, maxiters = 100, type = "dna", order = "input")
-aligned_check <- msaConvert(align_check, type = "seqinr::alignment")
-aligned_check$seq
-
-
-
-
+beep(8)
+rm(align, alignConv, alignFA, gene_file, path, row)
 
 ### Distance matrices #####################################################################################################################################
 
