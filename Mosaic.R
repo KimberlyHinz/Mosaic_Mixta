@@ -9,7 +9,7 @@ library("msa")
 library("ape")
 library("adegenet")
 library("Rfast")
-
+library("beepr")
 
 ### Selection for genes ###################################################################################################################################
 # If on my own computer:
@@ -23,7 +23,7 @@ fastaFiles$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_
 # If in the office:
 setwd("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/")
 fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
-                                       pattern - ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
+                                       pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
 fastaFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/", 
                               fastaFiles$File_name, sep = "")             # Creates a file pathway for each gene
@@ -86,10 +86,10 @@ rm(gene_file, count, path, row, twenty)
 
 ### Aligning genes ########################################################################################################################################
 # Using ClustalW in R
-fastaFilesOrg <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/4Organize/", 
+fastaFilesOrg <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/4Organize/", 
                                           pattern = ".fasta"))            # Makes a dataframe listing the fasta files in the folder
 colnames(fastaFilesOrg) <- "File_name"                                    # Changes the column name
-fastaFilesOrg$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/4Organize/", 
+fastaFilesOrg$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/4Organize/", 
                                  fastaFilesOrg$File_name, sep = "")      # Creates a file pathway for each gene
 
 for(row in 1:nrow(fastaFilesOrg)) {                                       # Aligns genes that passed the filter
@@ -115,10 +115,10 @@ beep(8)
 rm(align, alignConv, alignFA, gene_file, path, row)
 
 ### Distance matrices #####################################################################################################################################
-fastaFilesAlign <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/5Aligned/",
+fastaFilesAlign <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
                                             pattern = ".fasta"))          # Makes a dataframe listing the fasta files in the folder
 colnames(fastaFilesAlign) <- "File_name"                                  # Changes the column name
-fastaFilesAlign$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/5Aligned/",
+fastaFilesAlign$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
                                    fastaFilesAlign$File_name, sep = "")   # Creates a file pathway for each gene
 fastaFilesAlign$Gene <- gsub(pattern = ".fasta", replacement = "", 
                              x = fastaFilesAlign$File_name)               # Creates a column with just the gene name
@@ -135,7 +135,7 @@ for(row in 1:nrow(fastaFilesAlign)) {                                     # Crea
   gene_dist_df <- as.data.frame(as.matrix(gene_dist))                     # Converts to dataframe
   colnames(gene_dist_df) <- c("Tatumella_saanichensis", "Citrobacter_freundii",	"Enterobacter_cloacae", "Erwinia_amylovora", "Erwinia_tasmaniensis", 
                               "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", "Tatumella_ptyseos")
-                                                                          # Change column names (useful for next step)
+  # Change column names (useful for next step)
   write.csv(x = gene_dist_df, 
             file = paste("6Distance/", fastaFilesAlign$Gene[row], 
                          ".csv", sep = ""))                               # Write distance matrices into csv
@@ -143,11 +143,13 @@ for(row in 1:nrow(fastaFilesAlign)) {                                     # Crea
 rm(gene_dist, gene_dist_df, gene_file, path, row)
 
 ### Categorizing closest relative #########################################################################################################################
-csvFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/6Distance/",
+csvFiles <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Distance/",
                                      pattern = ".csv"))                   # Makes a dataframe listing the csv files in the folder
 colnames(csvFiles) <- "File_name"                                         # Changes the column name
-csvFiles$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/6Distance/",
+csvFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Distance/",
                             csvFiles$File_name, sep = "")                 # Creates a file pathway for each distance matrix
+csvFiles$Gene <- gsub(pattern = ".csv", replacement = "", 
+                             x = csvFiles$File_name)                      # Creates a column with just the gene name
 
 relative <- function(number) {                                            # Returns the relative name given row number
   if(number == 1) {
@@ -174,7 +176,7 @@ relative <- function(number) {                                            # Retu
 }
 
 M_calida <- as.data.frame(matrix(ncol = 3, nrow = 0))                     # Dataframe for M. calida's closest relatives
-colnames(M_calida) <- c("First_relative", "Second_relative")              # Changes the column names
+colnames(M_calida) <- c("Gene", "First_relative", "Second_relative")      # Changes the column names
 
 for(row in 1:nrow(csvFiles)) {                                            # Finds the two closest relatives to Mixta calida
   path <- csvFiles$Path_name[row]
@@ -187,12 +189,13 @@ for(row in 1:nrow(csvFiles)) {                                            # Find
                   nth(x = dist_matrix$Mixta_calida, k = 3,
                       descending = FALSE), arr.ind = TRUE)                # k = 3 is third smallest number
   
-  rela <- data.frame(two = relative(min2),                                # Dataframe with first and second relative
+  rela <- data.frame(gene = csvFiles$Gene[row],                           # Dataframe with first and second relative
+                     two = relative(min2),
                      third = relative(min3))
   
   M_calida <- rbind(M_calida, rela)
 }
-rm(rela, min2, min3, path, row)
+rm(dist_matrix, rela, min2, min3, path, row)
 
 for(row in 1:nrow(M_calida)) {                                            # Writes the closest, non-Mixta relative into Results column
   if(M_calida$two[row] == "Mixta_gaviniae") {
@@ -203,8 +206,8 @@ for(row in 1:nrow(M_calida)) {                                            # Writ
 }
 rm(row)
 
-M_gaviniae <- as.data.frame(matrix(ncol = 2, nrow = 0))                   # Dataframe for M. gaviniae's closest relatives
-colnames(M_gaviniae) <- c("First_relative", "Second_relative")            # Changes the column names
+M_gaviniae <- as.data.frame(matrix(ncol = 3, nrow = 0))                   # Dataframe for M. gaviniae's closest relatives
+colnames(M_gaviniae) <- c("Gene", "First_relative", "Second_relative")    # Changes the column names
 
 for(row in 1:nrow(csvFiles)) {                                            # Finds the two closest relatives to Mixta gaviniae
   path <- csvFiles$Path_name[row]
@@ -217,7 +220,8 @@ for(row in 1:nrow(csvFiles)) {                                            # Find
                   nth(x = dist_matrix$Mixta_gaviniae, k = 3,
                       descending = FALSE), arr.ind = TRUE)                # k = 3 is third smallest number
   
-  rela <- data.frame(two = relative(min2),                                # Dataframe with first and second relative
+  rela <- data.frame(gene = csvFiles$Gene[row],                           # Dataframe with first and second relative
+                     two = relative(min2),
                      third = relative(min3))
   
   M_gaviniae <- rbind(M_gaviniae, rela)
