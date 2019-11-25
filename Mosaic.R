@@ -236,3 +236,6 @@ for(row in 1:nrow(M_gaviniae)) {                                          # Writ
   }
 }
 rm(row)
+
+write.csv(x = M_calida, file = "7Results/M_calida.csv")                   # Write results into csv
+write.csv(x = M_gaviniae, file = "7Results/M_gaviniae.csv")               # Write results into csv
