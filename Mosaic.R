@@ -11,7 +11,6 @@ library("adegenet")
 library("Rfast")
 library("beepr")
 
-### Selection for genes ###################################################################################################################################
 # If on my own computer:
 setwd("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/")
 fastaFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes", 
@@ -28,7 +27,7 @@ colnames(fastaFiles) <- "File_name"                                       # Chan
 fastaFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/", 
                               fastaFiles$File_name, sep = "")             # Creates a file pathway for each gene
 
-####
+### Selection for genes ###################################################################################################################################
 ten_seq <- function(gene) {                                               # Function that checks if there are 10 sequences in the gene file
   if(nrow(gene) == 20) {                                                  # Checks if there's 20 rows because odd rows are names and even rows are seq.
     print("You may continue")
@@ -38,7 +37,7 @@ ten_seq <- function(gene) {                                               # Func
     twenty <- "No"
   }
 }
-#
+
 gene_length <- function(gene_file) {                                      # Function that checks for similar gene lengths
   count = 0
   for(row in 1:nrow(gene_file)) {
@@ -67,7 +66,7 @@ for(row in 1:nrow(fastaFiles)) {                                          # Lets
                            "ID:LMPCFIAF_01940__Erwinia tasmaniensis__ET1-99", "ID:MLHGDOMH_01877__Mixta calida__DSM_22759",
                            "ID:MHMNNPCM_01846__Mixta gaviniae__DSM_22758", "ID:MEFHALAL_00346__Pantoea agglomerans__NBRC_102470",
                            "ID:KOGPCAHI_00156__Pantoea septica__LMG_5345", "ID:IBJKPIAN_01672__Tatumella ptyseos__NCTC11468")
-                                                                          # Renames the species names so they aren't ridiculously long
+    # Renames the species names so they aren't ridiculously long
     
     count <- gene_length(gene_file)
     if(count == 10) {                                                     # If all 10 are of similar lengths, then continue
@@ -114,6 +113,48 @@ for(row in 1:nrow(fastaFilesOrg)) {                                       # Alig
 beep(8)
 rm(align, alignConv, alignFA, gene_file, path, row)
 
+### Best model for genes ##################################################################################################################################
+fastaFilesModel <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Model/",
+                                            pattern = ".csv"))            # Make a dataframe listing the csv files in the folder
+colnames(fastaFilesModel) <- "File_name"                                  # Changes the column name
+fastaFilesModel$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Model/",
+                                   fastaFilesModel$File_name, sep = "")   # Creates a file pathway for each gene
+
+best_model <- as.data.frame(matrix(ncol = 2, nrow = 0))                   # Dataframe for each gene's best model
+for(row in 1:nrow(fastaFilesModel)) {
+  path <- fastaFilesModel$Path_name[row]
+  gene_model_test <- read.csv(file = path)
+  
+  model <- as.data.frame(gene_model_test$Model[1])
+  colnames(model) <- "Model"
+  model$File_name <- fastaFilesModel$File_name[row]
+  
+  best_model <- rbind(best_model, model)
+}
+rm(gene_model_test, model, path, row)
+
+best_model$Gene <- gsub(pattern = ".csv", replacement = "", 
+                             x = best_model$File_name)                    # Creates a column with just the gene name
+best_model$Path_Name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
+                              best_model$Gene, ".fasta", sep = "")
+
+Uniq_mods <- as.data.frame(unique(best_model$Model))
+colnames(Uniq_mods) <- "Model_Para"
+Uniq_mods$Model_Name <- c("T92_G_I", "TN93_G_I", "T92_G", "GTR_G_I", 
+                              "HKY_G_I", "K2_G", "TN93_G", "K2_I", 
+                              "TN93_I", "GTR_G", "K2_G_I", "HKY_G", 
+                              "JC_G", "T92_I")
+for(row in 1:nrow(Uniq_mods)) {
+  Para <- Uniq_mods$Model_Para[row]
+  Name <- Uniq_mods$Model_Name[row]
+  
+  datframe <- subset(best_model, Model == Para)
+  datframe <- datframe$Path_Name
+  
+  write.table(datframe, file = paste(Name, ".txt", sep = ""), sep = "\n",
+              row.names = FALSE, col.names = FALSE, quote = FALSE)
+}
+
 ### Distance matrices #####################################################################################################################################
 fastaFilesAlign <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
                                             pattern = ".fasta"))          # Makes a dataframe listing the fasta files in the folder
@@ -149,7 +190,7 @@ colnames(csvFiles) <- "File_name"                                         # Chan
 csvFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Distance/",
                             csvFiles$File_name, sep = "")                 # Creates a file pathway for each distance matrix
 csvFiles$Gene <- gsub(pattern = ".csv", replacement = "", 
-                             x = csvFiles$File_name)                      # Creates a column with just the gene name
+                      x = csvFiles$File_name)                      # Creates a column with just the gene name
 
 relative <- function(number) {                                            # Returns the relative name given row number
   if(number == 1) {
@@ -239,3 +280,6 @@ rm(row)
 
 write.csv(x = M_calida, file = "7Results/M_calida.csv")                   # Write results into csv
 write.csv(x = M_gaviniae, file = "7Results/M_gaviniae.csv")               # Write results into csv
+
+### Kittens ###############################################################################################################################################
+showmekittens()
