@@ -120,7 +120,7 @@ colnames(fastaFilesModel) <- "File_name"                                  # Chan
 fastaFilesModel$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Model/",
                                    fastaFilesModel$File_name, sep = "")   # Creates a file pathway for each gene
 
-best_model <- as.data.frame(matrix(ncol = 2, nrow = 0))                   # Dataframe for each gene's best model
+best_model <- as.data.frame(matrix(ncol = 3, nrow = 0))                   # Dataframe for each gene's best model
 for(row in 1:nrow(fastaFilesModel)) {
   path <- fastaFilesModel$Path_name[row]
   gene_model_test <- read.csv(file = path)
@@ -128,15 +128,51 @@ for(row in 1:nrow(fastaFilesModel)) {
   model <- as.data.frame(gene_model_test$Model[1])
   colnames(model) <- "Model"
   model$File_name <- fastaFilesModel$File_name[row]
+  model$ModelA <- "hello"
+  if(model$Model == "T92+G+I") {
+    model$ModelA == "T92_G"
+  } else if (model$Model == "TN93+G+I") {
+    model$ModelA == "TN93_G"
+  } else if (model$Model == "T92+G") {
+    model$ModelA == "T92_G"
+  } else if (model$Model == "GTR+G+I") {
+    model$ModelA == "GTR_G"
+  } else if (model$Model == "HKY+G+I") {
+    model$ModelA == "HKY_G"
+  } else if (model$Model == "K2+G") {
+    model$ModelA == "K2_G"
+  } else if (model$Model == "TN93+G") {
+    model$ModelA == "TN93_G"
+  } else if (model$Model == "K2+I") {
+    model$ModelA == "K2"
+  } else if (model$Model == "TN93+I") {
+    model$ModelA == "TN93"
+  } else if (model$Model == "GTR+G") {
+    model$ModelA == "GTR_G"
+  } else if (model$Model == "K2+G+I") {
+    model$ModelA == "K2_G"
+  } else if (model$Model == "HKY+G") {
+    model$ModelA == "HKY_G"
+  } else if (model$Model == "JC+G") {
+    model$ModelA == "JC_G"
+  } else if (model$Model == "T92+I") {
+    model$ModelA == "T92"
+  }
   
   best_model <- rbind(best_model, model)
 }
 rm(gene_model_test, model, path, row)
 
-best_model$Gene <- gsub(pattern = ".csv", replacement = "", 
+best_model$Gene <- gsub(pattern = "-4212.csv", replacement = "", 
                              x = best_model$File_name)                    # Creates a column with just the gene name
 best_model$Path_Name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
                               best_model$Gene, ".fasta", sep = "")
+
+for(row in 1:nrow(best_model)) {
+  
+}
+
+
 
 Uniq_mods <- as.data.frame(unique(best_model$Model))
 colnames(Uniq_mods) <- "Model_Para"
@@ -154,6 +190,7 @@ for(row in 1:nrow(Uniq_mods)) {
   write.table(datframe, file = paste(Name, ".txt", sep = ""), sep = "\n",
               row.names = FALSE, col.names = FALSE, quote = FALSE)
 }
+rm(datframe, Name, Para, row)
 
 ### Distance matrices #####################################################################################################################################
 fastaFilesAlign <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
