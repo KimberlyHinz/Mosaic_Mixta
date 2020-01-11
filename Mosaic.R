@@ -121,6 +121,9 @@ fastaFilesModel$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixt
                                    fastaFilesModel$File_name, sep = "")   # Creates a file pathway for each gene
 
 best_model <- as.data.frame(matrix(ncol = 3, nrow = 0))                   # Dataframe for each gene's best model
+
+###HERE!! Make this for loop more concise!!
+
 for(row in 1:nrow(fastaFilesModel)) {                                     # Organize by model since invariant sites are not an option for distance matrices
   path <- fastaFilesModel$Path_name[row]                                  # Path to model for each gene
   gene_model_test <- read.csv(file = path)                                # Read in model test csv
@@ -180,7 +183,7 @@ for(row in 1:nrow(Uniq_mods)) {                                           # Writ
   write.table(datframe, file = paste(Name, ".txt", sep = ""), sep = "\n", # Creates a txt file listing the gene pathways
               row.names = FALSE, col.names = FALSE, quote = FALSE)
 }
-rm(datframe, Name, Para, row)
+rm(datframe, Name, row)
 
 ### Distance matrices #####################################################################################################################################
 fastaFilesAlign <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
