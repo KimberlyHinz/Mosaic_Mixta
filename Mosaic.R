@@ -121,73 +121,63 @@ fastaFilesModel$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixt
                                    fastaFilesModel$File_name, sep = "")   # Creates a file pathway for each gene
 
 best_model <- as.data.frame(matrix(ncol = 3, nrow = 0))                   # Dataframe for each gene's best model
-for(row in 1:nrow(fastaFilesModel)) {
-  path <- fastaFilesModel$Path_name[row]
-  gene_model_test <- read.csv(file = path)
+for(row in 1:nrow(fastaFilesModel)) {                                     # Organize by model since invariant sites are not an option for distance matrices
+  path <- fastaFilesModel$Path_name[row]                                  # Path to model for each gene
+  gene_model_test <- read.csv(file = path)                                # Read in model test csv
   
-  model <- as.data.frame(gene_model_test$Model[1])
+  model <- as.data.frame(gene_model_test$Model[1])                        # Assign the name of the best model to model
   colnames(model) <- "Model"
   model$File_name <- fastaFilesModel$File_name[row]
-  model$ModelA <- "hello"
-  if(model$Model == "T92+G+I") {
-    model$ModelA == "T92_G"
+  
+  if(model$Model == "T92+G+I") {                                          # New column with model name
+    model$ModelA <- "T92_G"
   } else if (model$Model == "TN93+G+I") {
-    model$ModelA == "TN93_G"
+    model$ModelA <- "TN93_G"
   } else if (model$Model == "T92+G") {
-    model$ModelA == "T92_G"
+    model$ModelA <- "T92_G"
   } else if (model$Model == "GTR+G+I") {
-    model$ModelA == "GTR_G"
+    model$ModelA <- "GTR_G"
   } else if (model$Model == "HKY+G+I") {
-    model$ModelA == "HKY_G"
+    model$ModelA <- "HKY_G"
   } else if (model$Model == "K2+G") {
-    model$ModelA == "K2_G"
+    model$ModelA <- "K2_G"
   } else if (model$Model == "TN93+G") {
-    model$ModelA == "TN93_G"
+    model$ModelA <- "TN93_G"
   } else if (model$Model == "K2+I") {
-    model$ModelA == "K2"
+    model$ModelA <- "K2"
   } else if (model$Model == "TN93+I") {
-    model$ModelA == "TN93"
+    model$ModelA <- "TN93"
   } else if (model$Model == "GTR+G") {
-    model$ModelA == "GTR_G"
+    model$ModelA <- "GTR_G"
   } else if (model$Model == "K2+G+I") {
-    model$ModelA == "K2_G"
+    model$ModelA <- "K2_G"
   } else if (model$Model == "HKY+G") {
-    model$ModelA == "HKY_G"
+    model$ModelA <- "HKY_G"
   } else if (model$Model == "JC+G") {
-    model$ModelA == "JC_G"
+    model$ModelA <- "JC_G"
   } else if (model$Model == "T92+I") {
-    model$ModelA == "T92"
+    model$ModelA <- "T92"
   }
   
-  best_model <- rbind(best_model, model)
+  best_model <- rbind(best_model, model)                                  # Combine all best models to one dataset
 }
-rm(gene_model_test, model, path, row)
+rm(gene_model_test, model, path, row)                                     # Remove unneeded variables from the for loop
 
 best_model$Gene <- gsub(pattern = "-4212.csv", replacement = "", 
                              x = best_model$File_name)                    # Creates a column with just the gene name
 best_model$Path_Name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
-                              best_model$Gene, ".fasta", sep = "")
+                              best_model$Gene, ".fasta", sep = "")        # New pathway to aligned fasta file
 
-for(row in 1:nrow(best_model)) {
+Uniq_mods <- as.data.frame(unique(best_model$ModelA))                     # All unique models for genes
+colnames(Uniq_mods) <- "Model_Name"
+
+for(row in 1:nrow(Uniq_mods)) {                                           # Writes a txt file with all pathways for genes of each model (for MEGAX)
+  Name <- as.character(Uniq_mods$Model_Name[row])                         # Takes each model name in turn
   
-}
-
-
-
-Uniq_mods <- as.data.frame(unique(best_model$Model))
-colnames(Uniq_mods) <- "Model_Para"
-Uniq_mods$Model_Name <- c("T92_G_I", "TN93_G_I", "T92_G", "GTR_G_I", 
-                              "HKY_G_I", "K2_G", "TN93_G", "K2_I", 
-                              "TN93_I", "GTR_G", "K2_G_I", "HKY_G", 
-                              "JC_G", "T92_I")
-for(row in 1:nrow(Uniq_mods)) {
-  Para <- Uniq_mods$Model_Para[row]
-  Name <- Uniq_mods$Model_Name[row]
+  datframe <- subset(best_model, ModelA == Name)                          # Subsets best_model according to model name
+  datframe <- as.data.frame(datframe$Path_Name)                           # Keep only the pathway to fasta files
   
-  datframe <- subset(best_model, Model == Para)
-  datframe <- datframe$Path_Name
-  
-  write.table(datframe, file = paste(Name, ".txt", sep = ""), sep = "\n",
+  write.table(datframe, file = paste(Name, ".txt", sep = ""), sep = "\n", # Creates a txt file listing the gene pathways
               row.names = FALSE, col.names = FALSE, quote = FALSE)
 }
 rm(datframe, Name, Para, row)
