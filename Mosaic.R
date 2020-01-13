@@ -120,45 +120,36 @@ colnames(fastaFilesModel) <- "File_name"                                  # Chan
 fastaFilesModel$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Model/",
                                    fastaFilesModel$File_name, sep = "")   # Creates a file pathway for each gene
 
-best_model <- as.data.frame(matrix(ncol = 3, nrow = 0))                   # Dataframe for each gene's best model
-
-###HERE!! Make this for loop more concise!!
-
+best_model <- as.data.frame(matrix(ncol = 4, nrow = 0))                   # Dataframe for each gene's best model
 for(row in 1:nrow(fastaFilesModel)) {                                     # Organize by model since invariant sites are not an option for distance matrices
   path <- fastaFilesModel$Path_name[row]                                  # Path to model for each gene
   gene_model_test <- read.csv(file = path)                                # Read in model test csv
   
   model <- as.data.frame(gene_model_test$Model[1])                        # Assign the name of the best model to model
-  colnames(model) <- "Model"
+  colnames(model) <- "Model1"
   model$File_name <- fastaFilesModel$File_name[row]
   
-  if(model$Model == "T92+G+I") {                                          # New column with model name
+  if(model$Model1 %in% c("GTR+G+I", "GTR+G", "HKY+G+I", "HKY+G")) {
+    model$Model2 <- gene_model_test$Model[2] ## HERE!! ##
+  }
+  
+  if(model$Model1 %in% c("T92+G+I", "T92+G")) {                                          # New column with model name
     model$ModelA <- "T92_G"
-  } else if (model$Model == "TN93+G+I") {
+  } else if (model$Model1 %in% c("TN93+G+I", "TN93+G")) {
     model$ModelA <- "TN93_G"
-  } else if (model$Model == "T92+G") {
-    model$ModelA <- "T92_G"
-  } else if (model$Model == "GTR+G+I") {
+  } else if (model$Model1 %in% c("GTR+G+I", "GTR+G")) {
     model$ModelA <- "GTR_G"
-  } else if (model$Model == "HKY+G+I") {
+  } else if (model$Model1 %in% c("HKY+G+I", "HKY+G")) {
     model$ModelA <- "HKY_G"
-  } else if (model$Model == "K2+G") {
+  } else if (model$Model1 %in% c("K2+G", "K2+G+I")) {
     model$ModelA <- "K2_G"
-  } else if (model$Model == "TN93+G") {
-    model$ModelA <- "TN93_G"
-  } else if (model$Model == "K2+I") {
+  } else if (model$Model1 == "K2+I") {
     model$ModelA <- "K2"
-  } else if (model$Model == "TN93+I") {
+  } else if (model$Model1 == "TN93+I") {
     model$ModelA <- "TN93"
-  } else if (model$Model == "GTR+G") {
-    model$ModelA <- "GTR_G"
-  } else if (model$Model == "K2+G+I") {
-    model$ModelA <- "K2_G"
-  } else if (model$Model == "HKY+G") {
-    model$ModelA <- "HKY_G"
-  } else if (model$Model == "JC+G") {
+  } else if (model$Model1 == "JC+G") {
     model$ModelA <- "JC_G"
-  } else if (model$Model == "T92+I") {
+  } else if (model$Model1 == "T92+I") {
     model$ModelA <- "T92"
   }
   
