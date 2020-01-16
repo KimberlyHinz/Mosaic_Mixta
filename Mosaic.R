@@ -174,6 +174,31 @@ for(row in 1:nrow(Uniq_mods)) {                                           # Writ
 rm(datframe, Name, row)
 
 ### Distance matrices #####################################################################################################################################
+testmeg2 <- read.table(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/JC_G/38006_atpE-3788.meg", skip = 45, fill = TRUE)
+
+hel <- as.character(testmeg2$V5)
+
+for(i in 1:length(hel)) {
+  hel[i] <- gsub(pattern = "\\[|\\]", replacement = "", x = hel[i])
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 fastaFilesAlign <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
                                             pattern = ".fasta"))          # Makes a dataframe listing the fasta files in the folder
 colnames(fastaFilesAlign) <- "File_name"                                  # Changes the column name
