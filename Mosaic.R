@@ -174,57 +174,51 @@ for(row in 1:nrow(Uniq_mods)) {                                           # Writ
 rm(datframe, Name, row)
 
 ### Distance matrices #####################################################################################################################################
-testmeg2 <- read.table(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/JC_G/38006_atpE-3788.meg", skip = 45, fill = TRUE)
+testmeg1 <- read.table(file = "7Distance/37305_ispE-8212.meg", skip = 45, fill = TRUE, stringsAsFactors = FALSE)
 
-hel <- as.character(testmeg2$V5)
-
-for(i in 1:length(hel)) {
-  hel[i] <- gsub(pattern = "\\[|\\]", replacement = "", x = hel[i])
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-fastaFilesAlign <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
-                                            pattern = ".fasta"))          # Makes a dataframe listing the fasta files in the folder
-colnames(fastaFilesAlign) <- "File_name"                                  # Changes the column name
-fastaFilesAlign$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/5Aligned/",
-                                   fastaFilesAlign$File_name, sep = "")   # Creates a file pathway for each gene
-fastaFilesAlign$Gene <- gsub(pattern = ".fasta", replacement = "", 
-                             x = fastaFilesAlign$File_name)               # Creates a column with just the gene name
-
-
-for(row in 1:nrow(fastaFilesAlign)) {                                     # Creates a distance matrix for each aligned gene
-  path <- fastaFilesAlign$Path_name[row]
-  gene_file <- fasta2DNAbin(file = path)                                  # Reads in fasta file as a DNAbin
+testmeg2 <- as.data.frame(matrix(ncol = 1, nrow = 10))
+for(i in 1:length(testmeg1)) {
+  hel <- as.character(testmeg1[[i]])
   
-  gene_dist <- dist.dna(x = gene_file, model = "T92",                     # Tamura 1992 model
-                        pairwise.deletion = TRUE,                         # Does pairwise deletions
-                        as.matrix = TRUE)                                 # Returns matrix format
-  
-  gene_dist_df <- as.data.frame(as.matrix(gene_dist))                     # Converts to dataframe
-  colnames(gene_dist_df) <- c("Tatumella_saanichensis", "Citrobacter_freundii",	"Enterobacter_cloacae", "Erwinia_amylovora", "Erwinia_tasmaniensis", 
-                              "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", "Tatumella_ptyseos")
-  # Change column names (useful for next step)
-  write.csv(x = gene_dist_df, 
-            file = paste("6Distance/", fastaFilesAlign$Gene[row], 
-                         ".csv", sep = ""))                               # Write distance matrices into csv
+  for(j in 1:length(hel)) {
+    hel[j] <- gsub(pattern = "\\[|\\]", replacement = "", x = hel[j])
+  }
+  testmeg2 <- cbind(testmeg2, hel, stringsAsFactors = FALSE) 
 }
-rm(gene_dist, gene_dist_df, gene_file, path, row)
+rm(hel, i, j)
+colnames(testmeg2) <- paste("V", 1:13, sep = "")
+
+testmeg3 <- subset(testmeg2, select = V3:V12)
+colnames(testmeg3) <- paste("V", 1:10, sep = "")
+
+for(row in 2:(nrow(testmeg3) - 1)) {
+  for(i in 1:(row - 1)) {
+    testmeg3[row, i] <- testmeg3[row, i + 1]
+  }
+}
+rm(i, row)
+diag(testmeg3) <- 0
+
+
+# Might have to do the five weird ones separately
+testmeg1.2 <- read.table(file = "7Distance/37818_hypothetical_protein.meg", stringsAsFactors = FALSE, skip = 37, fill = TRUE)
+#
+
+megFiles <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/7Distance/",
+                                     pattern = ".meg"))
+colnames(megFiles) <- "File_name"
+megFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/7Distance/",
+                            megFiles$File_name, sep = "")
+
+megFiles$Gene <- best_model$Gene
+
+
+
+
+
+
+# c("Tatumella_saanichensis", "Citrobacter_freundii",	"Enterobacter_cloacae", "Erwinia_amylovora", "Erwinia_tasmaniensis", 
+#                               "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", "Tatumella_ptyseos")
 
 ### Categorizing closest relative #########################################################################################################################
 csvFiles <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Distance/",
