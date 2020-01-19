@@ -13,7 +13,7 @@ library("beepr")
 library("dplyr")
 
 # If on my own computer:
-setwd("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/")
+setwd("D:/Honours/")
 fastaFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes", 
                                        pattern = ".fasta"))               # Makes a dataframe listing the fasta files in the folder
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
@@ -176,41 +176,53 @@ rm(datframe, Name, row)
 ### Distance matrices #####################################################################################################################################
 testmeg1 <- read.table(file = "7Distance/37305_ispE-8212.meg", skip = 45, fill = TRUE, stringsAsFactors = FALSE)
 
-testmeg2 <- as.data.frame(matrix(ncol = 1, nrow = 10))
-for(i in 1:length(testmeg1)) {
-  hel <- as.character(testmeg1[[i]])
-  
-  for(j in 1:length(hel)) {
-    hel[j] <- gsub(pattern = "\\[|\\]", replacement = "", x = hel[j])
-  }
-  testmeg2 <- cbind(testmeg2, hel, stringsAsFactors = FALSE) 
-}
-rm(hel, i, j)
-colnames(testmeg2) <- paste("V", 1:13, sep = "")
-
-testmeg3 <- subset(testmeg2, select = V3:V12)
-colnames(testmeg3) <- paste("V", 1:10, sep = "")
-
-for(row in 2:(nrow(testmeg3) - 1)) {
-  for(i in 1:(row - 1)) {
-    testmeg3[row, i] <- testmeg3[row, i + 1]
-  }
-}
-rm(i, row)
-diag(testmeg3) <- 0
-
-
 # Might have to do the five weird ones separately
 testmeg1.2 <- read.table(file = "7Distance/37818_hypothetical_protein.meg", stringsAsFactors = FALSE, skip = 37, fill = TRUE)
 #
 
-megFiles <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/7Distance/",
+
+
+megFiles <- as.data.frame(list.files(path = "D:/Honours/7Distance/",
                                      pattern = ".meg"))
 colnames(megFiles) <- "File_name"
-megFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/7Distance/",
+megFiles$Path_name <- paste("D:/Honours/7Distance/",
                             megFiles$File_name, sep = "")
 
 megFiles$Gene <- best_model$Gene
+
+
+for(row in 1:nrow(megFiles)) {
+  path <- megFiles$Path_name[row]
+  mega <- case_when(
+    megFiles$Gene[row] %in% c("37818_hypothetical_protein", "38262_ygbE", "38956_hypothetical_protein", "39709_yciH", "39916_eamA") 
+      ~ read.table(file = "7Distance/37818_hypothetical_protein.meg",
+                   stringsAsFactors = FALSE, skip = 37, fill = TRUE),
+    TRUE ~ read.table(file = "7Distance/37305_ispE-8212.meg", 
+                   stringsAsFactors = FALSE, skip = 45, fill = TRUE))
+    
+  mega2 <- as.data.frame(matrix(ncol = 1, nrow = 10))
+  for(i in 1:length(mega)) {
+    hel <- as.character(mega[[i]])
+    
+    for(j in 1:length(hel)) {
+      hel[j] <- gsub(pattern = "\\[|\\]", replacement = "", x = hel[j])
+    }
+    mega2 <- cbind(mega2, hel, stringsAsFactors = FALSE) 
+  }
+  rm(hel, i, j)
+  colnames(mega2) <- paste("V", 1:13, sep = "")
+  
+  dist <- subset(mega2, select = V3:V12)
+  colnames(dist) <- paste("V", 1:10, sep = "")
+  
+  for(row in 2:(nrow(dist) - 1)) {
+    for(i in 1:(row - 1)) {
+      dist[row, i] <- dist[row, i + 1]
+    }
+  }
+  rm(i, row)
+  diag(dist) <- 0
+}
 
 
 
