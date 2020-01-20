@@ -115,10 +115,10 @@ beep(8)
 rm(align, alignConv, alignFA, gene_file, path, row)
 
 ### Best model for genes ##################################################################################################################################
-fastaFilesModel <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Model/",
+fastaFilesModel <- as.data.frame(list.files(path = "D:/Honours/6Model/",
                                             pattern = ".csv"))            # Make a dataframe listing the csv files in the folder
 colnames(fastaFilesModel) <- "File_name"                                  # Changes the column name
-fastaFilesModel$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Model/",
+fastaFilesModel$Path_name <- paste("D:/Honours/6Model/",
                                    fastaFilesModel$File_name, sep = "")   # Creates a file pathway for each gene
 
 best_model <- as.data.frame(matrix(ncol = 4, nrow = 0))                   # Dataframe for each gene's best model
@@ -190,16 +190,16 @@ megFiles$Path_name <- paste("D:/Honours/7Distance/",
 
 megFiles$Gene <- best_model$Gene
 
-
 for(row in 1:nrow(megFiles)) {
   path <- megFiles$Path_name[row]
+  gene <- megFiles$Gene[row]
   mega <- case_when(
-    megFiles$Gene[row] %in% c("37818_hypothetical_protein", "38262_ygbE", "38956_hypothetical_protein", "39709_yciH", "39916_eamA") 
-      ~ read.table(file = "7Distance/37818_hypothetical_protein.meg",
-                   stringsAsFactors = FALSE, skip = 37, fill = TRUE),
+    gene %in% c("37818_hypothetical_protein", "38262_ygbE", "38956_hypothetical_protein", "39709_yciH", "39916_eamA") 
+    ~ read.table(file = "7Distance/37818_hypothetical_protein.meg",
+                 stringsAsFactors = FALSE, skip = 37, fill = TRUE),
     TRUE ~ read.table(file = "7Distance/37305_ispE-8212.meg", 
-                   stringsAsFactors = FALSE, skip = 45, fill = TRUE))
-    
+                      stringsAsFactors = FALSE, skip = 45, fill = TRUE))
+  
   mega2 <- as.data.frame(matrix(ncol = 1, nrow = 10))
   for(i in 1:length(mega)) {
     hel <- as.character(mega[[i]])
