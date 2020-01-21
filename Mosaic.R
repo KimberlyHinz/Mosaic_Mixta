@@ -281,19 +281,7 @@ rm(dist, MCclorel, mega, mega2, MGclorel, gene, M_cal, M_gav, path)
 # Same thing as above.
 ## These 6 genes are identical in both M. calida and M. gaviniae.
 
-write.csv(x = M_calida, file = "8Results/M_calida.csv")
-write.csv(x = M_gaviniae, file = "8Results/M_gaviniae.csv")
-
 M_calida <- read.csv(file = "8Results/M_calida.csv", stringsAsFactors = FALSE)
-M_gaviniae <- read.csv(file = "8Results//M_gaviniae.csv", stringsAsFactors = FALSE)
-
-for(row in 1:nrow(M_calida)) {
-  if(M_calida$One[row] == "Mixta_calida") {
-    M_calida$Results_Mixta[row] <- M_calida$Two[row]
-  } else if(M_calida$One[row] == "Mixta_gaviniae") {
-    M_calida$Results_Mixta[row] <- M_calida$One[row]
-  }
-}
 
 for(row in 1:nrow(M_calida)) {
   M_calida$Results_Mixta[row] <- case_when(
@@ -303,32 +291,33 @@ for(row in 1:nrow(M_calida)) {
 }
 
 for(row in 1:nrow(M_calida)) {
-  if(M_calida$One[row] %in% c("Mixta_calida", "Mixta_gaviniae")) {
-    if(M_calida$Two[row] %in% c("Mixta_calida", "Mixta_gaviniae")) {
-      M_calida$Results[row] <- as.character(M_calida$Three[row])
-    } else {
-      M_calida$Results[row] <- as.character(M_calida$Two[row])
-    }
-  } else {
-    M_calida$Results[row] <- as.character(M_calida$One[1])
-  }
-}
-if(M_calida$One[1] %in% c("Mixta_calida", "Mixta_gaviniae")) {
-  if(M_calida$Two[1] %in% c("Mixta_calida", "Mixta_gaviniae")) {
-    test <- as.character(M_calida$Three[1])
-  } else {
-    test <- as.character(M_calida$Two[1])
-  }
-} else {
-  test <- as.character(M_calida$One[1])
+  M_calida$Results_Other[row] <- case_when(
+    M_calida$Two[row] %in% c("Mixta_calida", "Mixta_gaviniae") ~ M_calida$Three[row],
+    TRUE ~ M_calida$Two[row]
+  )
 }
 
+write.csv(x = M_calida, file = "8Results/M_calida.csv")
 
 
 
+M_gaviniae <- read.csv(file = "8Results/M_gaviniae.csv", stringsAsFactors = FALSE)
 
-write.csv(x = M_calida, file = "7Results/M_calida.csv")                   # Write results into csv
-write.csv(x = M_gaviniae, file = "7Results/M_gaviniae.csv")               # Write results into csv
+for(row in 1:nrow(M_gaviniae)) {
+  M_gaviniae$Results_Mixta[row] <- case_when(
+    M_gaviniae$One[row] == "Mixta_gaviniae" ~ M_gaviniae$Two[row],
+    M_gaviniae$One[row] == "Mixta_calida" ~ M_gaviniae$One[row]
+  )
+}
+### HERE!!
+for(row in 1:nrow(M_calida)) {
+  M_calida$Results_Other[row] <- case_when(
+    M_calida$Two[row] %in% c("Mixta_calida", "Mixta_gaviniae") ~ M_calida$Three[row],
+    TRUE ~ M_calida$Two[row]
+  )
+}
+
+write.csv(x = M_gaviniae, file = "8Results/M_gaviniae.csv")
 
 ### Kittens ###############################################################################################################################################
 showmekittens()
