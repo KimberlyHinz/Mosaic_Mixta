@@ -173,7 +173,7 @@ for(row in 1:nrow(Uniq_mods)) {                                           # Writ
 }
 rm(datframe, Name, row)
 
-### Distance matrices #####################################################################################################################################
+### Closest relative ######################################################################################################################################
 megFiles <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/7Distance/",
                                      pattern = ".meg"))                   # Makes a list of all .meg file in this diretory
 colnames(megFiles) <- "File_name"                                         # Changes the column name
@@ -209,9 +209,17 @@ relative <- function(number) {                                            # Retu
     number == 10 ~ "Tatumella_ptyseos")
 }
 
-for(row in 1:nrow(megFiles)) {                                            # Finds the two closest relatives to Mixta calida
-  path <- megFiles$Path_name[1]                                         # Path name
-  gene <- megFiles$Gene[1]                                              # Gene name
+M_calida <- as.data.frame(matrix(ncol = 4, nrow = 0))                     # Dataframe for M. calida's closest relatives
+colnames(M_calida) <- c("Gene", "Itself_check", "First_relative",
+                        "Second_relative")                                # Changes the column names
+
+M_gaviniae <- as.data.frame(matrix(ncol = 4, nrow = 0))                   # Dataframe for M. gaviniae's closest relatives
+colnames(M_gaviniae) <- c("Gene", "Itself_check", "First_relative", 
+                          "Second_relative")                              # Changes the column names
+
+for(row in 1:nrow(megFiles)) {                                            # Finds the two closest relatives to Mixta species
+  path <- megFiles$Path_name[row]                                         # Path name
+  gene <- megFiles$Gene[row]                                              # Gene name
   
   if(gene %in% c("37818_hypothetical_protein", "38262_ygbE", "38956_hypothetical_protein", "39709_yciH", 
                  "39916_eamA")) {                                         # These five genes had to be run manually (therefore different format)
@@ -253,110 +261,63 @@ for(row in 1:nrow(megFiles)) {                                            # Find
   MCclorel <- close_relative(gene, M_cal)
   MGclorel <- close_relative(gene, M_gav)
   
+  M_calida <- rbind(M_calida, MCclorel)
+  M_gaviniae <- rbind(M_gaviniae, MGclorel)
 }
-rm(dist, mega, mega2, gene, path)
-
-
-# c("Tatumella_saanichensis", "Citrobacter_freundii",	"Enterobacter_cloacae", "Erwinia_amylovora", "Erwinia_tasmaniensis", 
-#                               "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", "Tatumella_ptyseos")
+beep(8)
+rm(dist, MCclorel, mega, mega2, MGclorel, gene, M_cal, M_gav, path)
 
 ### Categorizing closest relative #########################################################################################################################
-csvFiles <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Distance/",
-                                     pattern = ".csv"))                   # Makes a dataframe listing the csv files in the folder
-colnames(csvFiles) <- "File_name"                                         # Changes the column name
-csvFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Distance/",
-                            csvFiles$File_name, sep = "")                 # Creates a file pathway for each distance matrix
-csvFiles$Gene <- gsub(pattern = ".csv", replacement = "", 
-                      x = csvFiles$File_name)                             # Creates a column with just the gene name
+# Weird ones for M_calida: 
+#   37893_rpsR ---> 30S ribosomal subunit protein
+#   38470_rpmA ---> 50S ribosomal subunit protein
+#   38576_rpsQ ---> 30S ribosomal subunit protein
+#   38613_rpmF ---> 50S ribosomal subunit protein
+# These genes had M. gaviniae as "Itself". Therefore, M. calida and M. gaviniae have identical genes for these four.
 
-relative <- function(number) {                                            # Returns the relative name given row number
-  if(number == 1) {
-    rltv <- "Tatumella_saanichensis"
-  } else if(number == 2) {
-    rltv <- "Citrobacter_freundii"
-  } else if(number == 3) {
-    rltv <- "Enterobacter_cloacae"
-  } else if(number == 4) {
-    rltv <- "Erwinia_amylovora"
-  } else if(number == 5) {
-    rltv <- "Erwinia_tasmaniensis"
-  } else if(number == 6) {
-    rltv <- "Mixta_calida"
-  } else if(number == 7) {
-    rltv <- "Mixta_gaviniae"
-  } else if(number == 8) {
-    rltv <- "Pantoea_agglomerans"
-  } else if(number == 9) {
-    rltv <- "Pantoea_septica"
-  } else if(number == 10) {
-    rltv <- "Tatumella_ptyseos"
-  }
-}
+# Weird ones for M_gaviniae:
+#   38559_rplQ ---> 50S ribosomal subunit protein
+#   39814_rpmB ---> 50S ribosomal subunit protein
+# Same thing as above.
+## These 6 genes are identical in both M. calida and M. gaviniae.
 
-M_calida <- as.data.frame(matrix(ncol = 3, nrow = 0))                     # Dataframe for M. calida's closest relatives
-colnames(M_calida) <- c("Gene", "First_relative", "Second_relative")      # Changes the column names
+write.csv(x = M_calida, file = "8Results/M_calida.csv")
+write.csv(x = M_gaviniae, file = "8Results/M_gaviniae.csv")
 
-for(row in 1:nrow(csvFiles)) {                                            # Finds the two closest relatives to Mixta calida
-  path <- csvFiles$Path_name[row]
-  dist_matrix <- read.csv(file = path, header = TRUE)                     # Reads in the csv file
-  
-  min2 <- which(dist_matrix$Mixta_calida ==                               # Finds second closest relative (first is itself)
-                  nth(x = dist_matrix$Mixta_calida, k = 2, 
-                      descending = FALSE), arr.ind = TRUE)                # k = 2 is second smallest number
-  min3 <- which(dist_matrix$Mixta_calida ==                               # Finds third closest relative
-                  nth(x = dist_matrix$Mixta_calida, k = 3,
-                      descending = FALSE), arr.ind = TRUE)                # k = 3 is third smallest number
-  
-  rela <- data.frame(gene = csvFiles$Gene[row],                           # Dataframe with first and second relative
-                     two = relative(min2),
-                     third = relative(min3))
-  
-  M_calida <- rbind(M_calida, rela)
-}
-rm(dist_matrix, rela, min2, min3, path, row)
+M_calida <- read.csv(file = "8Results/M_calida.csv")
+M_gaviniae <- read.
 
-for(row in 1:nrow(M_calida)) {                                            # Writes the closest, non-Mixta relative into Results column
-  if(M_calida$two[row] == "Mixta_gaviniae") {
-    M_calida$Results[row] <- as.character(M_calida$third[row])
+for(row in 1:nrow(M_calida)) {
+  if(M_calida$One[row] %in% c("Mixta_calida", "Mixta_gaviniae")) {
+    if(M_calida$Two[row] %in% c("Mixta_calida", "Mixta_gaviniae")) {
+      M_calida$Results[row] <- as.character(M_calida$Three[row])
+    } else {
+      M_calida$Results[row] <- as.character(M_calida$Two[row])
+    }
   } else {
-    M_calida$Results[row] <- as.character(M_calida$two[row])
+    M_calida$Results[row] <- as.character(M_calida$One[1])
   }
 }
-rm(row)
-
-M_gaviniae <- as.data.frame(matrix(ncol = 3, nrow = 0))                   # Dataframe for M. gaviniae's closest relatives
-colnames(M_gaviniae) <- c("Gene", "First_relative", "Second_relative")    # Changes the column names
-
-for(row in 1:nrow(csvFiles)) {                                            # Finds the two closest relatives to Mixta gaviniae
-  path <- csvFiles$Path_name[row]
-  dist_matrix <- read.csv(file = path, header = TRUE)                     # Reads in the csv file
-  
-  min2 <- which(dist_matrix$Mixta_gaviniae ==                             # Finds second closest relative (first is itself)
-                  nth(x = dist_matrix$Mixta_gaviniae, k = 2, 
-                      descending = FALSE), arr.ind = TRUE)                # k = 2 is second smallest number
-  min3 <- which(dist_matrix$Mixta_gaviniae ==                             # Finds third closest relative
-                  nth(x = dist_matrix$Mixta_gaviniae, k = 3,
-                      descending = FALSE), arr.ind = TRUE)                # k = 3 is third smallest number
-  
-  rela <- data.frame(gene = csvFiles$Gene[row],                           # Dataframe with first and second relative
-                     two = relative(min2),
-                     third = relative(min3))
-  
-  M_gaviniae <- rbind(M_gaviniae, rela)
-}
-rm(rela, min2, min3, path, row)
-
-for(row in 1:nrow(M_gaviniae)) {                                          # Writes the closest, non-Mixta relative into Results column
-  if(M_gaviniae$two[row] == "Mixta_calida") {
-    M_gaviniae$Results[row] <- as.character(M_gaviniae$third[row])
+if(M_calida$One[1] %in% c("Mixta_calida", "Mixta_gaviniae")) {
+  if(M_calida$Two[1] %in% c("Mixta_calida", "Mixta_gaviniae")) {
+    test <- as.character(M_calida$Three[1])
   } else {
-    M_gaviniae$Results[row] <- as.character(M_gaviniae$two[row])
+    test <- as.character(M_calida$Two[1])
   }
+} else {
+  test <- as.character(M_calida$One[1])
 }
-rm(row)
+
+
+
+
 
 write.csv(x = M_calida, file = "7Results/M_calida.csv")                   # Write results into csv
 write.csv(x = M_gaviniae, file = "7Results/M_gaviniae.csv")               # Write results into csv
 
 ### Kittens ###############################################################################################################################################
 showmekittens()
+
+
+# c("Tatumella_saanichensis", "Citrobacter_freundii",	"Enterobacter_cloacae", "Erwinia_amylovora", "Erwinia_tasmaniensis", 
+#                               "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", "Tatumella_ptyseos")
