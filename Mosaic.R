@@ -309,11 +309,11 @@ for(row in 1:nrow(M_gaviniae)) {
     M_gaviniae$One[row] == "Mixta_calida" ~ M_gaviniae$One[row]
   )
 }
-### HERE!!
-for(row in 1:nrow(M_calida)) {
-  M_calida$Results_Other[row] <- case_when(
-    M_calida$Two[row] %in% c("Mixta_calida", "Mixta_gaviniae") ~ M_calida$Three[row],
-    TRUE ~ M_calida$Two[row]
+
+for(row in 1:nrow(M_gaviniae)) {
+  M_gaviniae$Results_Other[row] <- case_when(
+    M_gaviniae$Two[row] %in% c("Mixta_calida", "Mixta_gaviniae") ~ M_gaviniae$Three[row],
+    TRUE ~ M_gaviniae$Two[row]
   )
 }
 
