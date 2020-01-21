@@ -174,34 +174,52 @@ for(row in 1:nrow(Uniq_mods)) {                                           # Writ
 rm(datframe, Name, row)
 
 ### Distance matrices #####################################################################################################################################
-testmeg1 <- read.table(file = "7Distance/37305_ispE-8212.meg", skip = 45, fill = TRUE, stringsAsFactors = FALSE)
+megFiles <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/7Distance/",
+                                     pattern = ".meg"))                   # Makes a list of all .meg file in this diretory
+colnames(megFiles) <- "File_name"                                         # Changes the column name
+megFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/7Distance/",
+                            megFiles$File_name, sep = "")                 # Adds the path name for each gene
+megFiles$Gene <- best_model$Gene                                          # Adds the gene name (no extension)
 
-# Might have to do the five weird ones separately
-testmeg1.2 <- read.table(file = "7Distance/37818_hypothetical_protein.meg", stringsAsFactors = FALSE, skip = 37, fill = TRUE)
-#
+relative <- function(number) {                                            # Returns the relative name given row number
+  if(number == 1) {
+    rltv <- "Tatumella_saanichensis"
+  } else if(number == 2) {
+    rltv <- "Citrobacter_freundii"
+  } else if(number == 3) {
+    rltv <- "Enterobacter_cloacae"
+  } else if(number == 4) {
+    rltv <- "Erwinia_amylovora"
+  } else if(number == 5) {
+    rltv <- "Erwinia_tasmaniensis"
+  } else if(number == 6) {
+    rltv <- "Mixta_calida"
+  } else if(number == 7) {
+    rltv <- "Mixta_gaviniae"
+  } else if(number == 8) {
+    rltv <- "Pantoea_agglomerans"
+  } else if(number == 9) {
+    rltv <- "Pantoea_septica"
+  } else if(number == 10) {
+    rltv <- "Tatumella_ptyseos"
+  }
+}
 
-
-
-megFiles <- as.data.frame(list.files(path = "D:/Honours/7Distance/",
-                                     pattern = ".meg"))
-colnames(megFiles) <- "File_name"
-megFiles$Path_name <- paste("D:/Honours/7Distance/",
-                            megFiles$File_name, sep = "")
-
-megFiles$Gene <- best_model$Gene
-
-for(row in 1:nrow(megFiles)) {
-  path <- megFiles$Path_name[row]
-  gene <- megFiles$Gene[row]
-  mega <- case_when(
-    gene %in% c("37818_hypothetical_protein", "38262_ygbE", "38956_hypothetical_protein", "39709_yciH", "39916_eamA") 
-    ~ read.table(file = "7Distance/37818_hypothetical_protein.meg",
-                 stringsAsFactors = FALSE, skip = 37, fill = TRUE),
-    TRUE ~ read.table(file = "7Distance/37305_ispE-8212.meg", 
-                      stringsAsFactors = FALSE, skip = 45, fill = TRUE))
+relatives <- function()
+for(row in 1:nrow(megFiles)) {                                            # Finds the two closest relatives to Mixta calida
+  path <- megFiles$Path_name[row]                                         # Path name
+  gene <- megFiles$Gene[row]                                              # Gene name
   
+  if(gene %in% c("37818_hypothetical_protein", "38262_ygbE", 
+                 "38956_hypothetical_protein", "39709_yciH", 
+                 "39916_eamA")) {                                         # These five genes had to be run manually (therefore different format)
+    mega <- read.table(file = path, stringsAsFactors = FALSE, skip = 37, fill = TRUE)
+  } else {                                                                # For the rest
+    mega <- read.table(file = path, stringsAsFactors = FALSE, skip = 45, fill = TRUE)
+  }
+
   mega2 <- as.data.frame(matrix(ncol = 1, nrow = 10))
-  for(i in 1:length(mega)) {
+  for(i in 1:length(mega)) {                                              # Removes the square brackets
     hel <- as.character(mega[[i]])
     
     for(j in 1:length(hel)) {
@@ -210,22 +228,42 @@ for(row in 1:nrow(megFiles)) {
     mega2 <- cbind(mega2, hel, stringsAsFactors = FALSE) 
   }
   rm(hel, i, j)
-  colnames(mega2) <- paste("V", 1:13, sep = "")
+  colnames(mega2) <- paste("V", 1:13, sep = "")                           # Changes the column names
   
-  dist <- subset(mega2, select = V3:V12)
-  colnames(dist) <- paste("V", 1:10, sep = "")
+  dist <- subset(mega2, select = V3:V12)                                  # Subsets mega2, keeping only the important columns
+  colnames(dist) <- paste("V", 1:10, sep = "")                            # Changes the column names
   
-  for(row in 2:(nrow(dist) - 1)) {
+  for(row in 2:(nrow(dist) - 1)) {                                        # Moves things over so that the SE's are separate
     for(i in 1:(row - 1)) {
       dist[row, i] <- dist[row, i + 1]
     }
   }
   rm(i, row)
-  diag(dist) <- 0
+  diag(dist) <- 0                                                         # Adds zeros down the diagonal since each species' gene is closest to itself
+  colnames(dist) <- c("Tatumella_saanichensis", "Citrobacter_freundii",	
+                      "Enterobacter_cloacae", "Erwinia_amylovora", 
+                      "Erwinia_tasmaniensis", "Mixta_calida", 
+                      "Mixta_gaviniae", "Pantoea_agglomerans", 
+                      "Pantoea_septica", "Tatumella_ptyseos")             # Changes the column names
+
+  MCmin1 <- which(dist$Mixta_calida == nth(x = dist$Mixta_calida, k = 1, descending = FALSE, arr.ind = TRUE))
 }
+rm(dist, mega, mega2, gene, path)
 
 
 
+min2 <- which(dist_matrix$Mixta_calida ==                               # Finds second closest relative (first is itself)
+                nth(x = dist_matrix$Mixta_calida, k = 2, 
+                    descending = FALSE), arr.ind = TRUE)                # k = 2 is second smallest number
+min3 <- which(dist_matrix$Mixta_calida ==                               # Finds third closest relative
+                nth(x = dist_matrix$Mixta_calida, k = 3,
+                    descending = FALSE), arr.ind = TRUE)                # k = 3 is third smallest number
+
+rela <- data.frame(gene = csvFiles$Gene[row],                           # Dataframe with first and second relative
+                   two = relative(min2),
+                   third = relative(min3))
+
+M_calida <- rbind(M_calida, rela)
 
 
 
@@ -239,7 +277,7 @@ colnames(csvFiles) <- "File_name"                                         # Chan
 csvFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Distance/",
                             csvFiles$File_name, sep = "")                 # Creates a file pathway for each distance matrix
 csvFiles$Gene <- gsub(pattern = ".csv", replacement = "", 
-                      x = csvFiles$File_name)                      # Creates a column with just the gene name
+                      x = csvFiles$File_name)                             # Creates a column with just the gene name
 
 relative <- function(number) {                                            # Returns the relative name given row number
   if(number == 1) {
