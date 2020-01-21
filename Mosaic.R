@@ -284,8 +284,23 @@ rm(dist, MCclorel, mega, mega2, MGclorel, gene, M_cal, M_gav, path)
 write.csv(x = M_calida, file = "8Results/M_calida.csv")
 write.csv(x = M_gaviniae, file = "8Results/M_gaviniae.csv")
 
-M_calida <- read.csv(file = "8Results/M_calida.csv")
-M_gaviniae <- read.
+M_calida <- read.csv(file = "8Results/M_calida.csv", stringsAsFactors = FALSE)
+M_gaviniae <- read.csv(file = "8Results//M_gaviniae.csv", stringsAsFactors = FALSE)
+
+for(row in 1:nrow(M_calida)) {
+  if(M_calida$One[row] == "Mixta_calida") {
+    M_calida$Results_Mixta[row] <- M_calida$Two[row]
+  } else if(M_calida$One[row] == "Mixta_gaviniae") {
+    M_calida$Results_Mixta[row] <- M_calida$One[row]
+  }
+}
+
+for(row in 1:nrow(M_calida)) {
+  M_calida$Results_Mixta[row] <- case_when(
+    M_calida$One[row] == "Mixta_calida" ~ M_calida$Two[row],
+    M_calida$One[row] == "Mixta_gaviniae" ~ M_calida$One[row]
+  )
+}
 
 for(row in 1:nrow(M_calida)) {
   if(M_calida$One[row] %in% c("Mixta_calida", "Mixta_gaviniae")) {
