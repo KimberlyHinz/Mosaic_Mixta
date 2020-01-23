@@ -11,9 +11,16 @@ library("adegenet")
 library("Rfast")
 library("beepr")
 library("dplyr")
+library("plyr")
 
 # If on my own computer:
 setwd("D:/Honours/")
+
+# If in the office:
+setwd("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/")
+
+### Selection for genes ###################################################################################################################################
+# If on my own computer:
 fastaFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes", 
                                        pattern = ".fasta"))               # Makes a dataframe listing the fasta files in the folder
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
@@ -21,14 +28,12 @@ fastaFiles$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_
                               fastaFiles$File_name, sep = "")             # Creates a file pathway for each gene
 
 # If in the office:
-setwd("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/")
 fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
                                        pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
 fastaFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/", 
                               fastaFiles$File_name, sep = "")             # Creates a file pathway for each gene
 
-### Selection for genes ###################################################################################################################################
 ten_seq <- function(gene) {                                               # Function that checks if there are 10 sequences in the gene file
   if(nrow(gene) == 20) {                                                  # Checks if there's 20 rows because odd rows are names and even rows are seq.
     print("You may continue")
@@ -343,7 +348,7 @@ length(which(M_gaviniae$Results_Other == "Tatumella_saanichensis"))       # 3
 length(which(M_gaviniae$Results_Other == "Citrobacter_freundii"))         # 7
 length(which(M_gaviniae$Results_Other == "Enterobacter_cloacae"))         # 11
 
-### Distances #############################################################################################################################################
+### Distances and standard errors #########################################################################################################################
 megFiles <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/7Distance/",
                                      pattern = ".meg"))                   # Makes a list of all .meg file in this diretory
 colnames(megFiles) <- "File_name"                                         # Changes the column name
@@ -355,14 +360,14 @@ megFiles$Gene <- best_model$Gene                                          # Adds
 M_calida_dist <- as.data.frame(matrix(ncol = 21, nrow = 0))               # Dataframe for M. calida's closest relatives
 colnames(M_calida_dist) <- c("Gene", "Tatumella_saanichensis", "TS_Error", "Citrobacter_freundii", "CF_Error", "Enterobacter_cloacae", "EC_Error",
                              "Erwinia_amylovora", "EA_Error", "Erwinia_tasmaniensis", "ET_Error", "Mixta_calida", "MC_Error", "Mixta_gaviniae", 
-                             "MG_Error", "Pantoea_agglomerans", "PA_Error", "Pantoea_septica", "PS_Error", "Tatumella_ptyseos", "TP_Error")
-                                                                          # Changes the column names
+                             "MG_Error", "Pantoea_agglomerans", "PA_Error", "Pantoea_septica", "PS_Error", 
+                             "Tatumella_ptyseos", "TP_Error")             # Changes the column names
 
 M_gaviniae_dist <- as.data.frame(matrix(ncol = 21, nrow = 0))             # Dataframe for M. gaviniae's closest relatives
 colnames(M_gaviniae_dist) <- c("Gene", "Tatumella_saanichensis", "TS_Error", "Citrobacter_freundii", "CF_Error", "Enterobacter_cloacae", "EC_Error",
                                "Erwinia_amylovora", "EA_Error", "Erwinia_tasmaniensis", "ET_Error", "Mixta_calida", "MC_Error", "Mixta_gaviniae", 
-                               "MG_Error", "Pantoea_agglomerans", "PA_Error", "Pantoea_septica", "PS_Error", "Tatumella_ptyseos", "TP_Error")
-                                                                          # Changes the column names
+                               "MG_Error", "Pantoea_agglomerans", "PA_Error", "Pantoea_septica", "PS_Error", 
+                               "Tatumella_ptyseos", "TP_Error")           # Changes the column names
 
 for(row in 1:nrow(megFiles)) {                                            # Finds the two closest relatives to Mixta species
   path <- megFiles$Path_name[row]                                         # Path name
@@ -433,7 +438,9 @@ rm(dist, M_cal, M_gav, mega, mega2, gene, path)
 write.csv(x = M_calida_dist, file = "8Results/M_calida_dist.csv", row.names = FALSE)
 write.csv(x = M_gaviniae_dist, file = "8Results/M_gaviniae_dist.csv", row.names = FALSE)
 
-
+### Retrieve gene IDs #####################################################################################################################################
+M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv")
+M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv")
 
 fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
                                        pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
@@ -449,45 +456,74 @@ for(row in 1:nrow(fastaFiles)) {                                          # Lets
   gene_file <- read.table(file = path, header = FALSE, sep = "\n", 
                           stringsAsFactors = FALSE)                       # Reads in the gene file according to the pathway, separation is newline
   
-  calida <- gene_file[11, ]
-  calida <- gsub(pattern = "\\|.*", replacement = "", x = calida)
-  calida <- gsub(pattern = ">ID:MLHGDOMH_", replacement = "", x = calida)
-  calida <- cbind(file, calida)
-  ID_calida <- rbind(ID_calida, calida)
+  calida <- gene_file[11, ]                                               # Get M. calida info row
+  calida <- gsub(pattern = "\\|.*", replacement = "", x = calida)         # Remove everything after the "|" symbol
+  calida <- gsub(pattern = ">ID:MLHGDOMH_", replacement = "", x = calida) # Remove the ID code
+  calida <- cbind(file, calida)                                           # Combine file name with ID
+  ID_calida <- rbind(ID_calida, calida)                                   # Combine everything
   
-  gaviniae <- gene_file[13, ]
-  gaviniae <- gsub(pattern = "\\|.*", replacement = "", x = gaviniae)
-  gaviniae <- gsub(pattern = ">ID:MHMNNPCM_", replacement = "", x = gaviniae)
-  gaviniae <- cbind(file, gaviniae)
-  ID_gaviniae <- rbind(ID_gaviniae, gaviniae)
+  gaviniae <- gene_file[13, ]                                             # Get M. gaviniae info row
+  gaviniae <- gsub(pattern = "\\|.*", replacement = "", x = gaviniae)     # Remove everything after the "|" symbol
+  gaviniae <- gsub(pattern = ">ID:MHMNNPCM_", replacement = "", 
+                   x = gaviniae)                                          # Remove the ID code
+  gaviniae <- cbind(file, gaviniae)                                       # Combine file name with ID
+  ID_gaviniae <- rbind(ID_gaviniae, gaviniae)                             # Combine everything
 }
 rm(calida, gaviniae, gene_file, file, path, row)
 
-colnames(ID_calida) <- c("Gene", "ID")
+colnames(ID_calida) <- c("Gene", "ID")                                    # Change the column names
 colnames(ID_gaviniae) <- c("Gene", "ID")
-ID_calida$Gene <- as.character(ID_calida$Gene)
+ID_calida$Gene <- as.character(ID_calida$Gene)                            # Change structure of columns
 ID_calida$ID <- as.character(ID_calida$ID)
 ID_gaviniae$Gene <- as.character(ID_gaviniae$Gene)
 ID_gaviniae$ID <- as.character(ID_gaviniae$ID)
 
-ID_calida$Gene <- gsub(pattern = ".fasta", replacement = "", x = ID_calida$Gene)
-ID_gaviniae$Gene <- gsub(pattern = ".fasta", replacement = "", x = ID_gaviniae$Gene)
+ID_calida$Gene <- gsub(pattern = ".fasta", replacement = "", 
+                       x = ID_calida$Gene)                                # Remove ".fasta" from file names so only gene names
+ID_gaviniae$Gene <- gsub(pattern = ".fasta", replacement = "", 
+                         x = ID_gaviniae$Gene)
 
-
-
-
-ID <- ID_calida
-test <- M_calida_dist[1:20, ]
-for(row in 1:nrow(ID)) {
-  ID$test <- case_when(
-    ID$Gene %in% test$
+for(row in 1:nrow(ID_calida)) {                                           # Set to TRUE if gene name is one of the 1035 genes in the project
+  ID_calida$Check <- case_when(
+    ID_calida$Gene %in% M_calida_dist$Gene ~ TRUE,
+    TRUE ~ FALSE
   )
 }
-IDs <- case_when(
-  
-)
+rm(row)
 
+for(row in 1:nrow(ID_gaviniae)) {                                         # Set to TRUE if gene name is one of the 1035 genes in the project
+  ID_gaviniae$Check <- case_when(
+    ID_gaviniae$Gene %in% M_gaviniae_dist$Gene ~ TRUE,
+    TRUE ~ FALSE
+  )
+}
+rm(row)
 
+ID_calida <- subset(x = ID_calida, Check == TRUE)                         # Subset for only the 1035 genes
+ID_gaviniae <- subset(x = ID_gaviniae, Check == TRUE)
+
+M_calida_dist <- cbind(ID_calida$Gene, ID_calida$ID, M_calida_dist)       # Combine IDs with distance and standard errors dataframe
+M_gaviniae_dist <- cbind(ID_gaviniae$Gene, ID_gaviniae$ID, 
+                         M_gaviniae_dist)
+
+colnames(M_calida_dist)[1:2] <- c("Gene_Check", "ID")                     # Change column names for first two columns
+colnames(M_gaviniae_dist)[1:2] <- c("Gene_Check", "ID")
+
+write.csv(x = M_calida_dist, file = "8Results/M_calida_dist.csv",         # Save distances, standard errors, and gene IDs
+          row.names = FALSE)
+write.csv(x = M_gaviniae_dist, file = "8Results/M_gaviniae_dist.csv", 
+          row.names = FALSE)
+
+### Distance plot #########################################################################################################################################
+M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv")
+M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv")
+
+M_calida_sort <- ddply(M_calida_dist, c("ID", "Gene"))
+M_gaviniae_sort <- ddply(M_gaviniae_dist, c("ID", "Gene"))
+
+test <- M_calida_sort[1:50, ]
+plot(y = test$Tatumella_saanichensis, x = test$ID)
+ggplot()
 ### Kittens ###############################################################################################################################################
 showmekittens()
 
