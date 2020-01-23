@@ -12,6 +12,9 @@ library("Rfast")
 library("beepr")
 library("dplyr")
 library("plyr")
+library("tidyr")
+library("ggplot2")
+theme_set(theme_bw())
 
 # If on my own computer:
 setwd("D:/Honours/")
@@ -520,10 +523,38 @@ M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv")
 
 M_calida_sort <- ddply(M_calida_dist, c("ID", "Gene"))
 M_gaviniae_sort <- ddply(M_gaviniae_dist, c("ID", "Gene"))
+M_calida_sort$Gene <- as.character(M_calida_sort$Gene)
+M_gaviniae_sort$Gene <- as.character(M_gaviniae_dist$Gene)
 
-test <- M_calida_sort[1:50, ]
-plot(y = test$Tatumella_saanichensis, x = test$ID)
-ggplot()
+test <- M_calida_sort[1:100, ]
+test_tidy <- select() %>% 
+  gather(, key = Species, value = Distance, -Gene_Check, -ID, -Gene, -TS_Error, -CF_Error, -EC_Error, 
+-EA_Error, -ET_Error, -MC_Error, -MG_Error, -PA_Error, -PS_Error, -TP_Error)
+
+?left_join()
+
+
+
+
+ggplot(data = test, aes(x = test$ID)) +
+  geom_point(aes(y = test$Tatumella_saanichensi), colour = "red") +
+  geom_line(aes(y = test$Tatumella_saanichensis), colour = "red", linetype = "dotted") +
+  # geom_point(aes(y = test$Tatumella_ptyseos), colour = "orange") +
+  # geom_line(aes(y = test$Tatumella_ptyseos), colour = "orange", linetype = "dotted") +
+  # geom_point(aes(y = test$Erwinia_amylovora), colour = "green") +
+  # geom_line(aes(y = test$Erwinia_amylovora), colour = "green", linetype = "dotted") +
+  # geom_point(aes(y = test$Erwinia_tasmaniensis), colour = "darkgreen") +
+  # geom_line(aes(y = test$Erwinia_tasmaniensis), colour = "darkgreen", linetype = "dotted") +
+  # geom_point(aes(y = test$Pantoea_agglomerans), colour = "blue") +
+  # geom_line(aes(y = test$Pantoea_agglomerans), colour = "blue", linetype = "dotted") +
+  # geom_point(aes(y = test$Pantoea_septica), colour = "darkblue") +
+  # geom_line(aes(y = test$Pantoea_septica), colour = "darkblue", linetype = "dotted") +
+  # geom_point(aes(y = test$Citrobacter_freundii), colour = "purple") +
+  # geom_line(aes(y = test$Citrobacter_freundii), colour = "purple", linetype = "dotted") +
+  # geom_point(aes(y = test$Enterobacter_cloacae), colour = "pink") +
+  # geom_line(aes(y = test$Enterobacter_cloacae), colour = "pink", linetype = "dotted") +
+  # theme(legend.position = "bottom") +
+  labs(x = "M. calida Gene ID", y = "Distance")
 ### Kittens ###############################################################################################################################################
 showmekittens()
 
