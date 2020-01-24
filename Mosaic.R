@@ -21,7 +21,7 @@ setwd("D:/Honours/")
 
 # If in the office:
 setwd("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/")
-
+#
 ### Selection for genes ###################################################################################################################################
 # If on my own computer:
 fastaFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes", 
@@ -521,6 +521,13 @@ write.csv(x = M_gaviniae_dist, file = "8Results/M_gaviniae_dist.csv",
 M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv")
 M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv")
 
+test <- M_calida_dist[1:100, ]
+test <- ?select()
+test_tidy1 <- test %>%
+  pivot_longer()
+
+
+
 M_calida_sort <- ddply(M_calida_dist, c("ID", "Gene"))
 M_gaviniae_sort <- ddply(M_gaviniae_dist, c("ID", "Gene"))
 M_calida_sort$Gene <- as.character(M_calida_sort$Gene)
@@ -528,10 +535,10 @@ M_gaviniae_sort$Gene <- as.character(M_gaviniae_dist$Gene)
 
 test <- M_calida_sort[1:100, ]
 test_tidy <- select() %>% 
-  gather(, key = Species, value = Distance, -Gene_Check, -ID, -Gene, -TS_Error, -CF_Error, -EC_Error, 
--EA_Error, -ET_Error, -MC_Error, -MG_Error, -PA_Error, -PS_Error, -TP_Error)
+  ?gather(test, key = Species, value = Distance, -Gene_Check, -ID, -Gene, -TS_Error, -CF_Error, -EC_Error, 
+         -EA_Error, -ET_Error, -MC_Error, -MG_Error, -PA_Error, -PS_Error, -TP_Error)
 
-?left_join()
+left_join()
 
 
 
@@ -550,11 +557,11 @@ ggplot(data = test, aes(x = test$ID)) +
   # geom_point(aes(y = test$Pantoea_septica), colour = "darkblue") +
   # geom_line(aes(y = test$Pantoea_septica), colour = "darkblue", linetype = "dotted") +
   # geom_point(aes(y = test$Citrobacter_freundii), colour = "purple") +
-  # geom_line(aes(y = test$Citrobacter_freundii), colour = "purple", linetype = "dotted") +
-  # geom_point(aes(y = test$Enterobacter_cloacae), colour = "pink") +
-  # geom_line(aes(y = test$Enterobacter_cloacae), colour = "pink", linetype = "dotted") +
-  # theme(legend.position = "bottom") +
-  labs(x = "M. calida Gene ID", y = "Distance")
+# geom_line(aes(y = test$Citrobacter_freundii), colour = "purple", linetype = "dotted") +
+# geom_point(aes(y = test$Enterobacter_cloacae), colour = "pink") +
+# geom_line(aes(y = test$Enterobacter_cloacae), colour = "pink", linetype = "dotted") +
+# theme(legend.position = "bottom") +
+labs(x = "M. calida Gene ID", y = "Distance")
 ### Kittens ###############################################################################################################################################
 showmekittens()
 
