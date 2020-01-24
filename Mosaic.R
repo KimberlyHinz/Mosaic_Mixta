@@ -518,13 +518,26 @@ write.csv(x = M_gaviniae_dist, file = "8Results/M_gaviniae_dist.csv",
           row.names = FALSE)
 
 ### Distance plot #########################################################################################################################################
-M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv")
+M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv", stringsAsFactors = FALSE)
 M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv")
 
-test <- M_calida_dist[1:100, ]
-test <- subset(test, select = )
-test_tidy1 <- test %>%
-  pivot_longer()
+tidy_dist_C <- M_calida_dist[1:100, ]
+tidy_dist_C <- subset(tidy_dist_C, select = c("ID", "Gene", "Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora",
+                                            "Erwinia_tasmaniensis", "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", 
+                                            "Tatumella_ptyseos"))
+tidy_dist_C <- tidy_dist_C %>%
+  pivot_longer(cols = Tatumella_saanichensis:Tatumella_ptyseos,
+               names_to = "Species", values_to = "Distance")
+
+tidy_ster_C <- M_calida_dist[1:100, ]
+tidy_ster_C <- subset(tidy_ster_C, select = c("ID", "Gene", "TS_Error", "CF_Error", "EC_Error", "EA_Error", "ET_Error", "MC_Error", "MG_Error", "PA_Error",
+                                          "PS_Error", "TP_Error"))
+tidy_ster_C <- tidy_ster_C %>%
+  pivot_longer(cols = TS_Error:TP_Error,
+               names_to = "Species", values_to = "Std_Errors")
+
+tidy_calida <- 
+
 
 
 
@@ -533,12 +546,9 @@ M_gaviniae_sort <- ddply(M_gaviniae_dist, c("ID", "Gene"))
 M_calida_sort$Gene <- as.character(M_calida_sort$Gene)
 M_gaviniae_sort$Gene <- as.character(M_gaviniae_dist$Gene)
 
-test <- M_calida_sort[1:100, ]
-test_tidy <- select() %>% 
-  ?gather(test, key = Species, value = Distance, -Gene_Check, -ID, -Gene, -TS_Error, -CF_Error, -EC_Error, 
-          -EA_Error, -ET_Error, -MC_Error, -MG_Error, -PA_Error, -PS_Error, -TP_Error)
 
-left_join()
+
+?left_join()
 
 
 
