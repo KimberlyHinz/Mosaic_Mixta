@@ -519,59 +519,82 @@ write.csv(x = M_gaviniae_dist, file = "8Results/M_gaviniae_dist.csv",
 
 ### Distance plot #########################################################################################################################################
 M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv", stringsAsFactors = FALSE)
-M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv")
+M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv", stringsAsFactors = FALSE)
 
-tidy_dist_C <- M_calida_dist[1:100, ]
-tidy_dist_C <- subset(tidy_dist_C, select = c("ID", "Gene", "Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora",
-                                            "Erwinia_tasmaniensis", "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", 
-                                            "Tatumella_ptyseos"))
+tidy_dist_C <- subset(M_calida_dist, select = c("ID", "Gene", "Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora",
+                                                "Erwinia_tasmaniensis", "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", 
+                                                "Tatumella_ptyseos"))
 tidy_dist_C <- tidy_dist_C %>%
   pivot_longer(cols = Tatumella_saanichensis:Tatumella_ptyseos,
                names_to = "Species", values_to = "Distance")
 
-tidy_ster_C <- M_calida_dist[1:100, ]
-tidy_ster_C <- subset(tidy_ster_C, select = c("ID", "Gene", "TS_Error", "CF_Error", "EC_Error", "EA_Error", "ET_Error", "MC_Error", "MG_Error", "PA_Error",
-                                          "PS_Error", "TP_Error"))
+tidy_ster_C <- subset(M_calida_dist, select = c("ID", "Gene", "TS_Error", "CF_Error", "EC_Error", "EA_Error", "ET_Error", "MC_Error", "MG_Error", "PA_Error",
+                                                "PS_Error", "TP_Error"))
 tidy_ster_C <- tidy_ster_C %>%
   pivot_longer(cols = TS_Error:TP_Error,
-               names_to = "Species", values_to = "Std_Errors")
+               names_to = "Species_se", values_to = "Std_Errors")
+colnames(tidy_ster_C) <- c("ID_se", "Gene_se", "Species_se", "Std_Errors")
 
-tidy_calida <- 
+tidy_calida <- cbind(tidy_dist_C, tidy_ster_C)
+tidy_calida <- subset(tidy_calida, select = c("ID", "Gene", "Species", "Distance", "Std_Errors"))
 
+M_calida_sort <- ddply(tidy_calida, c("ID", "Gene"))
 
-
-
-M_calida_sort <- ddply(M_calida_dist, c("ID", "Gene"))
-M_gaviniae_sort <- ddply(M_gaviniae_dist, c("ID", "Gene"))
-M_calida_sort$Gene <- as.character(M_calida_sort$Gene)
-M_gaviniae_sort$Gene <- as.character(M_gaviniae_dist$Gene)
+write.csv(x = M_calida_sort, file = "8Results/M_calida_sort.csv", row.names = FALSE)
 
 
+####
+tidy_dist_G <- subset(M_gaviniae_dist, select = c("ID", "Gene", "Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", 
+                                                  "Erwinia_amylovora", "Erwinia_tasmaniensis", "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", 
+                                                  "Pantoea_septica", "Tatumella_ptyseos"))
+tidy_dist_G <- tidy_dist_G %>%
+  pivot_longer(cols = Tatumella_saanichensis:Tatumella_ptyseos,
+               names_to = "Species", values_to = "Distance")
 
-?left_join()
+tidy_ster_G <- subset(M_gaviniae_dist, select = c("ID", "Gene", "TS_Error", "CF_Error", "EC_Error", "EA_Error", "ET_Error", "MC_Error", "MG_Error", "PA_Error",
+                                                  "PS_Error", "TP_Error"))
+tidy_ster_G <- tidy_ster_G %>%
+  pivot_longer(cols = TS_Error:TP_Error,
+               names_to = "Species_se", values_to = "Std_Errors")
+colnames(tidy_ster_G) <- c("ID_se", "Gene_se", "Species_se", "Std_Errors")
+
+tidy_gaviniae <- cbind(tidy_dist_G, tidy_ster_G)
+tidy_gaviniae <- subset(tidy_gaviniae, select = c("ID", "Gene", "Species", "Distance", "Std_Errors"))
+
+M_gaviniae_sort <- ddply(tidy_gaviniae, c("ID", "Gene"))
+
+write.csv(x = M_gaviniae_sort, file = "8Results/M_gaviniae_sort.csv", row.names = FALSE)
 
 
+####
+M_calida_sort <- read.csv(file = "8Results/M_calida_sort.csv", stringsAsFactors = FALSE)
+M_gaviniae_sort <- read.csv(file = "8Results/M_gaviniae_sort.csv", stringsAsFactors = FALSE)
 
+M_cal1 <- subset(M_calida_sort, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
+                                               "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", "Tatumella_ptyseos"))
+M_cal1$DistanceN <- M_cal1$Distance * -1
 
-ggplot(data = test, aes(x = test$ID)) +
-  geom_point(aes(y = test$Tatumella_saanichensi), colour = "red") +
-  geom_line(aes(y = test$Tatumella_saanichensis), colour = "red", linetype = "dotted") +
-  # geom_point(aes(y = test$Tatumella_ptyseos), colour = "orange") +
-  # geom_line(aes(y = test$Tatumella_ptyseos), colour = "orange", linetype = "dotted") +
-  # geom_point(aes(y = test$Erwinia_amylovora), colour = "green") +
-  # geom_line(aes(y = test$Erwinia_amylovora), colour = "green", linetype = "dotted") +
-  # geom_point(aes(y = test$Erwinia_tasmaniensis), colour = "darkgreen") +
-  # geom_line(aes(y = test$Erwinia_tasmaniensis), colour = "darkgreen", linetype = "dotted") +
-  # geom_point(aes(y = test$Pantoea_agglomerans), colour = "blue") +
-  # geom_line(aes(y = test$Pantoea_agglomerans), colour = "blue", linetype = "dotted") +
-  # geom_point(aes(y = test$Pantoea_septica), colour = "darkblue") +
-  # geom_line(aes(y = test$Pantoea_septica), colour = "darkblue", linetype = "dotted") +
-  # geom_point(aes(y = test$Citrobacter_freundii), colour = "purple") +
-# geom_line(aes(y = test$Citrobacter_freundii), colour = "purple", linetype = "dotted") +
-# geom_point(aes(y = test$Enterobacter_cloacae), colour = "pink") +
-# geom_line(aes(y = test$Enterobacter_cloacae), colour = "pink", linetype = "dotted") +
-# theme(legend.position = "bottom") +
-labs(x = "M. calida Gene ID", y = "Distance")
+ggplot(data = M_cal1, aes(x = ID, y = DistanceN)) +
+  geom_point(aes(colour = M_cal1$Species)) +
+  geom_line(aes(colour = M_cal1$Species)) +
+  theme(legend.position = "bottom") +
+  labs(x = "M. calida Gene ID", y = "Distance from M. calida", colour = "Species")
+
+M_cal2 <- subset(M_cal1, DistanceN > -1)
+
+ggplot(data = M_cal2, aes(x = ID, y = DistanceN)) +
+  geom_point(aes(colour = M_cal2$Species), size = 3, alpha = 0.75) +
+  # geom_line(aes(colour = M_cal2$Species)) +
+  theme(legend.position = "bottom") +
+  labs(x = "M. calida Gene ID", y = "Distance from M. calida", colour = "Species")
+
+M_cal2_1 <- M_cal1[1:207, ]
+ggplot(data = M_cal2_1, aes(x = ID, y = DistanceN)) +
+  geom_point(aes(colour = M_cal2_1$Species), size = 3, alpha = 0.75) +
+  geom_line(aes(colour = M_cal2_1$Species), linetype = "dotted") +
+  theme(legend.position = "bottom") +
+  labs(x = "M. calida Gene ID", y = "Distance from M. calida", colour = "Species")
+#
 ### Kittens ###############################################################################################################################################
 showmekittens()
 
