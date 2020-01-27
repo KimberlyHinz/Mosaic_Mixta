@@ -518,82 +518,210 @@ write.csv(x = M_gaviniae_dist, file = "8Results/M_gaviniae_dist.csv",
           row.names = FALSE)
 
 ### Distance plot #########################################################################################################################################
-M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv", stringsAsFactors = FALSE)
-M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv", stringsAsFactors = FALSE)
+M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv", 
+                          stringsAsFactors = FALSE)                       # Read in M. calida's distances
+M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv", 
+                            stringsAsFactors = FALSE)                     # Read in M. gaviniae's distances
 
-tidy_dist_C <- subset(M_calida_dist, select = c("ID", "Gene", "Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora",
-                                                "Erwinia_tasmaniensis", "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", 
-                                                "Tatumella_ptyseos"))
-tidy_dist_C <- tidy_dist_C %>%
+tidy_dist_C <- subset(M_calida_dist, select = c("ID", "Gene", "Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", 
+                                                "Erwinia_amylovora", "Erwinia_tasmaniensis", "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", 
+                                                "Pantoea_septica", 
+                                                "Tatumella_ptyseos"))     # Subset for only the distances
+tidy_dist_C <- tidy_dist_C %>%                                            # Gather distances into one column according to species and by ID
   pivot_longer(cols = Tatumella_saanichensis:Tatumella_ptyseos,
                names_to = "Species", values_to = "Distance")
 
-tidy_ster_C <- subset(M_calida_dist, select = c("ID", "Gene", "TS_Error", "CF_Error", "EC_Error", "EA_Error", "ET_Error", "MC_Error", "MG_Error", "PA_Error",
-                                                "PS_Error", "TP_Error"))
-tidy_ster_C <- tidy_ster_C %>%
+tidy_ster_C <- subset(M_calida_dist, select = c("ID", "Gene", "TS_Error", "CF_Error", "EC_Error", "EA_Error", "ET_Error", "MC_Error", "MG_Error", 
+                                                "PA_Error", "PS_Error", 
+                                                "TP_Error"))              # Subset for only the standard errors
+tidy_ster_C <- tidy_ster_C %>%                                            # Gather standard errors into one column according to species and by ID
   pivot_longer(cols = TS_Error:TP_Error,
                names_to = "Species_se", values_to = "Std_Errors")
-colnames(tidy_ster_C) <- c("ID_se", "Gene_se", "Species_se", "Std_Errors")
+colnames(tidy_ster_C) <- c("ID_se", "Gene_se", "Species_se",
+                           "Std_Errors")                                  # Change the column names
 
-tidy_calida <- cbind(tidy_dist_C, tidy_ster_C)
-tidy_calida <- subset(tidy_calida, select = c("ID", "Gene", "Species", "Distance", "Std_Errors"))
+tidy_calida <- cbind(tidy_dist_C, tidy_ster_C)                            # Combine distances and standard errors dataframes
+tidy_calida <- subset(tidy_calida, select = c("ID", "Gene", "Species", "Distance", 
+                                              "Std_Errors"))              # Removes the columns that were needed only to double check things were inline
 
-M_calida_sort <- ddply(tidy_calida, c("ID", "Gene"))
+M_calida_sort <- ddply(tidy_calida, c("ID", "Gene"))                      # Sort by gene ID and then Gene name
 
-write.csv(x = M_calida_sort, file = "8Results/M_calida_sort.csv", row.names = FALSE)
+write.csv(x = M_calida_sort, file = "8Results/M_calida_sort.csv",         # Write this to a csv file
+          row.names = FALSE)
 
-
-####
+# Mixta gaviniae #
 tidy_dist_G <- subset(M_gaviniae_dist, select = c("ID", "Gene", "Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", 
                                                   "Erwinia_amylovora", "Erwinia_tasmaniensis", "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", 
-                                                  "Pantoea_septica", "Tatumella_ptyseos"))
-tidy_dist_G <- tidy_dist_G %>%
+                                                  "Pantoea_septica", 
+                                                  "Tatumella_ptyseos"))   # Subset for only the distances
+tidy_dist_G <- tidy_dist_G %>%                                            # Gather distances into one column according to species and by ID
   pivot_longer(cols = Tatumella_saanichensis:Tatumella_ptyseos,
                names_to = "Species", values_to = "Distance")
 
-tidy_ster_G <- subset(M_gaviniae_dist, select = c("ID", "Gene", "TS_Error", "CF_Error", "EC_Error", "EA_Error", "ET_Error", "MC_Error", "MG_Error", "PA_Error",
-                                                  "PS_Error", "TP_Error"))
-tidy_ster_G <- tidy_ster_G %>%
+tidy_ster_G <- subset(M_gaviniae_dist, select = c("ID", "Gene", "TS_Error", "CF_Error", "EC_Error", "EA_Error", "ET_Error", "MC_Error", "MG_Error", 
+                                                  "PA_Error", "PS_Error", 
+                                                  "TP_Error"))            # Subset for only the standard errors
+tidy_ster_G <- tidy_ster_G %>%                                            # Gather standard errors into one column according to species and by ID
   pivot_longer(cols = TS_Error:TP_Error,
                names_to = "Species_se", values_to = "Std_Errors")
-colnames(tidy_ster_G) <- c("ID_se", "Gene_se", "Species_se", "Std_Errors")
+colnames(tidy_ster_G) <- c("ID_se", "Gene_se", "Species_se", 
+                           "Std_Errors")                                  # Change the column names
 
-tidy_gaviniae <- cbind(tidy_dist_G, tidy_ster_G)
-tidy_gaviniae <- subset(tidy_gaviniae, select = c("ID", "Gene", "Species", "Distance", "Std_Errors"))
+tidy_gaviniae <- cbind(tidy_dist_G, tidy_ster_G)                          # Combine distances and standard errors dataframes
+tidy_gaviniae <- subset(tidy_gaviniae, select = c("ID", "Gene", "Species", "Distance", 
+                                                  "Std_Errors"))          # Removes the columns that were needed only to double check things were inline
 
-M_gaviniae_sort <- ddply(tidy_gaviniae, c("ID", "Gene"))
+M_gaviniae_sort <- ddply(tidy_gaviniae, c("ID", "Gene"))                  # Sort by gene ID and then Gene name
 
-write.csv(x = M_gaviniae_sort, file = "8Results/M_gaviniae_sort.csv", row.names = FALSE)
+write.csv(x = M_gaviniae_sort, file = "8Results/M_gaviniae_sort.csv", 
+          row.names = FALSE)                                              # Write this to a csv file
 
 
-####
-M_calida_sort <- read.csv(file = "8Results/M_calida_sort.csv", stringsAsFactors = FALSE)
-M_gaviniae_sort <- read.csv(file = "8Results/M_gaviniae_sort.csv", stringsAsFactors = FALSE)
+### Plots #################################################################################################################################################
+M_calida_sort <- read.csv(file = "8Results/M_calida_sort.csv", 
+                          stringsAsFactors = FALSE)                       # Read in the tidied and sorted distances for M. calida
+M_gaviniae_sort <- read.csv(file = "8Results/M_gaviniae_sort.csv", 
+                            stringsAsFactors = FALSE)                     # Read in the tidied and sorted distances for M. gaviniae
 
 M_cal1 <- subset(M_calida_sort, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
-                                               "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", "Tatumella_ptyseos"))
-M_cal1$DistanceN <- M_cal1$Distance * -1
+                                               "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
+                                               "Tatumella_ptyseos"))      # Removes the Mixta species since they are most likely ~ 0
+M_cal1$DistanceN <- M_cal1$Distance * -1                                  # Creates a column with negative distances (so 0 will be at top of plot)
 
-ggplot(data = M_cal1, aes(x = ID, y = DistanceN)) +
-  geom_point(aes(colour = M_cal1$Species)) +
-  geom_line(aes(colour = M_cal1$Species)) +
+png("9Plots/Full_dist.png", width = 2000, height = 1200)
+ggplot(data = M_cal1, aes(x = ID, y = DistanceN)) +                       # Full plot
+  geom_point(aes(colour = M_cal1$Species), size = 2, alpha = 0.75) +
+  geom_line(aes(colour = M_cal1$Species), linetype = "dotted") +
   theme(legend.position = "bottom") +
-  labs(x = "M. calida Gene ID", y = "Distance from M. calida", colour = "Species")
+  labs(x = "M. calida Gene ID", y = "Distance from M. calida", 
+       colour = "Species")
+dev.off()
 
-M_cal2 <- subset(M_cal1, DistanceN > -1)
+# Separated into 8 groups
+dist_plot <- function(dtst) {
+  ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
+    geom_point(aes(colour = dtst$Species), size = 3, alpha = 0.75) +
+    geom_line(aes(colour = dtst$Species), linetype = "dotted") +
+    theme(legend.position = "bottom") +
+    labs(x = "M. calida Gene ID", y = "Distance from M. calida", 
+         colour = "Species") +
+    ylim(-5.01, 0) +
+    geom_errorbar(aes(ymin = DistanceN - Std_Errors, 
+                      ymax = DistanceN + Std_Errors, colour = Species), 
+                  width = 0.2, position = position_dodge(0.05))
+}
 
-ggplot(data = M_cal2, aes(x = ID, y = DistanceN)) +
-  geom_point(aes(colour = M_cal2$Species), size = 3, alpha = 0.75) +
-  # geom_line(aes(colour = M_cal2$Species)) +
-  theme(legend.position = "bottom") +
-  labs(x = "M. calida Gene ID", y = "Distance from M. calida", colour = "Species")
+M_cal2_1 <- subset(M_cal1, ID <= 506)
+png("9Plots/dist_1_8.png", width = 1000, height = 750)
+dist_plot(M_cal2_1)
+dev.off()
 
-M_cal2_1 <- M_cal1[1:207, ]
-ggplot(data = M_cal2_1, aes(x = ID, y = DistanceN)) +
-  geom_point(aes(colour = M_cal2_1$Species), size = 3, alpha = 0.75) +
-  geom_line(aes(colour = M_cal2_1$Species), linetype = "dotted") +
-  theme(legend.position = "bottom") +
-  labs(x = "M. calida Gene ID", y = "Distance from M. calida", colour = "Species")
+M_cal2_2 <- subset(M_cal1, ID %in% 507:1012)
+png("9Plots/dist_2_8.png", width = 1000, height = 750)
+dist_plot(M_cal2_2)
+dev.off()
+
+M_cal2_3 <- subset(M_cal1, ID %in% 1013:1518)
+png("9Plots/dist_3_8.png", width = 1000, height = 750)
+dist_plot(M_cal2_3)
+dev.off()
+
+M_cal2_4 <- subset(M_cal1, ID %in% 1519:2024)
+png("9Plots/dist_4_8.png", width = 1000, height = 750)
+dist_plot(M_cal2_4)
+dev.off()
+
+M_cal2_5 <- subset(M_cal1, ID %in% 2025:2530)
+png("9Plots/dist_5_8.png", width = 1000, height = 750)
+dist_plot(M_cal2_5)
+dev.off()
+
+M_cal2_6 <- subset(M_cal1, ID %in% 2531:3036)
+png("9Plots/dist_6_8.png", width = 1000, height = 750)
+dist_plot(M_cal2_6)
+dev.off()
+
+M_cal2_7 <- subset(M_cal1, ID %in% 3037:3542)
+png("9Plots/dist_7_8.png", width = 1000, height = 750)
+dist_plot(M_cal2_7)
+dev.off()
+
+M_cal2_8 <- subset(M_cal1, ID %in% 3543:4048)
+png("9Plots/dist_8_8.png", width = 1000, height = 750)
+dist_plot(M_cal2_8)
+dev.off()
+
+# Separated into 8 groups and distances no greater than 1
+M_cal3 <- subset(M_cal1, Distance < 1)
+
+dist_plot_one <- function(dtst) {
+  ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
+    geom_point(aes(colour = dtst$Species), size = 3, alpha = 0.75) +
+    # geom_line(aes(colour = dtst$Species), linetype = "dotted") +
+    theme(legend.position = "bottom") +
+    labs(x = "M. calida Gene ID", y = "Distance from M. calida", 
+         colour = "Species") +
+    geom_errorbar(aes(ymin = DistanceN - Std_Errors, 
+                      ymax = DistanceN + Std_Errors, colour = Species), 
+                  width = 0.2, position = position_dodge(0.05))
+}
+
+png("9Plots/one_dist_1_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID <= 506))
+dev.off()
+
+png("9Plots/one_dist_2_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 507:1012))
+dev.off()
+
+png("9Plots/one_dist_3_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 1013:1518))
+dev.off()
+
+png("9Plots/one_dist_4_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 1519:2024))
+dev.off()
+
+png("9Plots/one_dist_5_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 2025:2530))
+dev.off()
+
+png("9Plots/one_dist_6_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 2531:3036))
+dev.off()
+
+png("9Plots/one_dist_7_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 3037:3542))
+dev.off()
+
+png("9Plots/one_dist_8_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 3543:4048))
+dev.off()
+
+### Circular plot #########################################################################################################################################
+M_calida <- read.csv(file = "8Results/M_calida.csv",                      # Reads in the M. calida results
+                     stringsAsFactors = FALSE)
+M_calida <- subset(M_calida, select = Gene:Results_Other)
+M_gaviniae <- read.csv(file = "8Results/M_gaviniae.csv",                  # Reads in the M. gaviniae results
+                       stringsAsFactors = FALSE)
+M_gaviniae <- subset(M_gaviniae, select = Gene:Results_Other)
+
+M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv",
+                          stringsAsFactors = FALSE)
+M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv",
+                            stringsAsFactors = FALSE)
+
+M_calida$ID <- M_calida_dist$ID
+M_gaviniae$ID <- M_gaviniae_dist$ID
+
+ggplot(M_calida, aes(xmin = ID - 1, xmax = ID, ymin = 4, ymax = 5, fill = Gene)) + 
+  geom_rect() + 
+  # geom_segment(data = subset(filld, label %in% label[duplicated(label)]),
+  #              aes(x = p, y = 0, xend = p, yend = 4, colour = label),
+  #              size = 2, show_guide = FALSE) +
+  # geom_text(aes(x = p, y = 4.5, label = label), colour = "white", size = 10) +
+  coord_polar() + 
+  scale_y_continuous(limits = c(0, 5))
 #
 ### Kittens ###############################################################################################################################################
 showmekittens()
