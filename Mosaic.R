@@ -577,24 +577,20 @@ write.csv(x = M_gaviniae_sort, file = "8Results/M_gaviniae_sort.csv",
           row.names = FALSE)                                              # Write this to a csv file
 
 
-### Plots #################################################################################################################################################
+### M. calida plots #######################################################################################################################################
 M_calida_sort <- read.csv(file = "8Results/M_calida_sort.csv", 
                           stringsAsFactors = FALSE)                       # Read in the tidied and sorted distances for M. calida
-M_gaviniae_sort <- read.csv(file = "8Results/M_gaviniae_sort.csv", 
-                            stringsAsFactors = FALSE)                     # Read in the tidied and sorted distances for M. gaviniae
-
 M_cal1 <- subset(M_calida_sort, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
                                                "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
                                                "Tatumella_ptyseos"))      # Removes the Mixta species since they are most likely ~ 0
 M_cal1$DistanceN <- M_cal1$Distance * -1                                  # Creates a column with negative distances (so 0 will be at top of plot)
 
-png("9Plots/Full_dist.png", width = 2000, height = 1200)
+png("9_1Plots_calida/MC_Full_dist.png", width = 2000, height = 1200)
 ggplot(data = M_cal1, aes(x = ID, y = DistanceN)) +                       # Full plot
   geom_point(aes(colour = M_cal1$Species), size = 2, alpha = 0.75) +
   geom_line(aes(colour = M_cal1$Species), linetype = "dotted") +
-  theme(legend.position = "bottom") +
-  labs(x = "M. calida Gene ID", y = "Distance from M. calida", 
-       colour = "Species")
+  theme(legend.position = "bottom", text = element_text(size = 36)) +
+  labs(x = "M. calida Gene ID", y = "Distance from M. calida", colour = "Species")
 dev.off()
 
 # Separated into 8 groups
@@ -602,7 +598,7 @@ dist_plot <- function(dtst) {
   ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
     geom_point(aes(colour = dtst$Species), size = 3, alpha = 0.75) +
     geom_line(aes(colour = dtst$Species), linetype = "dotted") +
-    theme(legend.position = "bottom") +
+    theme(legend.position = "bottom", text = element_text(size = 20)) +
     labs(x = "M. calida Gene ID", y = "Distance from M. calida", 
          colour = "Species") +
     ylim(-5.01, 0) +
@@ -611,44 +607,36 @@ dist_plot <- function(dtst) {
                   width = 0.2, position = position_dodge(0.05))
 }
 
-M_cal2_1 <- subset(M_cal1, ID <= 506)
-png("9Plots/dist_1_8.png", width = 1000, height = 750)
-dist_plot(M_cal2_1)
+png("9_1Plots_calida/MC_dist_1_8.png", width = 1000, height = 750)
+dist_plot(subset(M_cal1, ID <= 510))
 dev.off()
 
-M_cal2_2 <- subset(M_cal1, ID %in% 507:1012)
-png("9Plots/dist_2_8.png", width = 1000, height = 750)
-dist_plot(M_cal2_2)
+png("9_1Plots_calida/MC_dist_2_8.png", width = 1000, height = 750)
+dist_plot(subset(M_cal1, ID %in% 511:1021))
 dev.off()
 
-M_cal2_3 <- subset(M_cal1, ID %in% 1013:1518)
-png("9Plots/dist_3_8.png", width = 1000, height = 750)
-dist_plot(M_cal2_3)
+png("9_1Plots_calida/MC_dist_3_8.png", width = 1000, height = 750)
+dist_plot(subset(M_cal1, ID %in% 1021:1531))
 dev.off()
 
-M_cal2_4 <- subset(M_cal1, ID %in% 1519:2024)
-png("9Plots/dist_4_8.png", width = 1000, height = 750)
-dist_plot(M_cal2_4)
+png("9_1Plots_calida/MC_dist_4_8.png", width = 1000, height = 750)
+dist_plot(subset(M_cal1, ID %in% 1532:2042))
 dev.off()
 
-M_cal2_5 <- subset(M_cal1, ID %in% 2025:2530)
-png("9Plots/dist_5_8.png", width = 1000, height = 750)
-dist_plot(M_cal2_5)
+png("9_1Plots_calida/MC_dist_5_8.png", width = 1000, height = 750)
+dist_plot(subset(M_cal1, ID %in% 2043:2552))
 dev.off()
 
-M_cal2_6 <- subset(M_cal1, ID %in% 2531:3036)
-png("9Plots/dist_6_8.png", width = 1000, height = 750)
-dist_plot(M_cal2_6)
+png("9_1Plots_calida/MC_dist_6_8.png", width = 1000, height = 750)
+dist_plot(subset(M_cal1, ID %in% 2553:3063))
 dev.off()
 
-M_cal2_7 <- subset(M_cal1, ID %in% 3037:3542)
-png("9Plots/dist_7_8.png", width = 1000, height = 750)
-dist_plot(M_cal2_7)
+png("9_1Plots_calida/MC_dist_7_8.png", width = 1000, height = 750)
+dist_plot(subset(M_cal1, ID %in% 3064:3573))
 dev.off()
 
-M_cal2_8 <- subset(M_cal1, ID %in% 3543:4048)
-png("9Plots/dist_8_8.png", width = 1000, height = 750)
-dist_plot(M_cal2_8)
+png("9_1Plots_calida/MC_dist_8_8.png", width = 1000, height = 750)
+dist_plot(subset(M_cal1, ID %in% 3574:4084))
 dev.off()
 
 # Separated into 8 groups and distances no greater than 1
@@ -658,7 +646,7 @@ dist_plot_one <- function(dtst) {
   ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
     geom_point(aes(colour = dtst$Species), size = 3, alpha = 0.75) +
     # geom_line(aes(colour = dtst$Species), linetype = "dotted") +
-    theme(legend.position = "bottom") +
+    theme(legend.position = "bottom", text = element_text(size = 20)) +
     labs(x = "M. calida Gene ID", y = "Distance from M. calida", 
          colour = "Species") +
     geom_errorbar(aes(ymin = DistanceN - Std_Errors, 
@@ -666,62 +654,253 @@ dist_plot_one <- function(dtst) {
                   width = 0.2, position = position_dodge(0.05))
 }
 
-png("9Plots/one_dist_1_8.png", width = 1000, height = 750)
-dist_plot_one(subset(M_cal3, ID <= 506))
+png("9_1Plots_calida/MC_one_dist_1_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID <= 510))
 dev.off()
 
-png("9Plots/one_dist_2_8.png", width = 1000, height = 750)
-dist_plot_one(subset(M_cal3, ID %in% 507:1012))
+png("9_1Plots_calida/MC_one_dist_2_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 511:1021))
 dev.off()
 
-png("9Plots/one_dist_3_8.png", width = 1000, height = 750)
-dist_plot_one(subset(M_cal3, ID %in% 1013:1518))
+png("9_1Plots_calida/MC_one_dist_3_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 1022:1531))
 dev.off()
 
-png("9Plots/one_dist_4_8.png", width = 1000, height = 750)
-dist_plot_one(subset(M_cal3, ID %in% 1519:2024))
+png("9_1Plots_calida/MC_one_dist_4_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 1532:2042))
 dev.off()
 
-png("9Plots/one_dist_5_8.png", width = 1000, height = 750)
-dist_plot_one(subset(M_cal3, ID %in% 2025:2530))
+png("9_1Plots_calida/MC_one_dist_5_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 2043:2552))
 dev.off()
 
-png("9Plots/one_dist_6_8.png", width = 1000, height = 750)
-dist_plot_one(subset(M_cal3, ID %in% 2531:3036))
+png("9_1Plots_calida/MC_one_dist_6_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 2553:3063))
 dev.off()
 
-png("9Plots/one_dist_7_8.png", width = 1000, height = 750)
-dist_plot_one(subset(M_cal3, ID %in% 3037:3542))
+png("9_1Plots_calida/MC_one_dist_7_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 3064:3573))
 dev.off()
 
-png("9Plots/one_dist_8_8.png", width = 1000, height = 750)
-dist_plot_one(subset(M_cal3, ID %in% 3543:4048))
+png("9_1Plots_calida/MC_one_dist_8_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_cal3, ID %in% 3574:4084))
+dev.off()
+
+
+
+png("9_1Plots_calida/MC_one_dist_1_4.png", width = 2000, height = 1000)
+dist_plot_one(subset(M_gav3, ID %in% 1:1021))
+dev.off()
+
+png("9_1Plots_calida/MC_one_dist_2_4.png", width = 2000, height = 1000)
+dist_plot_one(subset(M_gav3, ID %in% 1022:2042))
+dev.off()
+
+png("9_1Plots_calida/MC_one_dist_3_4.png", width = 2000, height = 1000)
+dist_plot_one(subset(M_gav3, ID %in% 2043:3063))
+dev.off()
+
+png("9_1Plots_calida/MC_one_dist_4_4.png", width = 2000, height = 1000)
+dist_plot_one(subset(M_gav3, ID %in% 3064:4084))
+dev.off()
+
+### M. gaviniae plots #####################################################################################################################################
+M_gaviniae_sort <- read.csv(file = "8Results/M_gaviniae_sort.csv", 
+                            stringsAsFactors = FALSE)                     # Read in the tidied and sorted distances for M. gaviniae
+
+M_gav1 <- subset(M_gaviniae_sort, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
+                                                 "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
+                                                 "Tatumella_ptyseos"))      # Removes the Mixta species since they are most likely ~ 0
+M_gav1$DistanceN <- M_gav1$Distance * -1                                  # Creates a column with negative distances (so 0 will be at top of plot)
+
+png("9_2Plots_gaviniae/MG_Full_dist.png", width = 2000, height = 1200)
+ggplot(data = M_gav1, aes(x = ID, y = DistanceN)) +                       # Full plot
+  geom_point(aes(colour = M_gav1$Species), size = 2, alpha = 0.75) +
+  geom_line(aes(colour = M_gav1$Species), linetype = "dotted") +
+  theme(legend.position = "bottom", text = element_text(size = 36)) +
+  labs(x = "M. gaviniae Gene ID", y = "Distance from M. gaviniae", colour = "Species")
+dev.off()
+
+# Separated into 8 groups
+dist_plot <- function(dtst) {
+  ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
+    geom_point(aes(colour = dtst$Species), size = 3, alpha = 0.75) +
+    geom_line(aes(colour = dtst$Species), linetype = "dotted") +
+    theme(legend.position = "bottom", text = element_text(size = 20)) +
+    labs(x = "M. gaviniae Gene ID", y = "Distance from M. gaviniae", 
+         colour = "Species") +
+    ylim(-5.25, 0) +
+    geom_errorbar(aes(ymin = DistanceN - Std_Errors, 
+                      ymax = DistanceN + Std_Errors, colour = Species), 
+                  width = 0.2, position = position_dodge(0.05))
+}
+
+png("9_2Plots_gaviniae/MG_dist_1_8.png", width = 1000, height = 750)
+dist_plot(subset(M_gav1, ID <= 531))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_dist_2_8.png", width = 1000, height = 750)
+dist_plot(subset(M_gav1, ID %in% 532:1063))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_dist_3_8.png", width = 1000, height = 750)
+dist_plot(subset(M_gav1, ID %in% 1064:1595))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_dist_4_8.png", width = 1000, height = 750)
+dist_plot(subset(M_gav1, ID %in% 1596:2127))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_dist_5_8.png", width = 1000, height = 750)
+dist_plot(subset(M_gav1, ID %in% 2128:2659))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_dist_6_8.png", width = 1000, height = 750)
+dist_plot(subset(M_gav1, ID %in% 2660:3191))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_dist_7_8.png", width = 1000, height = 750)
+dist_plot(subset(M_gav1, ID %in% 3192:3723))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_dist_8_8.png", width = 1000, height = 750)
+dist_plot(subset(M_gav1, ID %in% 3724:4255))
+dev.off()
+
+# Separated into 8 groups and distances no greater than 1
+M_gav3 <- subset(M_gav1, Distance < 1)
+
+dist_plot_one <- function(dtst) {
+  ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
+    geom_point(aes(colour = dtst$Species), size = 3, alpha = 0.75) +
+    # geom_line(aes(colour = dtst$Species), linetype = "dotted") +
+    theme(legend.position = "bottom", text = element_text(size = 20)) +
+    labs(x = "M. gaviniae Gene ID", y = "Distance from M. gaviniae", 
+         colour = "Species") +
+    geom_errorbar(aes(ymin = DistanceN - Std_Errors, 
+                      ymax = DistanceN + Std_Errors, colour = Species), 
+                  width = 0.2, position = position_dodge(0.05))
+}
+
+png("9_2Plots_gaviniae/MG_one_dist_1_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_gav3, ID <= 531))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_2_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_gav3, ID %in% 532:1063))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_3_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_gav3, ID %in% 1064:1595))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_4_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_gav3, ID %in% 1596:2127))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_5_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_gav3, ID %in% 2128:2659))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_6_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_gav3, ID %in% 2660:3191))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_7_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_gav3, ID %in% 3192:3723))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_8_8.png", width = 1000, height = 750)
+dist_plot_one(subset(M_gav3, ID %in% 3724:4255))
+dev.off()
+
+
+
+png("9_2Plots_gaviniae/MG_one_dist_1_4.png", width = 2000, height = 1000)
+dist_plot_one(subset(M_gav3, ID %in% 1:1063))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_2_4.png", width = 2000, height = 1000)
+dist_plot_one(subset(M_gav3, ID %in% 1064:2127))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_3_4.png", width = 2000, height = 1000)
+dist_plot_one(subset(M_gav3, ID %in% 2128:3191))
+dev.off()
+
+png("9_2Plots_gaviniae/MG_one_dist_4_4.png", width = 2000, height = 1000)
+dist_plot_one(subset(M_gav3, ID %in% 3192:4255))
 dev.off()
 
 ### Circular plot #########################################################################################################################################
+# Mixta calida
 M_calida <- read.csv(file = "8Results/M_calida.csv",                      # Reads in the M. calida results
                      stringsAsFactors = FALSE)
 M_calida <- subset(M_calida, select = Gene:Results_Other)
+
+M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv",
+                          stringsAsFactors = FALSE)
+
+M_calida$ID <- M_calida_dist$ID
+
+M_calida$Results_Number <- case_when(
+  M_calida$Results_Other == "Pantoea_agglomerans" ~ 1,
+  M_calida$Results_Other == "Pantoea_septica" ~ 2,
+  M_calida$Results_Other == "Erwinia_amylovora" ~ 3,
+  M_calida$Results_Other == "Erwinia_tasmaniensis" ~ 4,
+  M_calida$Results_Other == "Tatumella_ptyseos" ~ 5,
+  M_calida$Results_Other == "Tatumella_saanichensis" ~ 6,
+  M_calida$Results_Other == "Citrobacter_freundii" ~ 7,
+  M_calida$Results_Other == "Enterobacter_cloacae" ~ 8
+)
+
+# Mixta gaviniae #
 M_gaviniae <- read.csv(file = "8Results/M_gaviniae.csv",                  # Reads in the M. gaviniae results
                        stringsAsFactors = FALSE)
 M_gaviniae <- subset(M_gaviniae, select = Gene:Results_Other)
 
-M_calida_dist <- read.csv(file = "8Results/M_calida_dist.csv",
-                          stringsAsFactors = FALSE)
 M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_dist.csv",
                             stringsAsFactors = FALSE)
 
-M_calida$ID <- M_calida_dist$ID
 M_gaviniae$ID <- M_gaviniae_dist$ID
 
-ggplot(M_calida, aes(xmin = ID - 1, xmax = ID, ymin = 4, ymax = 5, fill = Gene)) + 
-  geom_rect() + 
-  # geom_segment(data = subset(filld, label %in% label[duplicated(label)]),
-  #              aes(x = p, y = 0, xend = p, yend = 4, colour = label),
-  #              size = 2, show_guide = FALSE) +
-  # geom_text(aes(x = p, y = 4.5, label = label), colour = "white", size = 10) +
-  coord_polar() + 
-  scale_y_continuous(limits = c(0, 5))
+M_gaviniae$Results_Number <- case_when(
+  M_gaviniae$Results_Other == "Pantoea_agglomerans" ~ 1,
+  M_gaviniae$Results_Other == "Pantoea_septica" ~ 2,
+  M_gaviniae$Results_Other == "Erwinia_amylovora" ~ 3,
+  M_gaviniae$Results_Other == "Erwinia_tasmaniensis" ~ 4,
+  M_gaviniae$Results_Other == "Tatumella_ptyseos" ~ 5,
+  M_gaviniae$Results_Other == "Tatumella_saanichensis" ~ 6,
+  M_gaviniae$Results_Other == "Citrobacter_freundii" ~ 7,
+  M_gaviniae$Results_Other == "Enterobacter_cloacae" ~ 8
+)
+
+# M. calida plot #
+png("9_1Plots_calida/MC_categ_results.png", width = 1000, height = 725)
+ggplot(data = M_calida, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results_Number, fill = Results_Other)) +
+  geom_rect() +
+  coord_polar() +
+  scale_y_continuous(limits = c(0, 8)) +
+  theme(legend.position = "right", text = element_text(size = 20), 
+        axis.title.y = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank()) +
+  labs(fill = "Species")
+dev.off()
+
+# M. gaviniae plot
+png("9_2Plots_gaviniae/MG_categ_results.png", width = 1000, height = 725)
+ggplot(data = M_gaviniae, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results_Number, fill = Results_Other)) +
+  geom_rect() +
+  coord_polar() +
+  scale_y_continuous(limits = c(0, 8)) +
+  theme(legend.position = "right", text = element_text(size = 20), 
+        axis.title.y = element_blank(), 
+        axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank()) +
+  labs(fill = "Species")
+dev.off()
+
 #
 ### Kittens ###############################################################################################################################################
 showmekittens()
