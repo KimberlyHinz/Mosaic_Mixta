@@ -1,0 +1,56 @@
+#mega
+!Title: d;
+!Format DataType=Distance DataFormat=LowerLeft NTaxa=10;
+!Description
+  No. of Taxa:10
+  Analysis:Distance Estimation
+  Scope:Pairs of taxa
+  Estimate Variance:====================
+  Variance Estimation Method:Bootstrap method
+  No. of Bootstrap Replications:500
+  Substitution Model:====================
+  Substitutions Type:Nucleotide
+  Model/Method:Tamura 3-parameter model
+  Substitutions to Include:d: Transitions + Transversions
+  Rates and Patterns:====================
+  Rates among Sites:Gamma Distributed (G)
+  Gamma Parameter:1.00
+  Pattern among Lineages:Same (Homogeneous)
+  Data Subset to Use:====================
+  Gaps/Missing Data Treatment:Pairwise deletion
+  Site Coverage Cutoff (%):Not Applicable
+  Has Time Limit:False
+  Maximum Execution Time:-1
+  datatype:snNucleotide
+  containsCodingNuc:False
+  MissingBaseSymbol:?
+  IdenticalBaseSymbol:.
+  GapSymbol:-
+  No. of Sites:819
+  d:Estimate
+  S.E:Standard error
+;
+
+[ 1] #ID:IHMAAOCK_01692_Tatumella_saanichensis_NML_06-3099
+[ 2] #ID:JADOELLM_02794_Citrobacter_freundii_NCTC_9750
+[ 3] #ID:OJPMODEH_01576_Enterobacter_cloacae_subsp_cloacae_ATCC_13047
+[ 4] #ID:DGOHCAMD_01524_Erwinia_amylovora_CFBP_1232
+[ 5] #ID:LMPCFIAF_01940_Erwinia_tasmaniensis_ET1-99
+[ 6] #ID:MLHGDOMH_01877_Mixta_calida_DSM_22759
+[ 7] #ID:MHMNNPCM_01846_Mixta_gaviniae_DSM_22758
+[ 8] #ID:MEFHALAL_00346_Pantoea_agglomerans_NBRC_102470
+[ 9] #ID:KOGPCAHI_00156_Pantoea_septica_LMG_5345
+[10] #ID:IBJKPIAN_01672_Tatumella_ptyseos_NCTC11468
+
+[               1            2            3            4            5            6            7            8            9           10 ]
+[ 1]               [0.07592944 ][0.07635702 ][0.08599502 ][0.07521397 ][0.06275864 ][0.05790141 ][0.07216423 ][0.06405163 ][0.05235706 ]
+[ 2]   0.86369703               [0.03028367 ][0.06194978 ][0.05711064 ][0.04967066 ][0.04730687 ][0.05371299 ][0.04767571 ][0.07213666 ]
+[ 3]   0.86626246   0.32328788               [0.05127736 ][0.05926689 ][0.04967179 ][0.04330088 ][0.05018352 ][0.04647378 ][0.06468792 ]
+[ 4]   0.86328107   0.64629293   0.61041311               [0.01751015 ][0.03817323 ][0.04125319 ][0.04187749 ][0.04332365 ][0.07151371 ]
+[ 5]   0.81050091   0.62176179   0.64926593   0.14704195               [0.03731875 ][0.03858383 ][0.04389856 ][0.04167919 ][0.08503384 ]
+[ 6]   0.70929625   0.57890427   0.56344962   0.42944541   0.42758508               [0.01454763 ][0.03167088 ][0.02395201 ][0.06318157 ]
+[ 7]   0.66767573   0.59150326   0.51035876   0.44783965   0.44989838   0.11694931               [0.03157356 ][0.02550765 ][0.06354648 ]
+[ 8]   0.76269105   0.58594180   0.57082226   0.47142002   0.50504399   0.34880218   0.36055712               [0.02442902 ][0.06404458 ]
+[ 9]   0.71302767   0.53106333   0.52840298   0.48496291   0.45513397   0.26353893   0.28676297   0.26998997               [0.07206542 ]
+[10]   0.55650177   0.79258700   0.75131585   0.78922046   0.87209084   0.71216451   0.70796259   0.70159775   0.74545444               
+
