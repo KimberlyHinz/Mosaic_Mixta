@@ -1,4 +1,33 @@
-## I used the terminal in BioLinux to change the extensions from .fna to .fasta
+# Author: Kim Hinz
+# Date of study: 2019-09-05 -- 2020-04-01
+# Purpose: Phylogenetic analyses of Mixta genes to determine origination.
+# Name of study: Mosaic Mixta
+
+
+# The following code does different things for the phylogenetic study of two Mixta species (bacteria). Depending on the genes, model, and statistical 
+# method chosen for the phylogenetic tree, the Mixta species group with different genera (see Palmer et al. 2018 and Rezzonico et al. 2016 for an example).
+# Primarily, Mixta appeas to be a close relative to Pantoea with some leaning towards Erwinia. The purpose of my research is to determine why this might be
+# the case by performing distance matrix analyses for the homologous genes between two Mixta species, two Pantoea species, two Erwinia species, two 
+# Tatumella species, one Citrobacter species, and one Enterobacter species. The Citrobacter and Enterobacter species form the outgroup.
+
+
+# Publicly available genomes of the type strains of the species included in this study were retrieved from NCBI.
+# # Mixta calida DSM_22759 ----------------------------> complete genome
+# # Mixta gaviniae DSM_22758 --------------------------> complete genome
+# # Pantoea agglomerans NBRC_102470 -------------------> contigs
+# # Pantoea septica LMG_5345 --------------------------> contigs
+# # Erwinia amylovora CFBP_1232 -----------------------> contigs
+# # Erwinia tasmaniensis ET1/99 -----------------------> complete genome
+# # Tatumella ptyseos NCTC_11468 ----------------------> complete genome
+# # Tatumella saanichensis NML_06-3099 ----------------> contigs
+# # Citrobacter freundii NCTC_9750 --------------------> complete genome
+# # Enterobacter cloacae subsp cloacae ATCC_13047 -----> complete genome
+
+
+# These genomes were annotated using PROKKA version 1.14.1 and core genes were extracted using the GET_HOMOLOGUES software package with the bidirectional
+# best-hit search algorithm using default parameters.
+
+# The output file type of GET_HOMOLOGUES is .fna. Therefore, I used the terminal in BioLinux to change the extensions from .fna to .fasta
 #       for f in *.fna
 #       do
 #       [ -f "$f" ] && mv "$f" "${f%fna}fasta"
