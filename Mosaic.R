@@ -1,3 +1,4 @@
+### Information ############################################################################################################################################
 # Author: Kim Hinz
 # Date of study: 2019-09-05 -- 2020-04-01
 # Purpose: Phylogenetic analyses of Mixta genes to determine origination.
@@ -33,38 +34,36 @@
 #       [ -f "$f" ] && mv "$f" "${f%fna}fasta"
 #       done
 
+### Packages ###############################################################################################################################################
 library("seqinr")
+
+library("plyr")
 library("msa")
+library("beepr")
+
+
 library("ape")
 library("adegenet")
 library("Rfast")
-library("beepr")
 library("dplyr")
 library("plyr")
 library("tidyr")
 library("ggplot2")
 theme_set(theme_bw())
 
-# If on my own computer:
-setwd("D:/Honours/")
-
-# If in the office:
 setwd("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/")
+
 #
 ### Selection for genes ###################################################################################################################################
-# If on my own computer:
-fastaFiles <- as.data.frame(list.files(path = "C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes", 
-                                       pattern = ".fasta"))               # Makes a dataframe listing the fasta files in the folder
-colnames(fastaFiles) <- "File_name"                                       # Changes the column name
-fastaFiles$Path_name <- paste("C:/Users/Kim/Documents/School/2019_3Fall/Biology_498/Mosaic_Mixta/Genes/", 
-                              fastaFiles$File_name, sep = "")             # Creates a file pathway for each gene
+# This portion of the code acts as filter; it passes forward files that have full sequences (genes aren't split) and that don't have truncated sequences
+# (genes must be at least 90% of the length of the longest gene in each file). For example, if the longest sequence is 1000 bp, then the rest of the 
+# sequences in that file must be at least 900 bp. If at least one is shorter than 900 bp, the whole file is excluded.
 
-# If in the office:
 fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
                                        pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
-fastaFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/", 
-                              fastaFiles$File_name, sep = "")             # Creates a file pathway for each gene
+fastaFiles$Path_name <- paste("3Homologues_10/", fastaFiles$File_name, 
+                              sep = "")                                   # Creates a file pathway for each gene
 
 ten_seq <- function(gene) {                                               # Function that checks if there are 10 sequences in the gene file
   if(nrow(gene) == 20) {                                                  # Checks if there's 20 rows because odd rows are names and even rows are seq.
@@ -99,12 +98,10 @@ for(row in 1:nrow(fastaFiles)) {                                          # Lets
                             species = gene_file$V1[1:10 * 2 - 1], 
                             stringsAsFactors = FALSE)                     # Dataframe where first column are sequences and second are corresponing names
     
-    gene_file$species <- c("ID:IHMAAOCK_01692__Tatumella saanichensis__NML_06-3099", "ID:JADOELLM_02794__Citrobacter freundii__NCTC_9750",
-                           "ID:OJPMODEH_01576__Enterobacter cloacae_subsp_cloacae__ATCC 13047", "ID:DGOHCAMD_01524__Erwinia amylovora__CFBP_1232",
-                           "ID:LMPCFIAF_01940__Erwinia tasmaniensis__ET1-99", "ID:MLHGDOMH_01877__Mixta calida__DSM_22759",
-                           "ID:MHMNNPCM_01846__Mixta gaviniae__DSM_22758", "ID:MEFHALAL_00346__Pantoea agglomerans__NBRC_102470",
-                           "ID:KOGPCAHI_00156__Pantoea septica__LMG_5345", "ID:IBJKPIAN_01672__Tatumella ptyseos__NCTC11468")
-    # Renames the species names so they aren't ridiculously long
+    gene_file$species <- c("Tatumella saanichensis__NML_06-3099", "Citrobacter freundii__NCTC_9750", "Enterobacter cloacae_subsp_cloacae__ATCC 13047", 
+                           "Erwinia amylovora__CFBP_1232", "Erwinia tasmaniensis__ET1-99", "Mixta calida__DSM_22759", "Mixta gaviniae__DSM_22758", 
+                           "Pantoea agglomerans__NBRC_102470", "Pantoea septica__LMG_5345", 
+                           "Tatumella ptyseos__NCTC_11468")               # Renames the species names so they aren't ridiculously long
     
     count <- gene_length(gene_file)
     if(count == 10) {                                                     # If all 10 are of similar lengths, then continue
@@ -122,34 +119,40 @@ for(row in 1:nrow(fastaFiles)) {                                          # Lets
 rm(gene_file, count, path, row, twenty)
 
 ### Aligning genes ########################################################################################################################################
-# Using ClustalW in R
-fastaFilesOrg <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/4Organize/", 
+# 
+
+fastaFilesOrg <- as.data.frame(list.files(path = "4Organize/", 
                                           pattern = ".fasta"))            # Makes a dataframe listing the fasta files in the folder
 colnames(fastaFilesOrg) <- "File_name"                                    # Changes the column name
-fastaFilesOrg$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/4Organize/", 
-                                 fastaFilesOrg$File_name, sep = "")      # Creates a file pathway for each gene
+fastaFilesOrg$Path_name <- paste("4Organize/", fastaFilesOrg$File_name, 
+                                 sep = "")                                # Creates a file pathway for each gene
+
+align_gene <- function(gene_file) {                                       # Aligns the sequences in the file and converts to a dataframe
+  align <- msa::msaClustalW(inputSeqs = gene_file, maxiters = 100, 
+                            type = "dna", order = "input")                # Aligns the genes
+  
+  alignConv <- msaConvert(align, type = "seqinr::alignment")              # Converts the aligned genes into a readable form
+  
+  alignFA <- base::as.data.frame(matrix(ncol = 0, nrow = 10))             # Create the necessary format for write.fasta()
+  alignFA <- mutate(alignFA, 
+                    sequences = alignConv$seq,
+                    species = alignConv$nam)                              # Copies two columns from alignConv to alignFA
+}
 
 for(row in 1:nrow(fastaFilesOrg)) {                                       # Aligns genes that passed the filter
   path <- fastaFilesOrg$Path_name[row]
   gene_file <- readDNAStringSet(path)                                     # Reads in the genes (this way ensures the names are kept)
   
-  align <- msa::msaClustalW(inputSeqs = gene_file, maxiters = 100, 
-                            type = "dna", order = "input")                # Aligns the genes
-  alignConv <- msaConvert(align, type = "seqinr::alignment")              # Converts the aligned genes into a readable form
-  
-  alignFA <- base::as.data.frame(matrix(ncol = 2, nrow = 10))             # Create the necessary format for write.fasta()
-  colnames(alignFA) <- c("sequences", "species")
-  alignFA$sequences <- alignConv$seq                                      # Copy aligned genes into new dataframe
-  alignFA$species <- alignConv$nam
+  alignFA <- align_gene(gene_file)                                        # Aligns the sequences and converts to a readable dataframe
   
   write.fasta(sequences = as.list(alignFA$sequences),
               names = alignFA$species,
               file.out = paste("5Aligned/", fastaFilesOrg$File_name[row],
-                               sep = ''),
+                               sep = ""),
               open = "w", nbchar = 10000, as.string = TRUE)               # Creates a fasta file for each gene, will continue on to distance matrices
 }
 beep(8)
-rm(align, alignConv, alignFA, gene_file, path, row)
+rm(alignFA, gene_file, path, row)
 
 ### Best model for genes ##################################################################################################################################
 fastaFilesModel <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Model/",
