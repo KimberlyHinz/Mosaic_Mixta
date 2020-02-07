@@ -119,7 +119,7 @@ for(row in 1:nrow(fastaFiles)) {                                          # Lets
 rm(gene_file, count, path, row, twenty)
 
 ### Aligning genes ########################################################################################################################################
-# 
+# This section aligns the genes that passed the filter using ClustalW through the R package msa.
 
 fastaFilesOrg <- as.data.frame(list.files(path = "4Organize/", 
                                           pattern = ".fasta"))            # Makes a dataframe listing the fasta files in the folder
