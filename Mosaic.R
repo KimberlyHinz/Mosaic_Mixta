@@ -40,12 +40,13 @@ library("seqinr")
 library("plyr")
 library("msa")
 library("beepr")
-
-
-library("ape")
-library("adegenet")
-library("Rfast")
 library("dplyr")
+
+
+# library("ape")
+# library("adegenet")
+# library("Rfast")
+
 library("plyr")
 library("tidyr")
 library("ggplot2")
@@ -62,7 +63,8 @@ setwd("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/")
 fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
                                        pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
-fastaFiles$Path_name <- paste("3Homologues_10/", fastaFiles$File_name, 
+fastaFiles$Path_name <- paste("3Homologues_10/", 
+                              fastaFiles$File_name, 
                               sep = "")                                   # Creates a file pathway for each gene
 
 ten_seq <- function(gene) {                                               # Function that checks if there are 10 sequences in the gene file
@@ -88,7 +90,9 @@ gene_length <- function(gene_file) {                                      # Func
 
 for(row in 1:nrow(fastaFiles)) {                                          # Lets pass genes that meet requirements
   path <- fastaFiles$Path_name[row]
-  gene_file <- read.table(file = path, header = FALSE, sep = "\n", 
+  gene_file <- read.table(file = path, 
+                          header = FALSE, 
+                          sep = "\n", 
                           stringsAsFactors = FALSE)                       # Reads in the gene file according to the pathway, separation is newline
   
   twenty <- ten_seq(gene_file)
@@ -119,17 +123,21 @@ for(row in 1:nrow(fastaFiles)) {                                          # Lets
 rm(gene_file, count, path, row, twenty)
 
 ### Aligning genes ########################################################################################################################################
-# This section aligns the genes that passed the filter using ClustalW through the R package msa.
+# This section aligns the genes that passed the filter using ClustalW through the R package msa. The parameters are 100 maximum iterations (default is 16)
+# and default parameters. Then, the genes are written into a new fasta file.
 
 fastaFilesOrg <- as.data.frame(list.files(path = "4Organize/", 
                                           pattern = ".fasta"))            # Makes a dataframe listing the fasta files in the folder
 colnames(fastaFilesOrg) <- "File_name"                                    # Changes the column name
-fastaFilesOrg$Path_name <- paste("4Organize/", fastaFilesOrg$File_name, 
+fastaFilesOrg$Path_name <- paste("4Organize/", 
+                                 fastaFilesOrg$File_name, 
                                  sep = "")                                # Creates a file pathway for each gene
 
 align_gene <- function(gene_file) {                                       # Aligns the sequences in the file and converts to a dataframe
-  align <- msa::msaClustalW(inputSeqs = gene_file, maxiters = 100, 
-                            type = "dna", order = "input")                # Aligns the genes
+  align <- msa::msaClustalW(inputSeqs = gene_file, 
+                            maxiters = 100, 
+                            type = "dna",
+                            order = "input")                              # Aligns the genes
   
   alignConv <- msaConvert(align, type = "seqinr::alignment")              # Converts the aligned genes into a readable form
   
@@ -149,17 +157,38 @@ for(row in 1:nrow(fastaFilesOrg)) {                                       # Alig
               names = alignFA$species,
               file.out = paste("5Aligned/", fastaFilesOrg$File_name[row],
                                sep = ""),
-              open = "w", nbchar = 10000, as.string = TRUE)               # Creates a fasta file for each gene, will continue on to distance matrices
+              open = "w", 
+              nbchar = 10000, 
+              as.string = TRUE)                                           # Creates a fasta file for each gene, will continue on to distance matrices
 }
 beep(8)
 rm(alignFA, gene_file, path, row)
 
 ### Best model for genes ##################################################################################################################################
-fastaFilesModel <- as.data.frame(list.files(path = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Model/",
+# This section extracts the best (available) model for distance matrices for the genes. GTR and HKY are not options for distance matrices, so they are
+# removed from the order of best models. Accounting for invariant sites is also not an available option, so that parameter is ignored. 
+# The second half of this section creates a txt file for each model with all the file pathways to the genes requiring that model.
+
+fastaFilesModel <- as.data.frame(list.files(path = "6Model/",
                                             pattern = ".csv"))            # Make a dataframe listing the csv files in the folder
 colnames(fastaFilesModel) <- "File_name"                                  # Changes the column name
-fastaFilesModel$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/6Model/",
-                                   fastaFilesModel$File_name, sep = "")   # Creates a file pathway for each gene
+fastaFilesModel$Path_name <- paste("6Model/", 
+                                   fastaFilesModel$File_name, 
+                                   sep = "")                              # Creates a file pathway for each gene
+
+model_code <- function(model1) {
+  best_model <- case_when(
+    model1 %in% c("JC", "JC+I") ~ "JC",
+    model1 %in% c("JC+G", "JC+G+I") ~ "JC_G",
+    model1 %in% c("K2", "K2+I") ~ "K2",
+    model1 %in% c("K2+G", "K2+G+I") ~ "K2_G",
+    model1 %in% c("T92", "T92+I") ~ "T92",
+    model1 %in% c("T92+G", "T92+G+I") ~ "T92_G",
+    model1 %in% c("TN93", "TN93+I") ~ "TN93",
+    model1 %in% c("TN93+G", "TN93+G+I") ~ "TN93_G",
+  )
+  return(best_model)
+}
 
 best_model <- as.data.frame(matrix(ncol = 4, nrow = 0))                   # Dataframe for each gene's best model
 for(row in 1:nrow(fastaFilesModel)) {                                     # Organize by model since invariant sites are not an option for distance matrices
@@ -179,16 +208,8 @@ for(row in 1:nrow(fastaFilesModel)) {                                     # Orga
   colnames(model) <- "Model1"                                             # Rename column
   model$File_name <- fastaFilesModel$File_name[row]                       # File name for model testing csv file
   
-  model$ModelCode <- case_when(                                           # Get the model codes
-    model$Model1 %in% c("JC", "JC+I") ~ "JC",
-    model$Model1 %in% c("JC+G", "JC+G+I") ~ "JC_G",
-    model$Model1 %in% c("K2", "K2+I") ~ "K2",
-    model$Model1 %in% c("K2+G", "K2+G+I") ~ "K2_G",
-    model$Model1 %in% c("T92", "T92+I") ~ "T92",
-    model$Model1 %in% c("T92+G", "T92+G+I") ~ "T92_G",
-    model$Model1 %in% c("TN93", "TN93+I") ~ "TN93",
-    model$Model1 %in% c("TN93+G", "TN93+G+I") ~ "TN93_G",
-  )
+  model$ModelCode <- model_code(model$Model1)                             # Get the model codes
+  
   best_model <- rbind(best_model, model)                                  # Combine all best models to one dataset
 }
 rm(gene_model_test, model, path, row)                                     # Remove unneeded variables from the for loop
