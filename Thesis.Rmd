@@ -1,0 +1,170 @@
+---
+title: "Thesis"
+output:
+  word_document:
+    reference_docx: Styles1.docx
+    fig_caption: true
+    toc: true
+    toc_depth: 5
+bibliography: References.bib
+csl: nature-genetics.csl
+---
+
+A Thesis
+
+Submitted to the Department of Biology
+
+In Partial Fulfillment of the Requirements
+
+For the Degree of
+
+<br>
+
+Bachelor of Science
+
+in
+
+Honours Biology
+
+University of Regina
+
+<br>
+
+By
+
+Kimberly Hinz
+
+Regina, Saskatchewan
+
+April, 2020  
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
+# Abstract
+
+This is the abstract for my honours thesis.
+
+<!-- ```{=openxml} -->
+<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
+<!-- ``` -->
+<!-- # Acknowledgements -->
+
+<!-- I would like to thank Dr. John Stavrinides for the opportunity of working in his lab and for being incredibly encouraging, supportive, energetic, and motivating as my Honours supervisor. I could not have asked for a better supervisor and experience. -->
+
+<!-- Thank you to Dr. Maria Davis and Dr. Chris Somers for devoting time out of their busy schedules to serve as my committee members. -->
+
+<!-- A big thank you to the Stavrinauts (Stav Lab; SLab) for all their help and support, especially when none of us knew what my results showed. You taught me that research is about finding answers together, not having them beforehand. I would especially like to thank Craig Soutar, Michi Sawa, and Emily Haidl for their knowledge and expertise with bioinformatics and R coding. -->
+
+<!-- Another big thank you to Stefano Mezzini, who believed in my code and R Markdown, even when I did not. And who always found ridiculously simple solutions to my problems. -->
+
+<!-- Lastly, thank you so much to my family and friends for all of your support, even when you did/do not understand what I study. -->
+
+<!-- ```{=openxml} -->
+<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
+<!-- ``` -->
+<!-- # Dedication -->
+
+<!-- To my parents, who have loved and supported me throughout all my ventures: the ups, the downs, and the flat lands. Thank you for everything you have done and sacrificed for me. I love you so much! -->
+
+<!-- To Christina Solinas, who sparked my passion for genetics all those years ago. I may not have realized it back then, but biology was what I was always meant to study. Thank you; you have changed my life. -->
+
+<!-- ```{=openxml} -->
+<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
+<!-- ``` -->
+<!-- # Table of Contents -->
+
+
+<!-- ```{=openxml} -->
+<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
+<!-- ``` -->
+<!-- # List of Figures -->
+
+
+<!-- ```{=openxml} -->
+<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
+<!-- ``` -->
+<!-- # List of Abbreviations -->
+```{r echo = FALSE, message = FALSE, fig.cap=TRUE}
+library("dplyr")
+abbrevs <- as.data.frame(matrix(nrow = 1, ncol = 0))
+abbrevs <- mutate(abbrevs, 
+                  Abbreviation = c("NCBI"),
+                  `Full Name` = c("National Centre for Biotechnology Information"), 
+                  )
+
+
+library("knitr")
+kable(abbrevs)
+```
+
+<!-- ```{=openxml} -->
+<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
+<!-- ``` -->
+<!-- # List of Appendices -->
+
+
+<!-- ```{=openxml} -->
+<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
+<!-- ``` -->
+# Introduction
+
+
+
+# Materials and Methods
+## Genomes and Homologous Genes
+Publicly available full genomes were retrieved from the National Centre for Biotechnology Information (NCBI) comprising of ten type strains from *Mixta*, *Pantoae*, *Erwinia*, *Tatumella*, *Citrobacter*, and *Enterobacter*. A list of these strains follows:
+
+```{r echo = FALSE, message = FALSE, fig.cap=TRUE}
+library("dplyr")
+strain <- as.data.frame(matrix(nrow = 10, ncol = 0))
+strain <- mutate(strain, 
+                 Species = c("Mixta calida", "Mixta gaviniae", "Pantoea agglomerans", "Pantoea septica", "Erwinia amylovora", 
+                             "Erwinia tasmaniensis", "Tatumella ptyseos", "Tatumella saanichensis", "Citrobacter freundii", 
+                             "Enterobacter cloacae subsp cloacae"),
+                 Strain = c("DSM_22759", "DSM_22758", "NBRC_102470", "LMG_5345", "CFBP_1232", "ET1/99", "NCTC_11468", 
+                            "NML_06-3099", "NCTC_9750", "ATCC_13047"), 
+                 Level = c("complete genome", "complete genome", "contigs", "contigs", "contigs", "complete genome", 
+                           "complete genome", "contigs", "complete genome", "complete genome")
+)
+
+
+library("knitr")
+kable(strain, caption = "Table __. Species' names, strains, and assembly levels that are involved in the study.")
+```
+
+The genomes were annotated with Prokka v1.14.1 [@Seemann2014] and homologous genes were extracted using GET_HOMOLOGUES software package [@Contreras-Moreira2013] with the bidirectional best-hit search algorithm using default parameters.
+
+Within `R`, a filtering function was created to pass forward fasta files with ten, non-truncated sequences. The minimum gene length to pass through the filter was 90% the length of the longest sequence in that file.
+
+## Gene Alignment
+Fasta files were read into `R` using the `readDNAStringSet` function in the package `Biostrings` [@Aboyoun2018]. Gene alignments were done using the ClustalW algorithm with the function `msaClustalW` in the `R` package `msa` [@Bodenhofer2015]. The number of maximum iterations was set to 100 and the other parameters were kept at default settings [@Bodenhofer2015]. Alignments were then converted into a readable format using `msaConvert` from the `msa` package [@Bodenhofer2015]. New fasta files were written for each gene file using `write.fasta` from the `seqinr` package [@Jordan2007].
+
+## Distance Matrices
+
+
+# Results and Discussion
+The software package GET_HOMOLOGUES extracted 1284 genes that were common between the ten species. Of those genes, 1035 passed a filtering process that allowed through only files with 10 sequences and no truncated sequences.
+
+# Conclusion
+
+# Tips
+
+For hyperlinks: <http://rmarkdown.rstudio.com>
+
+For bold: **Knit**
+
+For italics: *Italy*
+
+For code: `echo = FALSE`
+
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
+# Literature Cited
+
+
+##### Appendix A
