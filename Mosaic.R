@@ -5,11 +5,11 @@
 # Name of study: Mosaic Mixta
 
 
-# The following code does different things for the phylogenetic study of two Mixta species (bacteria). Depending on the genes, model, and statistical 
-# method chosen for the phylogenetic tree, the Mixta species group with different genera (see Palmer et al. 2018 and Rezzonico et al. 2016 for an example).
-# Primarily, Mixta appeas to be a close relative to Pantoea with some leaning towards Erwinia. The purpose of my research is to determine why this might be
-# the case by performing distance matrix analyses for the homologous genes between two Mixta species, two Pantoea species, two Erwinia species, two 
-# Tatumella species, one Citrobacter species, and one Enterobacter species. The Citrobacter and Enterobacter species form the outgroup.
+# The following code is for the phylogenetic study of two Mixta species (bacteria). Depending on the genes, model, and statistical method chosen for the 
+# phylogenetic tree, the Mixta species group with different genera (see Palmer et al. 2018 and Rezzonico et al. 2016 for an example). Primarily, Mixta 
+# appears to be a close relative to Pantoea with some leaning towards Erwinia. The purpose of my research is to determine why this might be the case by 
+# performing distance matrix analyses for the homologous genes between two Mixta species, two Pantoea species, two Erwinia species, two Tatumella species, 
+# one Citrobacter species, and one Enterobacter species. The Citrobacter and Enterobacter species form the outgroup.
 
 
 # Publicly available genomes of the type strains of the species included in this study were retrieved from NCBI.
