@@ -43,9 +43,9 @@ library("beepr")
 library("dplyr")
 
 
-# library("ape")
-# library("adegenet")
-# library("Rfast")
+library("ape")
+library("adegenet")
+library("Rfast")
 
 library("plyr")
 library("tidyr")
