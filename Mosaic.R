@@ -529,8 +529,10 @@ write.csv(x = M_calida_dist, file = "8Results/M_calida_Distances.csv", row.names
 write.csv(x = M_gaviniae_dist, file = "8Results/M_gaviniae_Distances.csv", row.names = FALSE)
 
 ### Retrieve gene IDs #####################################################################################################################################
-M_calida_dist <- read.csv(file = "8Results/M_calida_Distances.csv", stringsAsFactors = FALSE)
-M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_Distances.csv", stringsAsFactors = FALSE)
+M_calida_dist <- read.csv(file = "8Results/M_calida_Distances.csv", 
+                          stringsAsFactors = FALSE)
+M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_Distances.csv", 
+                            stringsAsFactors = FALSE)
 
 fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
                                        pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
@@ -915,6 +917,100 @@ ggplot(data = M_gaviniae, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results
         axis.ticks.y = element_blank()) +
   labs(fill = "Species")
 dev.off()
+
+#
+### Gene Length Models #######################################################################################################################################
+M_calida <- read.csv(file = "8Results/M_calida_Relatives.csv",            # Reads in the M. calida results
+                     stringsAsFactors = FALSE)
+M_gaviniae <- read.csv(file = "8Results/M_gaviniae_Relatives.csv",
+                       stringsAsFactors = FALSE)
+
+fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
+                                       pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
+colnames(fastaFiles) <- "File_name"                                       # Changes the column name
+fastaFiles$Path_name <- paste("3Homologues_10/", 
+                              fastaFiles$File_name, 
+                              sep = "")                                   # Creates a file pathway for each gene
+fastaFiles$Gene <- gsub(pattern = ".fasta", replacement = "",             # Creates a column with just the gene name
+                        x = fastaFiles$File_name)
+
+fastaFiles$Check <- case_when(                                            # Sets common genes to TRUE
+  fastaFiles$Gene %in% M_calida$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+fastaFiles <- subset(fastaFiles, Check == TRUE, select = File_name:Gene)  # Subsets based on TRUE so file contains only the 1035 genes
+
+gene_length_mmm <- function(gene_file) {                                  # Finds the average, min, and max gene lengths in the file
+  leng <- as.data.frame(matrix(ncol = 0, nrow = 0))
+  for(row in 1:nrow(gene_file)) {
+    len <- nchar(gene_file$sequences)[row]
+    leng <- rbind(leng, len)
+  }
+  colnames(leng) <- "gene_mmm"
+  mean_length <- mean(leng$gene_mmm, na.rm = TRUE)
+  lengths <- as.data.frame(cbind(min(nchar(gene_file$sequences)), 
+                                 mean_length, 
+                                 max(nchar(gene_file$sequences))))
+}
+
+gene_mmm <- as.data.frame(matrix(ncol = 0, nrow = 0))
+for(row in 1:nrow(fastaFiles)) {                                          # Average, min, and max gene lengths for each of 1035 gene files
+  path <- fastaFiles$Path_name[row]
+  gene_file <- read.table(file = path, 
+                          header = FALSE, 
+                          sep = "\n", 
+                          stringsAsFactors = FALSE)                       # Reads in the gene file according to the pathway, separation is newline
+  
+  gene_file <- data.frame(sequences = gene_file$V1[1:10 * 2], 
+                          species = gene_file$V1[1:10 * 2 - 1], 
+                          stringsAsFactors = FALSE)                       # Dataframe where first column are sequences and second are corresponing names
+  
+  gene_file$species <- c("Tatumella saanichensis__NML_06-3099", "Citrobacter freundii__NCTC_9750", "Enterobacter cloacae_subsp_cloacae__ATCC 13047", 
+                         "Erwinia amylovora__CFBP_1232", "Erwinia tasmaniensis__ET1-99", "Mixta calida__DSM_22759", "Mixta gaviniae__DSM_22758", 
+                         "Pantoea agglomerans__NBRC_102470", "Pantoea septica__LMG_5345", 
+                         "Tatumella ptyseos__NCTC_11468")                 # Renames the species names so they aren't ridiculously long
+  
+  lengths <- gene_length_mmm(gene_file)                                   # Calls the function
+  lengths <- cbind(lengths, fastaFiles$Gene[row])                         # Adds the gene name, this will be used to check the gene order for cbind later
+  colnames(lengths) <- c("Min", "Mean", "Max", "Gene_Name")
+  
+  gene_mmm <- rbind(gene_mmm, lengths)                                    # Creates a dataframe with all of the average, min, and max gene lengths
+}
+rm(gene_file, lengths, path, row)                                         # Removes unnecessary variables
+
+unique(fastaFiles$Gene == gene_mmm$Gene_Name)                             # Checks that gene order is the same between both files. Should return just TRUE
+
+M_calida <- cbind(M_calida, gene_mmm)                                     # Combines the two dataframes
+M_calida <- subset(M_calida, select = Gene:Max)                           # Removes the Gene_name column
+
+M_calida$Rela_Pattern <- paste(M_calida$One, M_calida$Two, M_calida$Three, 
+                               M_calida$Four, M_calida$Five, M_calida$Six, 
+                               M_calida$Seven, M_calida$Eight, 
+                               M_calida$Nine, M_calida$Ten, sep = "_")
+
+species <- as.data.frame(matrix(ncol = 0, nrow = 10))
+species <- mutate(species,
+                  Spp = c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", "Erwinia_tasmaniensis", 
+                          "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", "Tatumella_ptyseos"),
+                  Acro = c("TS", "CF", "EC", "EA", "ET", "MC", "MG", "PA", "PS", "TP"))
+
+for(row in 1:nrow(species)) {
+  M_calida$Rela_Pattern <- gsub(pattern = species$Spp[row], replacement = species$Acro[row], x = M_calida$Rela_Pattern)
+}
+rm(row)
+
+### Model gene length vs closest relative ###
+library("mgcv")
+ctrl <- gam.control(nthreads = 3, trace = TRUE)                                       # Control for GAM
+
+M_calida <- mutate(M_calida,
+                   Gene = as.factor(Gene),
+                   Rela_Pattern = as.factor(Rela_Pattern),
+                   Results_Other = as.factor(Results_Other))
+
+GL_CR <- gam(Results_Other ~ s(Mean),
+             data = M_calida, method = "fREML", control = ctrl, family = multinom, discrete = TRUE)
+
 
 #
 ### Kittens ###############################################################################################################################################
