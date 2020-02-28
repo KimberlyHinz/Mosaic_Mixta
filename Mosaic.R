@@ -53,7 +53,7 @@ library("ggplot2")
 theme_set(theme_bw())
 
 setwd("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/")
-
+setwd("D:/Honours/")
 #
 ### Selection for genes ###################################################################################################################################
 # This portion of the code acts as filter; it passes forward files that have full sequences (genes aren't split) and that don't have truncated sequences
@@ -1078,12 +1078,36 @@ ctrl <- gam.control(nthreads = 3, trace = TRUE)                                 
 M_calida_L <- mutate(M_calida_L,
                      Gene = as.factor(Gene),
                      Rela_Pattern = as.factor(Rela_Pattern),
-                     Results_Other = as.factor(Results_Other))
+                     Results_Other = as.factor(Results_Other),
+                     ROther_Num = as.integer(Results_Other) - 1)
 
-CR_GL <- gam(Results_Other ~ s(Mean),
-             data = M_calida_L, method = "fREML", control = ctrl, family = multinom, discrete = TRUE)
+test <- M_calida_L$ROther_Num
+testx <- M_calida_L$Mean
+CR_GL <- gam(list(test ~ s(testx)),
+             method = "REML", control = ctrl, family = multinom(K=8))
 ### Relative pattern vs gene length ###
+library(mgcv)
+set.seed(6)
+## simulate some data from a three class model
+n <- 1000
+f1 <- function(x) sin(3*pi*x)*exp(-x)
+f2 <- function(x) x^3
+f3 <- function(x) .5*exp(-x^2)-.2
+f4 <- function(x) 1
+x1 <- runif(n);x2 <- runif(n)
+eta1 <- 2*(f1(x1) + f2(x2))-.5
+eta2 <- 2*(f3(x1) + f4(x2))-1
+p <- exp(cbind(0,eta1,eta2))
+p <- p/rowSums(p) ## prob. of each category 
+cp <- t(apply(p,1,cumsum)) ## cumulative prob.
+## simulate multinomial response with these probabilities
+## see also ?rmultinom
+y <- apply(cp,1,function(x) min(which(x>runif(1))))-1
 
+## now fit the model...
+b <- gam(list(y~s(x1)+s(x2),~s(x1)+s(x2)),family=multinom(K=2))
+plot(b,pages=1)
+gam.check(b)
 ### Distances vs gene length ###
 library("gratia")
 D_GL <- bam(Distance ~ s(Gene_Length, k = 12),
@@ -1098,34 +1122,34 @@ D_GL_3 <- bam(Distance ~ s(Gene_Length, k = 12),
 D_GL_4 <- bam(Distance ~ s(Gene_Length, k = 12),
               data = M_calida_sdist_L, method = "fREML", control = ctrl, family = gaussian(), discrete = TRUE)
 
-AIC(D_GL, D_GL_2, D_GL_3)
+AIC(D_GL, D_GL_2, D_GL_3, D_GL_4)
 
 test <- subset(M_calida_sdist_L, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
                                                 "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
                                                 "Tatumella_ptyseos"))
-D_GL <- bam(Distance ~ s(Gene_Length, k = 12),
+D2_GL <- bam(Distance ~ s(Gene_Length, k = 12),
             data = test, method = "fREML", control = ctrl, family = gaussian(), discrete = TRUE)
-D_GL_1_2 <- bam(Distance ~ s(Gene_Length, k = 12),
+D2_GL_1_2 <- bam(Distance ~ s(Gene_Length, k = 12),
                 data = test, method = "fREML", control = ctrl, family = gaussian(link = "log"), discrete = TRUE)
 
-D_GL_2 <- bam(Distance ~ s(Gene_Length, k = 12),
+D2_GL_2 <- bam(Distance ~ s(Gene_Length, k = 12),
               data = test, method = "fREML", control = ctrl, family = scat(), discrete = TRUE)
-D_GL_2_2 <- bam(Distance ~ s(Gene_Length, k = 12),
+D2_GL_2_2 <- bam(Distance ~ s(Gene_Length, k = 12),
                 data = test, method = "fREML", control = ctrl, family = scat(link = "log"), discrete = TRUE)
 
-D_GL_3 <- bam(Distance ~ s(Gene_Length, k = 12),
+D2_GL_3 <- bam(Distance ~ s(Gene_Length, k = 12),
               data = test, method = "fREML", control = ctrl, family = Gamma(link = "identity"), discrete = TRUE)
 
-D_GL_3_2 <- bam(Distance ~ s(Gene_Length, k = 12),
+D2_GL_3_2 <- bam(Distance ~ s(Gene_Length, k = 12),
                 data = test, method = "fREML", control = ctrl, family = Gamma(link = "log"), discrete = TRUE)
-AIC(D_GL, D_GL_1_2, D_GL_2, D_GL_2_2, D_GL_3, D_GL_3_2)
+AIC(D2_GL, D2_GL_1_2, D2_GL_2, D2_GL_2_2, D2_GL_3, D2_GL_3_2)
 
 
 
 layout(matrix(1:4, ncol = 2, byrow = TRUE))
-gam.check(D_GL_3)
-plot(D_GL_3_2, pages = 1, se = FALSE, scale = 0, scheme = 2)
-draw(D_GL_3)
+gam.check(D2_GL_2_2)
+plot(D2_GL_2_2, pages = 1, se = FALSE, scale = 0, scheme = 2)
+draw(D2_GL_3)
 #
 ### Significant First Relative ############################################################################################################################
 M_calida_sdist <- read.csv(file = "8Results/M_calida_Sort_Dist.csv",
