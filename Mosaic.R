@@ -1063,6 +1063,8 @@ write.csv(x = M_gaviniae_sdist_L, file = "8Results/M_gaviniae_Sort_Dist_L.csv",
 #
 ### Gene Length Models ####################################################################################################################################
 library("mgcv")
+library("gratia")
+
 M_calida_L <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", 
                        stringsAsFactors = FALSE)
 M_gaviniae_L <- read.csv(file = "8Results/M_gaviniae_Relatives_Length.csv",
@@ -1081,35 +1083,30 @@ M_calida_L <- mutate(M_calida_L,
                      Results_Other = as.factor(Results_Other),
                      ROther_Num = as.integer(Results_Other) - 1)
 
-test <- M_calida_L$ROther_Num
-testx <- M_calida_L$Mean
-CR_GL <- gam(list(test ~ s(testx)),
-             method = "REML", control = ctrl, family = multinom(K=8))
-### Relative pattern vs gene length ###
-library(mgcv)
-set.seed(6)
-## simulate some data from a three class model
-n <- 1000
-f1 <- function(x) sin(3*pi*x)*exp(-x)
-f2 <- function(x) x^3
-f3 <- function(x) .5*exp(-x^2)-.2
-f4 <- function(x) 1
-x1 <- runif(n);x2 <- runif(n)
-eta1 <- 2*(f1(x1) + f2(x2))-.5
-eta2 <- 2*(f3(x1) + f4(x2))-1
-p <- exp(cbind(0,eta1,eta2))
-p <- p/rowSums(p) ## prob. of each category 
-cp <- t(apply(p,1,cumsum)) ## cumulative prob.
-## simulate multinomial response with these probabilities
-## see also ?rmultinom
-y <- apply(cp,1,function(x) min(which(x>runif(1))))-1
+CR_GL <- gam(list(ROther_Num ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean)),
+             data = M_calida_L, family = multinom(K=7))
 
-## now fit the model...
-b <- gam(list(y~s(x1)+s(x2),~s(x1)+s(x2)),family=multinom(K=2))
-plot(b,pages=1)
-gam.check(b)
+layout(matrix(1:4, ncol = 2, byrow = TRUE))
+gam.check(CR_GL)
+draw(CR_GL)
+
+M_gaviniae_L <- mutate(M_gaviniae_L,
+                       Gene = as.factor(Gene),
+                       Rela_Pattern = as.factor(Rela_Pattern),
+                       Results_Other = as.factor(Results_Other),
+                       ROther_Num = as.integer(Results_Other) - 1)
+
+CR_GLg <- gam(list(ROther_Num ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean)),
+              data = M_gaviniae_L, family = multinom(K=7))
+
+layout(matrix(1:4, ncol = 2, byrow = TRUE))
+gam.check(CR_GLg)
+draw(CR_GLg)
+
+### Relative pattern vs gene length ###
+
 ### Distances vs gene length ###
-library("gratia")
+
 D_GL <- bam(Distance ~ s(Gene_Length, k = 12),
             data = M_calida_sdist_L, method = "fREML", control = ctrl, family = gaussian(), discrete = TRUE)
 
@@ -1128,20 +1125,20 @@ test <- subset(M_calida_sdist_L, Species %in% c("Tatumella_saanichensis", "Citro
                                                 "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
                                                 "Tatumella_ptyseos"))
 D2_GL <- bam(Distance ~ s(Gene_Length, k = 12),
-            data = test, method = "fREML", control = ctrl, family = gaussian(), discrete = TRUE)
+             data = test, method = "fREML", control = ctrl, family = gaussian(), discrete = TRUE)
 D2_GL_1_2 <- bam(Distance ~ s(Gene_Length, k = 12),
-                data = test, method = "fREML", control = ctrl, family = gaussian(link = "log"), discrete = TRUE)
+                 data = test, method = "fREML", control = ctrl, family = gaussian(link = "log"), discrete = TRUE)
 
 D2_GL_2 <- bam(Distance ~ s(Gene_Length, k = 12),
-              data = test, method = "fREML", control = ctrl, family = scat(), discrete = TRUE)
+               data = test, method = "fREML", control = ctrl, family = scat(), discrete = TRUE)
 D2_GL_2_2 <- bam(Distance ~ s(Gene_Length, k = 12),
-                data = test, method = "fREML", control = ctrl, family = scat(link = "log"), discrete = TRUE)
+                 data = test, method = "fREML", control = ctrl, family = scat(link = "log"), discrete = TRUE)
 
 D2_GL_3 <- bam(Distance ~ s(Gene_Length, k = 12),
-              data = test, method = "fREML", control = ctrl, family = Gamma(link = "identity"), discrete = TRUE)
+               data = test, method = "fREML", control = ctrl, family = Gamma(link = "identity"), discrete = TRUE)
 
 D2_GL_3_2 <- bam(Distance ~ s(Gene_Length, k = 12),
-                data = test, method = "fREML", control = ctrl, family = Gamma(link = "log"), discrete = TRUE)
+                 data = test, method = "fREML", control = ctrl, family = Gamma(link = "log"), discrete = TRUE)
 AIC(D2_GL, D2_GL_1_2, D2_GL_2, D2_GL_2_2, D2_GL_3, D2_GL_3_2)
 
 
@@ -1149,7 +1146,7 @@ AIC(D2_GL, D2_GL_1_2, D2_GL_2, D2_GL_2_2, D2_GL_3, D2_GL_3_2)
 layout(matrix(1:4, ncol = 2, byrow = TRUE))
 gam.check(D2_GL_2_2)
 plot(D2_GL_2_2, pages = 1, se = FALSE, scale = 0, scheme = 2)
-draw(D2_GL_3)
+draw(D2_GL_2_2)
 #
 ### Significant First Relative ############################################################################################################################
 M_calida_sdist <- read.csv(file = "8Results/M_calida_Sort_Dist.csv",
@@ -1342,6 +1339,40 @@ M_calida_Same_Genus <- read.csv(file = "8Results/M_calida_Same_Genus.csv",
 M_gaviniae_Same_Genus <- read.csv(file = "8Results/M_gaviniae_Same_Genus.csv", 
                                   stringsAsFactors = FALSE)
 
+#
+### Usual Relative Order ##################################################################################################################################
+M_calida_L <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", 
+                       stringsAsFactors = FALSE)
+M_gaviniae_L <- read.csv(file = "8Results/M_gaviniae_Relatives_Length.csv",
+                         stringsAsFactors = FALSE)
+
+patt_MC <- as.data.frame(unique(M_calida_L$Rela_Pattern))
+colnames(patt_MC) <- "Rel_Pattern"
+
+M_cal_patterns <- as.data.frame(matrix(nrow = 0, ncol = 0))
+for(row in 1:nrow(patt_MC)) {
+  pat <- as.data.frame(matrix(nrow = 1, ncol = 0))
+  pat <- mutate(pat,
+                Relative_Pattern = patt_MC$Rel_Pattern[row],
+                Number = length(which(M_calida_L$Rela_Pattern == patt_MC$Rel_Pattern[row])))
+  
+  M_cal_patterns <- rbind(M_cal_patterns, pat)
+}
+write.csv(x = M_cal_patterns, file = "8Results/M_calida_Relative_Pattern.csv", row.names = FALSE)
+
+patt_MG <- as.data.frame(unique(M_gaviniae_L$Rela_Pattern))
+colnames(patt_MG) <- "Rel_Pattern"
+
+M_gav_patterns <- as.data.frame(matrix(nrow = 0, ncol = 0))
+for(row in 1:nrow(patt_MG)) {
+  pat <- as.data.frame(matrix(nrow = 1, ncol = 0))
+  pat <- mutate(pat,
+                Relative_Pattern = patt_MG$Rel_Pattern[row],
+                Number = length(which(M_gaviniae_L$Rela_Pattern == patt_MG$Rel_Pattern[row])))
+  
+  M_gav_patterns <- rbind(M_gav_patterns, pat)
+}
+write.csv(x = M_gav_patterns, file = "8Results/M_gaviniae_Relative_Pattern.csv", row.names = FALSE)
 #
 ### Kittens ###############################################################################################################################################
 showmekittens()
