@@ -1074,21 +1074,13 @@ M_calida_sdist_L <- read.csv(file = "8Results/M_calida_Sort_Dist_L.csv",
 M_gaviniae_sdist_L <- read.csv(file = "8Results/M_gaviniae_Sort_Dist_L.csv",
                                stringsAsFactors = FALSE)
 
-ctrl <- gam.control(nthreads = 3, trace = TRUE)                                       # Control for GAM
+ctrl <- gam.control(nthreads = 3, trace = TRUE)                           # Control for GAM
 
-### Closest relative vs gene length ###
 M_calida_L <- mutate(M_calida_L,
                      Gene = as.factor(Gene),
                      Rela_Pattern = as.factor(Rela_Pattern),
                      Results_Other = as.factor(Results_Other),
                      ROther_Num = as.integer(Results_Other) - 1)
-
-CR_GL <- gam(list(ROther_Num ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean)),
-             data = M_calida_L, family = multinom(K=7))
-
-layout(matrix(1:4, ncol = 2, byrow = TRUE))
-gam.check(CR_GL)
-draw(CR_GL)
 
 M_gaviniae_L <- mutate(M_gaviniae_L,
                        Gene = as.factor(Gene),
@@ -1096,12 +1088,49 @@ M_gaviniae_L <- mutate(M_gaviniae_L,
                        Results_Other = as.factor(Results_Other),
                        ROther_Num = as.integer(Results_Other) - 1)
 
+### Closest relative vs gene length ###
+CR_GLc <- gam(list(ROther_Num ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean)),
+             data = M_calida_L, family = multinom(K=7))                   # Model to determine if mean gene length has an affect on closest relative result
+
+saveRDS(CR_GLc, file = "10Models/MC_Clos_Rel.rds")                        # Saves the model
+
+layout(matrix(1:4, ncol = 2, byrow = TRUE))
+gam.check(CR_GLc)
+draw(CR_GLc)
+
 CR_GLg <- gam(list(ROther_Num ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean)),
               data = M_gaviniae_L, family = multinom(K=7))
+
+saveRDS(CR_GLg, file = "10Models/MG_Clos_Rel.rds")                        # Saves the model
 
 layout(matrix(1:4, ncol = 2, byrow = TRUE))
 gam.check(CR_GLg)
 draw(CR_GLg)
+
+## Predictions ##
+M_cal_pred <- expand.grid(CR_Results = 0:7,
+                          Gene_Length = seq(156, 4221, by = 4))
+
+PA_gam_predict <- data.frame(Year1 = 1886:2018)                                       # Create new dataset for predictions
+PA_gam_predict <- mutate(PA_gam_predict,                                              # Add numeric year, date (Year), and decimal date columns
+                         Year1 = as.numeric(Year1),
+                         Year = as.Date(paste(Year1, 1, 1, sep = "-")),
+                         DecDate = decimal_date(Year))
+PA_gam_predict <- cbind(PA_gam_predict, predict(PA_gam, newdata = PA_gam_predict, 
+                                                se = TRUE))
+PA_gam_predict <- mutate(PA_gam_predict,
+                         upper = fit + se.fit * 1.96,
+                         lower = fit - se.fit * 1.96)
+
+ggplot(PA_annual_mtemps, aes(x = Year1, y = Mean)) +
+  geom_point(colour = "black") +
+  geom_line(colour = "black") +
+  geom_ribbon(aes(ymin = lower, ymax = upper, x = Year1), inherit.aes = FALSE, 
+              data = PA_gam_predict, alpha = 0.2) +
+  geom_line(aes(y = fit, x = Year1), inherit.aes = FALSE, data = PA_gam_predict, 
+            colour = "orangered3", size = 3) +
+  labs(x = "Year", y = "Annual Mean Temperature (\u00B0C)") +
+  geom_hline(aes(yintercept = 0))
 
 ### Relative pattern vs gene length ###
 
