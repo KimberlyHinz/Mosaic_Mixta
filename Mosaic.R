@@ -1080,17 +1080,22 @@ M_calida_L <- mutate(M_calida_L,
                      Gene = as.factor(Gene),
                      Rela_Pattern = as.factor(Rela_Pattern),
                      Results_Other = as.factor(Results_Other),
-                     ROther_Num = as.integer(Results_Other) - 1)
+                     ROther_Num = as.integer(Results_Other) - 1,
+                     RP_Num = as.integer(Rela_Pattern) - 1)
 
 M_gaviniae_L <- mutate(M_gaviniae_L,
                        Gene = as.factor(Gene),
                        Rela_Pattern = as.factor(Rela_Pattern),
                        Results_Other = as.factor(Results_Other),
-                       ROther_Num = as.integer(Results_Other) - 1)
+                       ROther_Num = as.integer(Results_Other) - 1,
+                       RP_Num = as.integer(Rela_Pattern) - 1)
 
 ### Closest relative vs gene length ###
+CR_GLc <- readRDS("10Models/MC_Clos_Rel.rds")
+CR_GLg <- readRDS("10Models/MG_Clos_Rel.rds")
+
 CR_GLc <- gam(list(ROther_Num ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean)),
-             data = M_calida_L, family = multinom(K=7))                   # Model to determine if mean gene length has an affect on closest relative result
+              data = M_calida_L, family = multinom(K=7))                  # Model to determine if mean gene length has an affect on closest relative result
 
 saveRDS(CR_GLc, file = "10Models/MC_Clos_Rel.rds")                        # Saves the model
 
@@ -1108,74 +1113,152 @@ gam.check(CR_GLg)
 draw(CR_GLg)
 
 ## Predictions ##
-M_cal_pred <- expand.grid(CR_Results = 0:7,
-                          Gene_Length = seq(156, 4221, by = 4))
+M_cal_pred <- data.frame(Mean = 156:4221)
 
-PA_gam_predict <- data.frame(Year1 = 1886:2018)                                       # Create new dataset for predictions
-PA_gam_predict <- mutate(PA_gam_predict,                                              # Add numeric year, date (Year), and decimal date columns
-                         Year1 = as.numeric(Year1),
-                         Year = as.Date(paste(Year1, 1, 1, sep = "-")),
-                         DecDate = decimal_date(Year))
-PA_gam_predict <- cbind(PA_gam_predict, predict(PA_gam, newdata = PA_gam_predict, 
-                                                se = TRUE))
-PA_gam_predict <- mutate(PA_gam_predict,
-                         upper = fit + se.fit * 1.96,
-                         lower = fit - se.fit * 1.96)
+M_cal_pred <- cbind(M_cal_pred, predict(CR_GLc, newdata = M_cal_pred, se = TRUE, type = "response"))
+colnames(M_cal_pred)[2:17] <- c("Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", "Erwinia_tasmaniensis", "Pantoea_agglomerans", 
+                                "Pantoea_septica", "Tatumella_ptyseos", "Tatumella_saanichensis", 
+                                "CF_SE", "EC_SE", "EA_SE", "ET_SE", "PA_SE", "PS_SE", "TP_SE", "TS_SE")
 
-ggplot(PA_annual_mtemps, aes(x = Year1, y = Mean)) +
-  geom_point(colour = "black") +
-  geom_line(colour = "black") +
-  geom_ribbon(aes(ymin = lower, ymax = upper, x = Year1), inherit.aes = FALSE, 
-              data = PA_gam_predict, alpha = 0.2) +
-  geom_line(aes(y = fit, x = Year1), inherit.aes = FALSE, data = PA_gam_predict, 
-            colour = "orangered3", size = 3) +
-  labs(x = "Year", y = "Annual Mean Temperature (\u00B0C)") +
-  geom_hline(aes(yintercept = 0))
+tidy_MC <- subset(M_cal_pred, select = Mean:Tatumella_saanichensis)
+tidy_MC <- tidy_MC %>%
+  pivot_longer(cols = Citrobacter_freundii:Tatumella_saanichensis,
+               names_to = "Species", values_to = "Fit")
 
-### Relative pattern vs gene length ###
+tidy_MC_se <- subset(M_cal_pred, select = CF_SE:TS_SE)
+tidy_MC_se$Mean <- M_cal_pred$Mean
+tidy_MC_se <- tidy_MC_se %>%
+  pivot_longer(cols = CF_SE:TS_SE,
+               names_to = "Species", values_to = "Fit_SE")
+
+unique(tidy_MC$Mean == tidy_MC_se$Mean)
+
+M_cal_pred <- cbind(tidy_MC, subset(tidy_MC_se, select = Fit_SE))
+rm(tidy_MC, tidy_MC_se)
+
+M_cal_pred <- mutate(M_cal_pred,
+                     upper = Fit + (Fit_SE * 1.96),
+                     lower = Fit - (Fit_SE * 1.96))
+
+MC_pred <- ggplot(M_cal_pred, aes(x = Mean, y = Fit, colour = Species)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper, x = Mean), inherit.aes = FALSE, 
+              data = M_cal_pred, alpha = 0.2) +
+  geom_line() +
+  scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1"))) +
+  theme(legend.position = "bottom", text = element_text(size = 9)) +
+  labs(x = "Gene Length Mean", y = "Probability", 
+       colour = "Species")
+
+ggsave(MC_pred, file = "9_1Plots_calida/MC_CR_pred.png", 
+       width = 16.51, height = 12.38, units = "cm")
+
+
+M_gav_pred <- data.frame(Mean = 156:4221)
+
+M_gav_pred <- cbind(M_gav_pred, predict(CR_GLg, newdata = M_gav_pred, se = TRUE, type = "response"))
+colnames(M_gav_pred)[2:17] <- c("Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", "Erwinia_tasmaniensis", "Pantoea_agglomerans", 
+                                "Pantoea_septica", "Tatumella_ptyseos", "Tatumella_saanichensis", 
+                                "CF_SE", "EC_SE", "EA_SE", "ET_SE", "PA_SE", "PS_SE", "TP_SE", "TS_SE")
+
+tidy_MG <- subset(M_gav_pred, select = Mean:Tatumella_saanichensis)
+tidy_MG <- tidy_MG %>%
+  pivot_longer(cols = Citrobacter_freundii:Tatumella_saanichensis,
+               names_to = "Species", values_to = "Fit")
+
+tidy_MG_se <- subset(M_gav_pred, select = CF_SE:TS_SE)
+tidy_MG_se$Mean <- M_gav_pred$Mean
+tidy_MG_se <- tidy_MG_se %>%
+  pivot_longer(cols = CF_SE:TS_SE,
+               names_to = "Species", values_to = "Fit_SE")
+
+unique(tidy_MG$Mean == tidy_MG_se$Mean)
+
+M_gav_pred <- cbind(tidy_MG, subset(tidy_MG_se, select = Fit_SE))
+rm(tidy_MG, tidy_MG_se)
+
+M_gav_pred <- mutate(M_gav_pred,
+                     upper = Fit + (Fit_SE * 1.96),
+                     lower = Fit - (Fit_SE * 1.96))
+
+MG_pred <- ggplot(M_gav_pred, aes(x = Mean, y = Fit, colour = Species)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper, x = Mean), inherit.aes = FALSE, 
+              data = M_gav_pred, alpha = 0.2) +
+  geom_line() +
+  scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1"))) +
+  theme(legend.position = "bottom", text = element_text(size = 9)) +
+  labs(x = "Gene Length Mean", y = "Probability", 
+       colour = "Species")
+
+ggsave(MG_pred, file = "9_2Plots_gaviniae/MG_CR_pred.png", 
+       width = 16.51, height = 12.38, units = "cm")
 
 ### Distances vs gene length ###
+D_GLc <- readRDS("10Models/MC_Distance.rds")
+D_GLg <- readRDS("10Models/MG_Distance.rds")
 
-D_GL <- bam(Distance ~ s(Gene_Length, k = 12),
-            data = M_calida_sdist_L, method = "fREML", control = ctrl, family = gaussian(), discrete = TRUE)
+M_cal_DGL <- subset(M_calida_sdist_L, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
+                                                     "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
+                                                     "Tatumella_ptyseos"))
+D_GLc <- bam(Distance ~ s(Gene_Length, k = 42),
+                 data = M_cal_DGL, method = "fREML", control = ctrl, family = tw(link = "log"), discrete = TRUE)
 
-D_GL_2 <- bam(Distance ~ s(Gene_Length, k = 12),
-              data = M_calida_sdist_L, method = "fREML", control = ctrl, family = scat(), discrete = TRUE)
-
-D_GL_3 <- bam(Distance ~ s(Gene_Length, k = 12),
-              data = M_calida_sdist_L, method = "fREML", control = ctrl, family = poisson(link = "log"), discrete = TRUE)
-
-D_GL_4 <- bam(Distance ~ s(Gene_Length, k = 12),
-              data = M_calida_sdist_L, method = "fREML", control = ctrl, family = gaussian(), discrete = TRUE)
-
-AIC(D_GL, D_GL_2, D_GL_3, D_GL_4)
-
-test <- subset(M_calida_sdist_L, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
-                                                "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
-                                                "Tatumella_ptyseos"))
-D2_GL <- bam(Distance ~ s(Gene_Length, k = 12),
-             data = test, method = "fREML", control = ctrl, family = gaussian(), discrete = TRUE)
-D2_GL_1_2 <- bam(Distance ~ s(Gene_Length, k = 12),
-                 data = test, method = "fREML", control = ctrl, family = gaussian(link = "log"), discrete = TRUE)
-
-D2_GL_2 <- bam(Distance ~ s(Gene_Length, k = 12),
-               data = test, method = "fREML", control = ctrl, family = scat(), discrete = TRUE)
-D2_GL_2_2 <- bam(Distance ~ s(Gene_Length, k = 12),
-                 data = test, method = "fREML", control = ctrl, family = scat(link = "log"), discrete = TRUE)
-
-D2_GL_3 <- bam(Distance ~ s(Gene_Length, k = 12),
-               data = test, method = "fREML", control = ctrl, family = Gamma(link = "identity"), discrete = TRUE)
-
-D2_GL_3_2 <- bam(Distance ~ s(Gene_Length, k = 12),
-                 data = test, method = "fREML", control = ctrl, family = Gamma(link = "log"), discrete = TRUE)
-AIC(D2_GL, D2_GL_1_2, D2_GL_2, D2_GL_2_2, D2_GL_3, D2_GL_3_2)
-
-
+saveRDS(D_GLc, file = "10Models/MC_Distance.rds")                         # Saves the model
 
 layout(matrix(1:4, ncol = 2, byrow = TRUE))
-gam.check(D2_GL_2_2)
-plot(D2_GL_2_2, pages = 1, se = FALSE, scale = 0, scheme = 2)
-draw(D2_GL_2_2)
+gam.check(D_GLc)
+draw(D_GLc)
+
+M_gav_DGL <- subset(M_gaviniae_sdist_L, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
+                                                       "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
+                                                       "Tatumella_ptyseos"))
+
+D_GLg <- bam(Distance ~ s(Gene_Length, k = 42),
+             data = M_gav_DGL, method = "fREML", control = ctrl, family = tw(link = "log"), discrete = TRUE)
+
+saveRDS(D_GLg, file = "10Models/MG_Distance.rds")                         # Saves the model
+
+layout(matrix(1:4, ncol = 2, byrow = TRUE))
+gam.check(D_GLg)
+draw(D_GLg)
+
+## Predictions ##
+M_cal_pred <- data.frame(Gene_Length = 150:4224)
+
+M_cal_pred <- cbind(M_cal_pred, predict(D_GLc, newdata = M_cal_pred, se = TRUE, type = "response"))
+
+M_cal_pred <- mutate(M_cal_pred,
+                     upper = fit + (se.fit * 1.96),
+                     lower = fit - (se.fit * 1.96))
+
+MC_pred <- ggplot(M_cal_pred, aes(x = Gene_Length, y = fit)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper, x = Gene_Length), inherit.aes = FALSE, 
+              data = M_cal_pred, alpha = 0.2) +
+  geom_line() +
+  theme(legend.position = "bottom", text = element_text(size = 9)) +
+  labs(x = "Gene Length", y = "Distance")
+
+ggsave(MC_pred, file = "9_1Plots_calida/MC_DGL_pred.png", 
+       width = 16.51, height = 12.38, units = "cm")
+
+
+M_gav_pred <- data.frame(Gene_Length = 150:4224)
+
+M_gav_pred <- cbind(M_gav_pred, predict(D_GLg, newdata = M_gav_pred, se = TRUE, type = "response"))
+
+M_gav_pred <- mutate(M_gav_pred,
+                     upper = fit + (se.fit * 1.96),
+                     lower = fit - (se.fit * 1.96))
+
+MG_pred <- ggplot(M_gav_pred, aes(x = Gene_Length, y = fit)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper, x = Gene_Length), inherit.aes = FALSE, 
+              data = M_gav_pred, alpha = 0.2) +
+  geom_line() +
+  theme(legend.position = "bottom", text = element_text(size = 9)) +
+  labs(x = "Gene Length", y = "Distance")
+
+ggsave(MG_pred, file = "9_2Plots_gaviniae/MG_DGL_pred.png", 
+       width = 16.51, height = 12.38, units = "cm")
+
 #
 ### Significant First Relative ############################################################################################################################
 M_calida_sdist <- read.csv(file = "8Results/M_calida_Sort_Dist.csv",
