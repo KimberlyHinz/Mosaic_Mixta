@@ -609,7 +609,7 @@ write.csv(x = M_calida_dist, file = "8Results/M_calida_Distances.csv",    # Save
 write.csv(x = M_gaviniae_dist, file = "8Results/M_gaviniae_Distances.csv", 
           row.names = FALSE)
 
-### Distance plot #########################################################################################################################################
+### Sort distances ########################################################################################################################################
 M_calida_dist <- read.csv(file = "8Results/M_calida_Distances.csv", 
                           stringsAsFactors = FALSE)                       # Read in M. calida's distances
 M_gaviniae_dist <- read.csv(file = "8Results/M_gaviniae_Distances.csv", 
@@ -691,9 +691,11 @@ png("9_1Plots_calida/MC_Full_dist.png", width = 2000, height = 1200)
 ggplot(data = M_cal1, aes(x = ID, y = DistanceN)) +                       # Full plot
   geom_point(aes(colour = M_cal1$Species), size = 2, alpha = 0.75) +
   geom_line(aes(colour = M_cal1$Species), linetype = "dotted") +
-  scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1"))) +
-  theme(legend.position = "bottom", text = element_text(size = 36)) +
-  labs(x = "M. calida Gene ID", y = "Distance from M. calida", 
+  scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+                      labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
+                                 "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
+  theme(legend.position = "bottom", text = element_text(size = 36), legend.text = element_text(face = "italic")) +
+  labs(x = expression(paste(italic("M. calida"), " Gene ID")), y = expression(paste("Negative Distance from ", italic("M. calida"))), 
        colour = "Species") +
   scale_x_continuous(limits = c(-50, 4134), expand = c(0, 0)) +
   scale_y_continuous(limits = c(-4.0, 0.1), expand = c(0, 0))
@@ -702,11 +704,17 @@ dev.off()
 # Separated into 8 groups
 dist_plot <- function(dtst, beg, end) {                                   # Function for the 8 distance plots (8 segments of the full plot)
   ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
-    geom_point(aes(colour = dtst$Species), size = 1.5, alpha = 0.75) +
-    geom_line(aes(colour = dtst$Species), linetype = "dotted") +
-    scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1"))) +
-    theme(legend.position = "bottom", text = element_text(size = 9)) +
-    labs(x = "M. calida Gene ID", y = "Distance from M. calida", 
+    geom_point(aes(colour = dtst$Species), 
+               size = 1.5, alpha = 0.75) +
+    geom_line(aes(colour = dtst$Species), 
+              linetype = "dotted") +
+    scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+                        labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
+                                   "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
+    theme(legend.position = "bottom", text = element_text(size = 9), 
+          legend.text = element_text(face = "italic")) +
+    labs(x = expression(paste(italic("M. calida"), " Gene ID")), 
+         y = expression(paste("Negative Distance from ", italic("M. calida"))), 
          colour = "Species") +
     scale_x_continuous(breaks = round(seq(min(dtst$ID), max(dtst$ID), by = 100), -2),
                        limits = c(beg - 10, end + 10), expand = c(0, 0)) +
@@ -733,10 +741,15 @@ M_cal2 <- rbind(M_cal2, extra_genes)
 
 dist_plot_one <- function(dtst, beg, end) {                               # Function for the next 8 plots that show only distances < 1
   ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
-    geom_point(aes(colour = dtst$Species), size = 1.5, alpha = 0.75) +
-    scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1"))) +
-    theme(legend.position = "bottom", text = element_text(size = 9)) +
-    labs(x = "M. calida Gene ID", y = "Distance from M. calida", 
+    geom_point(aes(colour = dtst$Species), 
+               size = 1.5, alpha = 0.75) +
+    scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+                        labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
+                                   "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
+    theme(legend.position = "bottom", text = element_text(size = 9), 
+          legend.text = element_text(face = "italic")) +
+    labs(x = expression(paste(italic("M. calida"), " Gene ID")),
+         y = expression(paste("Negative Distance from ", italic("M. calida"))), 
          colour = "Species") +
     scale_x_continuous(breaks = round(seq(min(dtst$ID), max(dtst$ID), by = 100), -2),
                        limits = c(beg - 10, end + 10), expand = c(0, 0)) +
@@ -771,17 +784,45 @@ M_gav1 <- rbind(M_gav1, extra_genes)
 
 png("9_2Plots_gaviniae/MG_Full_dist.png", width = 2000, height = 1200)
 ggplot(data = M_gav1, aes(x = ID, y = DistanceN)) +                       # Full plot
-  geom_point(aes(colour = M_gav1$Species), size = 2, alpha = 0.75) +
-  geom_line(aes(colour = M_gav1$Species), linetype = "dotted") +
-  scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1"))) +
-  theme(legend.position = "bottom", text = element_text(size = 36)) +
-  labs(x = "M. gaviniae Gene ID", y = "Distance from M. gaviniae", 
+  geom_point(aes(colour = M_gav1$Species), 
+             size = 2, alpha = 0.75) +
+  geom_line(aes(colour = M_gav1$Species), 
+            linetype = "dotted") +
+  scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+                      labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
+                                 "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
+  theme(legend.position = "bottom", text = element_text(size = 36),
+        legend.text = element_text(face = "italic")) +
+  labs(x = expression(paste(italic("M. gaviniae"), " Gene ID")),
+       y = expression(paste("Negative Distance from ", italic("M. gaviniae"))), 
        colour = "Species") +
   scale_x_continuous(limits = c(-50, 4305), expand = c(0, 0)) +
   scale_y_continuous(limits = c(-4.0, 0.1), expand = c(0, 0))
 dev.off()
 
 # Separated into 8 groups
+dist_plot <- function(dtst, beg, end) {                                   # Function for the 8 distance plots (8 segments of the full plot)
+  ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
+    geom_point(aes(colour = dtst$Species), 
+               size = 1.5, alpha = 0.75) +
+    geom_line(aes(colour = dtst$Species), 
+              linetype = "dotted") +
+    scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+                        labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
+                                   "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
+    theme(legend.position = "bottom", text = element_text(size = 9),
+          legend.text = element_text(face = "italic")) +
+    labs(x = expression(paste(italic("M. gaviniae"), " Gene ID")),
+         y = expression(paste("Negative Distance from ", italic("M. gaviniae"))), 
+         colour = "Species") +
+    scale_x_continuous(breaks = round(seq(min(dtst$ID), max(dtst$ID), by = 100), -2),
+                       limits = c(beg - 10, end + 10), expand = c(0, 0)) +
+    scale_y_continuous(limits = c(-5.11, 0.1), expand = c(0, 0)) +
+    geom_errorbar(aes(ymin = DistanceN - Std_Errors, 
+                      ymax = DistanceN + Std_Errors, colour = Species), 
+                  width = 0.2, position = position_dodge(0.05))
+}
+
 gene_num <- as.data.frame(matrix(ncol = 0, nrow = 8))                     # To separate the dataset into 8 segments of equal length on the genome
 gene_num <- mutate(gene_num,
                    beg = c(1, 532, 1064, 1596, 2128, 2660, 3192, 3724),
@@ -794,6 +835,25 @@ for(row in 1:nrow(gene_num)) {                                            # Crea
 }
 
 # Separated into 8 groups and distances no greater than 1
+dist_plot_one <- function(dtst, beg, end) {                               # Function for the next 8 plots that show only distances < 1
+  ggplot(data = dtst, aes(x = ID, y = DistanceN)) +
+    geom_point(aes(colour = dtst$Species), size = 1.5, alpha = 0.75) +
+    scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+                        labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
+                                   "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
+    theme(legend.position = "bottom", text = element_text(size = 9),
+          legend.text = element_text(face = "italic")) +
+    labs(x = expression(paste(italic("M. gaviniae"), " Gene ID")),
+         y = expression(paste("Negative Distance from ", italic("M. gaviniae"))), 
+         colour = "Species") +
+    scale_x_continuous(breaks = round(seq(min(dtst$ID), max(dtst$ID), by = 100), -2),
+                       limits = c(beg - 10, end + 10), expand = c(0, 0)) +
+    scale_y_continuous(limits = c(-1.25, 0.05), expand = c(0, 0)) +
+    geom_errorbar(aes(ymin = DistanceN - Std_Errors, 
+                      ymax = DistanceN + Std_Errors, colour = Species), 
+                  width = 0.2, position = position_dodge(0.05))
+}
+
 M_gav2 <- subset(M_gav1, DistanceN > -1)
 M_gav2 <- rbind(M_gav2, extra_genes)
 
@@ -803,7 +863,7 @@ for(row in 1:nrow(gene_num)) {                                            # Crea
          width = 16.51, height = 12.38, units = "cm")
 }
 
-### Circular plot #########################################################################################################################################
+### Circular plots ########################################################################################################################################
 ### Mixta calida ###
 M_calida <- read.csv(file = "8Results/M_calida_Relatives.csv",            # Reads in the M. calida relative results
                      stringsAsFactors = FALSE)
@@ -870,13 +930,16 @@ M_gaviniae <- rbind(M_gaviniae, extra_genes)                              # Comb
 png("9_1Plots_calida/MC_categ_results.png", width = 1000, height = 725)
 ggplot(data = M_calida, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results_Number, fill = Results_Other)) +
   geom_rect() +
-  scale_fill_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1"))) +
+  scale_fill_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+                    labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
+                               "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
   coord_polar() +
   scale_y_continuous(limits = c(0, 10)) +
   theme(legend.position = "right", text = element_text(size = 20), 
         axis.title.y = element_blank(), 
         axis.text.y = element_blank(), 
-        axis.ticks.y = element_blank()) +
+        axis.ticks.y = element_blank(),
+        legend.text = element_text(face = "italic")) +
   labs(fill = "Species")
 dev.off()
 
@@ -884,13 +947,16 @@ dev.off()
 png("9_2Plots_gaviniae/MG_categ_results.png", width = 1000, height = 725)
 ggplot(data = M_gaviniae, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results_Number, fill = Results_Other)) +
   geom_rect() +
-  scale_fill_manual(values = alpha(c("red", "orange", "green3", "darkgreen", "dodgerblue2", "blue3", "darkorchid", "violetred1"))) +
+  scale_fill_manual(values = alpha(c("red", "orange", "green3", "darkgreen", "dodgerblue2", "blue3", "darkorchid", "violetred1")),
+                    labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
+                               "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
   coord_polar() +
   scale_y_continuous(limits = c(0, 10)) +
   theme(legend.position = "right", text = element_text(size = 20), 
         axis.title.y = element_blank(), 
         axis.text.y = element_blank(), 
-        axis.ticks.y = element_blank()) +
+        axis.ticks.y = element_blank(),
+        legend.text = element_text(face = "italic")) +
   labs(fill = "Species")
 dev.off()
 
@@ -1200,7 +1266,7 @@ M_cal_DGL <- subset(M_calida_sdist_L, Species %in% c("Tatumella_saanichensis", "
                                                      "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
                                                      "Tatumella_ptyseos"))
 D_GLc <- bam(Distance ~ s(Gene_Length, k = 42),
-                 data = M_cal_DGL, method = "fREML", control = ctrl, family = tw(link = "log"), discrete = TRUE)
+             data = M_cal_DGL, method = "fREML", control = ctrl, family = tw(link = "log"), discrete = TRUE)
 
 saveRDS(D_GLc, file = "10Models/MC_Distance.rds")                         # Saves the model
 
@@ -1440,18 +1506,64 @@ write.csv(x = M_gaviniae_same_gen, file = "8Results/M_gaviniae_Same_Genus.csv", 
 ### Plots ###
 M_calida_S_sig <- read.csv(file = "8Results/M_calida_Species_Sig.csv", 
                            stringsAsFactors = FALSE)
-M_gaviniae_S_sig <- read.csv(file = "8Results/M_gaviniae_Species_Sig.csv", 
-                             stringsAsFactors = FALSE)
 M_calida_G_sig <- read.csv(file = "8Results/M_calida_Genus_Sig.csv", 
                            stringsAsFactors = FALSE)
+
+M_gaviniae_S_sig <- read.csv(file = "8Results/M_gaviniae_Species_Sig.csv", 
+                             stringsAsFactors = FALSE)
 M_gaviniae_G_sig <- read.csv(file = "8Results/M_gaviniae_Genus_Sig.csv", 
                              stringsAsFactors = FALSE)
+
 M_calida_Same_Genus <- read.csv(file = "8Results/M_calida_Same_Genus.csv", 
                                 stringsAsFactors = FALSE)
 M_gaviniae_Same_Genus <- read.csv(file = "8Results/M_gaviniae_Same_Genus.csv", 
                                   stringsAsFactors = FALSE)
 
-#
+
+unique(M_calida_S_sig$Gene_name %in% M_calida_G_sig$Gene_name) # If returns just TRUE, continue
+unique(M_gaviniae_S_sig$Gene_name %in% M_gaviniae_G_sig$Gene_name)
+
+M_cal_dist <- read.csv(file = "8Results/M_calida_Sort_Dist.csv", stringsAsFactors = FALSE)
+
+
+
+M_cal_dist$check <- case_when(
+  M_cal_dist$Gene %in% M_calida_G_sig$Gene_name ~ TRUE,
+  TRUE ~ FALSE
+)
+M_cal_dist <- subset(M_cal_dist, check == TRUE, select = ID:Std_Errors)
+M_cal_dist <- subset(M_cal_dist, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
+                                                "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
+                                                "Tatumella_ptyseos"))     # Removes the Mixta species since they are most likely ~ 0
+M_cal_dist <- mutate(M_cal_dist,
+                     DistanceN = Distance * -1,
+                     Both = case_when(
+                       M_cal_dist$Gene %in% M_calida_S_sig$Gene_name ~ TRUE,
+                       TRUE ~ FALSE
+                     ),
+                     upper = DistanceN + (Std_Errors * 1.96),
+                     lower = DistanceN - (Std_Errors * 1.96))
+
+Mcal_sig <- ggplot(data = M_cal_dist, aes(x = ID, y = DistanceN)) +
+  geom_point(aes(colour = Species), 
+             size = 1.5, alpha = 0.75) +
+  scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+                      labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
+                                 "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
+  theme(legend.position = "bottom", text = element_text(size = 9), 
+        legend.text = element_text(face = "italic")) +
+  labs(x = expression(paste(italic("M. calida"), " Gene ID")), 
+       y = expression(paste("Negative Distance from ", italic("M. calida"))), 
+       colour = "Species") +
+  scale_x_continuous(breaks = round(seq(min(M_cal_dist$ID), max(M_cal_dist$ID), by = 100), -2),
+                     limits = c(15, 4017), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-5.7, 0.1), expand = c(0, 0)) +
+  geom_errorbar(aes(ymin = lower, ymax = upper, colour = Species), 
+                width = 0.2, position = position_dodge(0.05)); Mcal_sig
+
+ggsave(plot, file = paste("9_1Plots_calida/MC_dist_", row, "_8.png", sep = ""), 
+       width = 16.51, height = 12.38, units = "cm")
+# dtst
 ### Usual Relative Order ##################################################################################################################################
 M_calida_L <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", 
                        stringsAsFactors = FALSE)
