@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 5
 bibliography: References.bib
-csl: nature-genetics.csl
+#csl: nature-genetics.csl
 ---
 ## To be removed header
 A Thesis
