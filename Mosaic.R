@@ -1569,37 +1569,52 @@ M_cal_dist <- mutate(M_cal_dist,
 
 # M_cal_dist <- subset(M_cal_dist, Distance <= 1)
 
-Mcal_sig <- 
-  ggplot(data = M_cal_dist, aes(x = ID, y = DistanceN)) +
-  geom_point(aes(colour = Species), show.legend = TRUE) +
-  geom_errorbar(aes(ymin = lower, ymax = upper, colour = Species), width = 0.2, position = position_dodge(0.05)) +
-  scale_colour_manual("Species",
-                      values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
-                      labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis",
-                                 "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
-  theme(legend.position = "bottom", text = element_text(size = 9),
-        legend.text = element_text(face = "italic")) +
-  labs(x = expression(paste(italic("M. calida"), " Gene ID")),
-       y = expression(paste("Negative Distance from ", italic("M. calida")))) +
-  scale_x_continuous(breaks = round(seq(min(M_cal_dist$ID), max(M_cal_dist$ID), by = 1000), -2),
-                     limits = c(0, 4032), expand = c(0, 0)) +
-  scale_y_continuous(limits = c(-1.2, 0.1), expand = c(0, 0)) +
-  geom_bar(data = M_cal_dist, aes(x = ID, y = 0.0125, fill = Both), stat = "identity", inherit.aes = FALSE); Mcal_sig
-# scale_fill_manual("Sig. Genus and Species", values = rep(1, 2), guide = guide_legend(override.aes = list(fill = c("black", "pink"), colour = c("black", "pink"))))
+Mcal_sig <- ggplot(data = M_cal_dist, aes(x = ID, y = DistanceN)) +
+  # geom_point(aes(colour = Species), show.legend = TRUE) +
+  # geom_errorbar(aes(ymin = lower, ymax = upper, colour = Species), width = 0.2, position = position_dodge(0.05)) +
+  # scale_colour_manual("Species",
+  #                     values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+  #                     labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis",
+  #                                "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
+  # theme(legend.position = "bottom", text = element_text(size = 9),
+  #       legend.text = element_text(face = "italic")) +
+  # labs(x = expression(paste(italic("M. calida"), " Gene ID")),
+  #      y = expression(paste("Negative Distance from ", italic("M. calida")))) +
+  # scale_x_continuous(breaks = round(seq(min(M_cal_dist$ID), max(M_cal_dist$ID), by = 1000), -2),
+  #                    limits = c(0, 4032), expand = c(0, 0)) +
+  # scale_y_continuous(limits = c(-5.7, 0.1), expand = c(0, 0)) +
+  geom_bar(data = test, aes(x = ID, y = rnorm, fill = Both), stat = "identity", inherit.aes = FALSE); Mcal_sig
+  # scale_fill_manual("Sig. Genus and Species", values = rep(1, 2), guide = guide_legend(override.aes = list(fill = c("black", "pink"), colour = c("black", "pink"))))
 #
 
-test <- as.data.frame(matrix(ncol = 0, nrow = 0))
+test <- as.data.frame(matrix(ncol = 0, nrow = 153))
 test <- mutate(test,
-               ID = unique(M_caldist))
+               ID = unique(M_cal_dist$ID),
+               Gene = unique(M_cal_dist$Gene))
+
+unique(M_calida_G_sig$Gene_name == test$Gene) # If TRUE, then continue
+
+test <- mutate(test,
+               Sig_Species = case_when(
+                 test$Gene %in% M_calida_S_sig$Gene_name ~ TRUE,
+                 TRUE ~ FALSE
+               ),
+               Sig_Genus = case_when(
+                 test$Gene %in% M_calida_G_sig$Gene_name ~ TRUE,
+                 TRUE ~ FALSE
+               ))
+
+test <- mutate(test,
+               Both = case_when(
+                 test$Sig_Species == test$Sig_Genus ~ "Both",
+                 TRUE ~ "Genus Only"
+               ))
+
+test$rnorm <- rnorm(n = 153, mean = 5, sd = 1)
 
 
-
-
-
-
-
-ggsave(Mcal_sig, file = "9_1Plots_calida/MC_dist_sigSG.png", 
-       width = 16.51, height = 12.38, units = "cm")
+# ggsave(Mcal_sig, file = "9_1Plots_calida/MC_dist_sigSG.png", 
+#        width = 16.51, height = 12.38, units = "cm")
 
 
 
