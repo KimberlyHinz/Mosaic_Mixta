@@ -1347,7 +1347,7 @@ M_calida_sdist <- subset(M_calida_sdist,
 
 M_calida_sdist <- mutate(M_calida_sdist,
                          lower_conf = M_calida_sdist$Distance - (M_calida_sdist$Std_Errors * 1.96),
-                         upper_cong = M_calida_sdist$Distance + (M_calida_sdist$Std_Errors * 1.96))
+                         upper_conf = M_calida_sdist$Distance + (M_calida_sdist$Std_Errors * 1.96))
 
 
 M_gaviniae_sdist <- read.csv(file = "8Results/M_gaviniae_Sort_Dist.csv",
@@ -1359,176 +1359,92 @@ M_gaviniae_sdist <- subset(M_gaviniae_sdist,
                                           "Tatumella_ptyseos"))           # Remove Mixta species
 
 M_gaviniae_sdist <- mutate(M_gaviniae_sdist,
-                         lower_conf = M_gaviniae_sdist$Distance - (M_gaviniae_sdist$Std_Errors * 1.96),
-                         upper_cong = M_gaviniae_sdist$Distance + (M_gaviniae_sdist$Std_Errors * 1.96))
+                           lower_conf = M_gaviniae_sdist$Distance - (M_gaviniae_sdist$Std_Errors * 1.96),
+                           upper_conf = M_gaviniae_sdist$Distance + (M_gaviniae_sdist$Std_Errors * 1.96))
 
 
 uniq_gene <- as.data.frame(unique(M_calida_sdist$Gene))                   # Dataframe with the 1035 gene names
 colnames(uniq_gene) <- "Gene_name"
 
-### Significant genes by species ###
+### Significant genes by species and genus ###
 # M. calida #
 sig_genes <- as.data.frame(matrix(ncol = 0, nrow = 0))
-for(row in nrow(uniq_gene)) {
-  gene <- subset(M_calida_sdist, Gene == uniq_gene$Gene_name[1])
+for(row in 1:nrow(uniq_gene)) {
+  gene <- subset(M_calida_sdist, Gene == uniq_gene$Gene_name[row])
   
   x <- Rfast::nth(x = gene$Distance, k = 1, descending = FALSE, index.return = TRUE)
   y <- Rfast::nth(x = gene$Distance, k = 2, descending = FALSE, index.return = TRUE)
   z <- Rfast::nth(x = gene$Distance, k = 3, descending = FALSE, index.return = TRUE)
   
-  sig <- as.data.frame(matrix(ncol = 0, nrow = 0))
-  sig <- mutatet(sig,
-                 Gene_name = uniq_gene$Gene_name[row])
-}
-#
-
-
-sig_genes <- as.data.frame(matrix(nrow = 0, ncol = 0))
-for(row in 1:nrow(uniq_gene)) {                                           # First relative's distance is significantly different from next species
-  gene <- subset(M_calida_sdist, Gene == uniq_gene$Gene_name[row])
+  genus_check <- case_when(
+    x %in% c(1, 8) & y %in% c(1, 8) ~ TRUE,                               # Tatumella
+    x %in% c(6, 7) & y %in% c(6, 7) ~ TRUE,                               # Pantoea
+    x %in% c(4, 5) & y %in% c(4, 5) ~ TRUE,                               # Erwinia
+    TRUE ~ FALSE
+  )
   
-  x <- Rfast::nth(x = gene$Distance, k = 1, descending = FALSE,           # First relative
-                  index.return = TRUE)
-  y <- Rfast::nth(x = gene$Distance, k = 2, descending = FALSE,           # Second relative
-                  index.return = TRUE)
-  
-  sig <- as.data.frame(matrix(nrow = 1, ncol = 0))
-  sig <- mutate(sig,                                                      # Creates a dataframe with gene names and if significantly different
+  sig <- as.data.frame(matrix(ncol = 0, nrow = 1))
+  sig <- mutate(sig,
                 Gene_name = uniq_gene$Gene_name[row],
-                Check = case_when(
-                  gene$Max_ConfInt[x] < gene$Min_ConfInt[y] ~ TRUE,       # Distances are significantly different
-                  TRUE ~ FALSE                                            # Distances are not significantly different
+                First_Species = case_when(
+                  gene$upper_conf[x] < gene$lower_conf[y] ~ TRUE,
+                  TRUE ~ FALSE
+                ),
+                Two_Same_Genus = genus_check,
+                First_Genus = case_when(
+                  genus_check == TRUE ~ case_when(                        # If first two are same genus, compare second and third relatives
+                    gene$upper_conf[y] < gene$lower_conf[z] ~ TRUE,       # Distances are significantly different
+                    TRUE ~ FALSE                                          # Distances are not significantly different
+                  ),
+                  genus_check == FALSE ~ FALSE                            # Don't bother comparing since the first two relatives aren't the same genus
                 ))
   
   sig_genes <- rbind(sig_genes, sig)
 }
-rm(gene, sig, row, x, y)
+rm(gene, sig, genus_check, row, x, y, z)
 
-Mcalida_spp_sig_genes <- subset(sig_genes, Check == TRUE,
-                                select = Gene_name)                       # Subset for significantly different distances, keep only gene names
-
-write.csv(x = Mcalida_spp_sig_genes, file = "8Results/M_calida_Species_Sig.csv", 
+write.csv(x = sig_genes, file = "8Results/M_calida_Sig_Rel.csv",
           row.names = FALSE)
+
 
 # M.gaviniae #
-sig_genes <- as.data.frame(matrix(nrow = 0, ncol = 0))
-for(row in 1:nrow(uniq_gene)) {                                           # First relative's distance is significantly different from next species
+sig_genes <- as.data.frame(matrix(ncol = 0, nrow = 0))
+for(row in 1:nrow(uniq_gene)) {
   gene <- subset(M_gaviniae_sdist, Gene == uniq_gene$Gene_name[row])
   
-  x <- Rfast::nth(x = gene$Distance, k = 1, descending = FALSE,           # First relative
-                  index.return = TRUE)
-  y <- Rfast::nth(x = gene$Distance, k = 2, descending = FALSE,           # Second relative
-                  index.return = TRUE)
+  x <- Rfast::nth(x = gene$Distance, k = 1, descending = FALSE, index.return = TRUE)
+  y <- Rfast::nth(x = gene$Distance, k = 2, descending = FALSE, index.return = TRUE)
+  z <- Rfast::nth(x = gene$Distance, k = 3, descending = FALSE, index.return = TRUE)
   
-  sig <- as.data.frame(matrix(nrow = 1, ncol = 0))
-  sig <- mutate(sig,                                                      # Creates a dataframe with gene names and if significantly different
+  genus_check <- case_when(
+    x %in% c(1, 8) & y %in% c(1, 8) ~ TRUE,                               # Tatumella
+    x %in% c(6, 7) & y %in% c(6, 7) ~ TRUE,                               # Pantoea
+    x %in% c(4, 5) & y %in% c(4, 5) ~ TRUE,                               # Erwinia
+    TRUE ~ FALSE
+  )
+  
+  sig <- as.data.frame(matrix(ncol = 0, nrow = 1))
+  sig <- mutate(sig,
                 Gene_name = uniq_gene$Gene_name[row],
-                Check = case_when(
-                  gene$Max_ConfInt[x] < gene$Min_ConfInt[y] ~ TRUE,       # Distances are significantly different
-                  TRUE ~ FALSE                                            # Distances are not significantly different
-                ))
-  
-  sig_genes <- rbind(sig_genes, sig)
-}
-rm(gene, sig, row, x, y)
-
-Mgaviniae_spp_sig_genes <- subset(sig_genes, Check == TRUE, 
-                                  select = Gene_name)                     # Subset for significantly different distances, keep only gene names
-
-write.csv(x = Mgaviniae_spp_sig_genes, file = "8Results/M_gaviniae_Species_Sig.csv", 
-          row.names = FALSE)
-
-### Significant genes by genus ###
-# M. calida #
-sig_genes <- as.data.frame(matrix(nrow = 0, ncol = 0))
-for(row in 1:nrow(uniq_gene)) {                                           # First relative's distance is significantly different from next genus
-  gene <- subset(M_calida_sdist, Gene == uniq_gene$Gene_name[row])
-  
-  x <- Rfast::nth(x = gene$Distance, k = 1, descending = FALSE,           # First relative
-                  index.return = TRUE)
-  y <- Rfast::nth(x = gene$Distance, k = 2, descending = FALSE,           # Second relative
-                  index.return = TRUE)
-  z <- Rfast::nth(x = gene$Distance, k = 3, descending = FALSE,           # Third relative
-                  index.return = TRUE)
-  
-  genus_check <- case_when(
-    x %in% c(1, 8) & y %in% c(1, 8) ~ TRUE,                               # Tatumella
-    x %in% c(6, 7) & y %in% c(6, 7) ~ TRUE,                               # Pantoea
-    x %in% c(4, 5) & y %in% c(4, 5) ~ TRUE,                               # Erwinia
-    TRUE ~ FALSE
-  )
-  
-  sig <- as.data.frame(matrix(nrow = 1, ncol = 0))
-  sig <- mutate(sig,                                                      # Creates a dataframe with gene names, if first two are same genus, and if 
-                Gene_name = uniq_gene$Gene_name[row],                     # significantly different
-                Same_Genus = genus_check,
-                Check = case_when(
-                  genus_check == TRUE ~ case_when(                        # If first two are same genus, compare first and third relatives
-                    gene$Max_ConfInt[x] < gene$Min_ConfInt[z] ~ TRUE,     # Distances are significantly different
+                First_Species = case_when(
+                  gene$upper_conf[x] < gene$lower_conf[y] ~ TRUE,
+                  TRUE ~ FALSE
+                ),
+                Two_Same_Genus = genus_check,
+                First_Genus = case_when(
+                  genus_check == TRUE ~ case_when(                        # If first two are same genus, compare second and third relatives
+                    gene$upper_conf[y] < gene$lower_conf[z] ~ TRUE,       # Distances are significantly different
                     TRUE ~ FALSE                                          # Distances are not significantly different
                   ),
-                  genus_check == FALSE ~ case_when(                       # If first two are not in the same genus, compare first and second relatives
-                    gene$Max_ConfInt[x] < gene$Min_ConfInt[y] ~ TRUE,     # Distances are significantly different
-                    TRUE ~ FALSE                                          # Distances are not significantly different
-                  )
+                  genus_check == FALSE ~ FALSE                            # Don't bother comparing since the first two relatives aren't the same genus
                 ))
   
   sig_genes <- rbind(sig_genes, sig)
 }
-rm(gene, sig, row, genus_check, x, y, z)
+rm(gene, sig, genus_check, row, x, y, z)
 
-M_calida_gen_sig <- subset(sig_genes, Check == TRUE, select = Gene_name)  # Subset for significantly different distances, keep only gene names
-write.csv(x = M_calida_gen_sig, file = "8Results/M_calida_Genus_Sig.csv", 
+write.csv(x = sig_genes, file = "8Results/M_gaviniae_Sig_Rel.csv",
           row.names = FALSE)
-
-M_calida_same_gen <- subset(sig_genes, select = Gene_name:Same_Genus)     # Keep gene names and whether the first two relatives are from the same genus
-write.csv(x = M_calida_same_gen, file = "8Results/M_calida_Same_Genus.csv", 
-          row.names = FALSE)
-
-# M. gaviniae #
-sig_genes <- as.data.frame(matrix(nrow = 0, ncol = 0))
-for(row in 1:nrow(uniq_gene)) {                                           # First relative's distance is significantly different from next genus
-  gene <- subset(M_gaviniae_sdist, Gene == uniq_gene$Gene_name[row])
-  
-  x <- Rfast::nth(x = gene$Distance, k = 1, descending = FALSE,           # First relative
-                  index.return = TRUE)
-  y <- Rfast::nth(x = gene$Distance, k = 2, descending = FALSE,           # Second relative
-                  index.return = TRUE)
-  z <- Rfast::nth(x = gene$Distance, k = 3, descending = FALSE,           # Third relative
-                  index.return = TRUE)
-  
-  genus_check <- case_when(
-    x %in% c(1, 8) & y %in% c(1, 8) ~ TRUE,                               # Tatumella
-    x %in% c(6, 7) & y %in% c(6, 7) ~ TRUE,                               # Pantoea
-    x %in% c(4, 5) & y %in% c(4, 5) ~ TRUE,                               # Erwinia
-    TRUE ~ FALSE
-  )
-  
-  sig <- as.data.frame(matrix(nrow = 1, ncol = 0))
-  sig <- mutate(sig,                                                      # Creates a dataframe with gene names, if first two are same genus, and if 
-                Gene_name = uniq_gene$Gene_name[row],                     # significantly different
-                Same_Genus = genus_check,
-                Check = case_when(
-                  genus_check == TRUE ~ case_when(                        # If first two are same genus, compare first and third relatives
-                    gene$Max_ConfInt[x] < gene$Min_ConfInt[z] ~ TRUE,     # Distances are significantly different
-                    TRUE ~ FALSE                                          # Distances are not significantly different
-                  ),
-                  genus_check == FALSE ~ case_when(                       # If first two are not in the same genus, compare first and second relatives
-                    gene$Max_ConfInt[x] < gene$Min_ConfInt[y] ~ TRUE,     # Distances are significantly different
-                    TRUE ~ FALSE                                          # Distances are not significantly different
-                  )
-                ))
-  
-  sig_genes <- rbind(sig_genes, sig)
-}
-rm(gene, sig, row, genus_check, x, y, z)
-
-M_gaviniae_gen_sig <- subset(sig_genes, Check == TRUE, 
-                             select = Gene_name)                          # Subset for significantly different distances, keep only gene names
-write.csv(x = M_gaviniae_gen_sig, file = "8Results/M_gaviniae_Genus_Sig.csv", row.names = FALSE)
-
-M_gaviniae_same_gen <- subset(sig_genes, select = Gene_name:Same_Genus)   # Keep gene names and whether the first two relatives are from the same genus
-write.csv(x = M_gaviniae_same_gen, file = "8Results/M_gaviniae_Same_Genus.csv", row.names = FALSE)
 
 # No longer doing plots
 ### Usual Relative Order ##################################################################################################################################
@@ -1564,6 +1480,71 @@ for(row in 1:nrow(patt_MG)) {
   M_gav_patterns <- rbind(M_gav_patterns, pat)
 }
 write.csv(x = M_gav_patterns, file = "8Results/M_gaviniae_Relative_Pattern.csv", row.names = FALSE)
+#
+### General gene names ####################################################################################################################################
+M_cal <- read.csv(file = "8Results/M_calida_Distances.csv", stringsAsFactors = FALSE)
+M_cal <- subset(M_cal, select = ID:Gene)
+
+M_cal$Gene_name <- substring(M_cal$Gene, 7)
+
+### Let's retrieve gene nucleotide numbers
+fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
+                                       pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
+colnames(fastaFiles) <- "File_name"                                       # Changes the column name
+fastaFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/", 
+                              fastaFiles$File_name, sep = "")             # Creates a file pathway for each gene
+
+fastaFiles <- mutate(fastaFiles,
+                     Gene = gsub(pattern = ".fasta", replacement = "", x = fastaFiles$File_name),
+                     Check = case_when(
+                       Gene %in% M_cal$Gene ~ TRUE,
+                       TRUE ~ FALSE
+                     ))
+
+fastaFiles <- subset(fastaFiles, Check == TRUE, select = File_name:Gene)
+
+nucl_calida <- as.data.frame(matrix(ncol = 0, nrow = 0))
+for(row in 1:nrow(fastaFiles)) {
+  calida <- as.data.frame(matrix(ncol = 0, nrow = 1))
+  
+  path <- fastaFiles$Path_name[row]
+  file <- as.character(fastaFiles$File_name[row])
+  
+  gene_file <- read.table(file = path, header = FALSE, sep = "\n", stringsAsFactors = FALSE)
+  
+  calida <- gene_file[11, ]
+  colnames(calida) <- "nucleotides"
+  
+  #calida <- substring(calida, first = 110, last = 130)
+  
+  nucl_calida <- rbind(nucl_calida, calida)
+}
+
+
+
+
+ID_calida <- as.data.frame(matrix(ncol = 2, nrow = 0))
+ID_gaviniae <- as.data.frame(matrix(ncol = 2, nrow = 0))
+for(row in 1:nrow(fastaFiles)) {                                          # Lets pass genes that meet requirements
+  path <- fastaFiles$Path_name[row]
+  file <- as.character(fastaFiles$File_name[row])
+  gene_file <- read.table(file = path, header = FALSE, sep = "\n", 
+                          stringsAsFactors = FALSE)                       # Reads in the gene file according to the pathway, separation is newline
+  
+  calida <- gene_file[11, ]                                               # Get M. calida info row
+  calida <- gsub(pattern = "\\|.*", replacement = "", x = calida)         # Remove everything after the "|" symbol
+  calida <- gsub(pattern = ">ID:MLHGDOMH_", replacement = "", x = calida) # Remove the ID code
+  calida <- cbind(file, calida)                                           # Combine file name with ID
+  ID_calida <- rbind(ID_calida, calida)                                   # Combine everything
+  
+  gaviniae <- gene_file[13, ]                                             # Get M. gaviniae info row
+  gaviniae <- gsub(pattern = "\\|.*", replacement = "", x = gaviniae)     # Remove everything after the "|" symbol
+  gaviniae <- gsub(pattern = ">ID:MHMNNPCM_", replacement = "", 
+                   x = gaviniae)                                          # Remove the ID code
+  gaviniae <- cbind(file, gaviniae)                                       # Combine file name with ID
+  ID_gaviniae <- rbind(ID_gaviniae, gaviniae)                             # Combine everything
+}
+rm(calida, gaviniae, gene_file, file, path, row)
 #
 ### Kittens ###############################################################################################################################################
 showmekittens()
