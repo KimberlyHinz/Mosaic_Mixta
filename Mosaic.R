@@ -1338,34 +1338,51 @@ ggsave(MG_pred, file = "9_2Plots_gaviniae/MG_DGL_pred.png",
 #
 ### Significant First Relative ############################################################################################################################
 M_calida_sdist <- read.csv(file = "8Results/M_calida_Sort_Dist.csv",
-                           stringsAsFactors = FALSE)    
-M_calida_sdist$Min_ConfInt <- M_calida_sdist$Distance - 
-  (M_calida_sdist$Std_Errors * 1.96)                                      # Lower confidence interval
-M_calida_sdist$Max_ConfInt <- M_calida_sdist$Distance + 
-  (M_calida_sdist$Std_Errors * 1.96)                                      # Upper confidence interval
+                           stringsAsFactors = FALSE)
 
 M_calida_sdist <- subset(M_calida_sdist, 
                          Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
                                         "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
                                         "Tatumella_ptyseos"))             # Remove Mixta species
 
+M_calida_sdist <- mutate(M_calida_sdist,
+                         lower_conf = M_calida_sdist$Distance - (M_calida_sdist$Std_Errors * 1.96),
+                         upper_cong = M_calida_sdist$Distance + (M_calida_sdist$Std_Errors * 1.96))
+
+
 M_gaviniae_sdist <- read.csv(file = "8Results/M_gaviniae_Sort_Dist.csv",
                              stringsAsFactors = FALSE)
-M_gaviniae_sdist$Min_ConfInt <- M_gaviniae_sdist$Distance - 
-  (M_gaviniae_sdist$Std_Errors * 1.96)                                    # Lower confidence interval
-M_gaviniae_sdist$Max_ConfInt <- M_gaviniae_sdist$Distance + 
-  (M_gaviniae_sdist$Std_Errors * 1.96)                                    # Upper confidence interval
 
 M_gaviniae_sdist <- subset(M_gaviniae_sdist, 
                            Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
                                           "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
                                           "Tatumella_ptyseos"))           # Remove Mixta species
 
+M_gaviniae_sdist <- mutate(M_gaviniae_sdist,
+                         lower_conf = M_gaviniae_sdist$Distance - (M_gaviniae_sdist$Std_Errors * 1.96),
+                         upper_cong = M_gaviniae_sdist$Distance + (M_gaviniae_sdist$Std_Errors * 1.96))
+
+
 uniq_gene <- as.data.frame(unique(M_calida_sdist$Gene))                   # Dataframe with the 1035 gene names
 colnames(uniq_gene) <- "Gene_name"
 
 ### Significant genes by species ###
 # M. calida #
+sig_genes <- as.data.frame(matrix(ncol = 0, nrow = 0))
+for(row in nrow(uniq_gene)) {
+  gene <- subset(M_calida_sdist, Gene == uniq_gene$Gene_name[1])
+  
+  x <- Rfast::nth(x = gene$Distance, k = 1, descending = FALSE, index.return = TRUE)
+  y <- Rfast::nth(x = gene$Distance, k = 2, descending = FALSE, index.return = TRUE)
+  z <- Rfast::nth(x = gene$Distance, k = 3, descending = FALSE, index.return = TRUE)
+  
+  sig <- as.data.frame(matrix(ncol = 0, nrow = 0))
+  sig <- mutatet(sig,
+                 Gene_name = uniq_gene$Gene_name[row])
+}
+#
+
+
 sig_genes <- as.data.frame(matrix(nrow = 0, ncol = 0))
 for(row in 1:nrow(uniq_gene)) {                                           # First relative's distance is significantly different from next species
   gene <- subset(M_calida_sdist, Gene == uniq_gene$Gene_name[row])
@@ -1513,150 +1530,7 @@ write.csv(x = M_gaviniae_gen_sig, file = "8Results/M_gaviniae_Genus_Sig.csv", ro
 M_gaviniae_same_gen <- subset(sig_genes, select = Gene_name:Same_Genus)   # Keep gene names and whether the first two relatives are from the same genus
 write.csv(x = M_gaviniae_same_gen, file = "8Results/M_gaviniae_Same_Genus.csv", row.names = FALSE)
 
-### Plots ###
-M_calida_S_sig <- read.csv(file = "8Results/M_calida_Species_Sig.csv", 
-                           stringsAsFactors = FALSE)
-M_calida_G_sig <- read.csv(file = "8Results/M_calida_Genus_Sig.csv", 
-                           stringsAsFactors = FALSE)
-M_calida_Same_Genus <- read.csv(file = "8Results/M_calida_Same_Genus.csv", 
-                                stringsAsFactors = FALSE)
-M_calida_Same_Genus <- subset(M_calida_Same_Genus, Same_Genus == TRUE)
-
-
-M_gaviniae_S_sig <- read.csv(file = "8Results/M_gaviniae_Species_Sig.csv", 
-                             stringsAsFactors = FALSE)
-M_gaviniae_G_sig <- read.csv(file = "8Results/M_gaviniae_Genus_Sig.csv", 
-                             stringsAsFactors = FALSE)
-M_gaviniae_Same_Genus <- read.csv(file = "8Results/M_gaviniae_Same_Genus.csv", 
-                                  stringsAsFactors = FALSE)
-M_gaviniae_Same_Genus <- subset(M_gaviniae_Same_Genus, Same_Genus == TRUE)
-
-
-M_cal_dist <- read.csv(file = "8Results/M_calida_Sort_Dist.csv", stringsAsFactors = FALSE)
-
-M_cal_dist <- subset(M_cal_dist, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
-                                                "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
-                                                "Tatumella_ptyseos"))     # Removes the Mixta species since they are most likely ~ 0
-
-M_cal_dist <- mutate(M_cal_dist,
-                     Sig_Species = case_when(
-                       M_cal_dist$Gene %in% M_calida_S_sig$Gene_name ~ TRUE,
-                       TRUE ~ FALSE
-                     ),
-                     Sig_Genus = case_when(
-                       M_cal_dist$Gene %in% M_calida_G_sig$Gene_name ~ TRUE,
-                       TRUE ~ FALSE
-                     ),
-                     spp_gen_check = case_when(
-                       Sig_Species == TRUE & Sig_Genus == TRUE ~ 1,
-                       Sig_Species == TRUE & Sig_Genus == FALSE ~ 2,
-                       Sig_Species == FALSE & Sig_Genus == TRUE ~ 3,
-                       TRUE ~ 4
-                     ))
-
-length(which(M_cal_dist$spp_gen_check == 0)) == 0 # If TRUE, then continue
-
-M_cal_dist <- subset(M_cal_dist, spp_gen_check %in% c(1, 3), select = ID:Sig_Genus)
-
-M_cal_dist <- mutate(M_cal_dist,
-                     DistanceN = Distance * -1,
-                     Both = case_when(
-                       M_cal_dist$Sig_Species == M_cal_dist$Sig_Genus ~ "Both",
-                       TRUE ~ "Genus Only"
-                     ),
-                     upper = DistanceN + (Std_Errors * 1.96),
-                     lower = DistanceN - (Std_Errors * 1.96))
-
-# M_cal_dist <- subset(M_cal_dist, Distance <= 1)
-
-Mcal_sig <- ggplot(data = M_cal_dist, aes(x = ID, y = DistanceN)) +
-  # geom_point(aes(colour = Species), show.legend = TRUE) +
-  # geom_errorbar(aes(ymin = lower, ymax = upper, colour = Species), width = 0.2, position = position_dodge(0.05)) +
-  # scale_colour_manual("Species",
-  #                     values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
-  #                     labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis",
-  #                                "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
-  # theme(legend.position = "bottom", text = element_text(size = 9),
-  #       legend.text = element_text(face = "italic")) +
-  # labs(x = expression(paste(italic("M. calida"), " Gene ID")),
-  #      y = expression(paste("Negative Distance from ", italic("M. calida")))) +
-  # scale_x_continuous(breaks = round(seq(min(M_cal_dist$ID), max(M_cal_dist$ID), by = 1000), -2),
-  #                    limits = c(0, 4032), expand = c(0, 0)) +
-  # scale_y_continuous(limits = c(-5.7, 0.1), expand = c(0, 0)) +
-  geom_bar(data = test, aes(x = ID, y = rnorm, fill = Both), stat = "identity", inherit.aes = FALSE); Mcal_sig
-  # scale_fill_manual("Sig. Genus and Species", values = rep(1, 2), guide = guide_legend(override.aes = list(fill = c("black", "pink"), colour = c("black", "pink"))))
-#
-
-test <- as.data.frame(matrix(ncol = 0, nrow = 153))
-test <- mutate(test,
-               ID = unique(M_cal_dist$ID),
-               Gene = unique(M_cal_dist$Gene))
-
-unique(M_calida_G_sig$Gene_name == test$Gene) # If TRUE, then continue
-
-test <- mutate(test,
-               Sig_Species = case_when(
-                 test$Gene %in% M_calida_S_sig$Gene_name ~ TRUE,
-                 TRUE ~ FALSE
-               ),
-               Sig_Genus = case_when(
-                 test$Gene %in% M_calida_G_sig$Gene_name ~ TRUE,
-                 TRUE ~ FALSE
-               ))
-
-test <- mutate(test,
-               Both = case_when(
-                 test$Sig_Species == test$Sig_Genus ~ "Both",
-                 TRUE ~ "Genus Only"
-               ))
-
-test$rnorm <- rnorm(n = 153, mean = 5, sd = 1)
-
-
-# ggsave(Mcal_sig, file = "9_1Plots_calida/MC_dist_sigSG.png", 
-#        width = 16.51, height = 12.38, units = "cm")
-
-
-
-
-
-
-
-M_gav_dist <- read.csv(file = "8Results/M_gaviniae_Sort_Dist.csv", stringsAsFactors = FALSE)
-
-M_gav_dist <- subset(M_gav_dist, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
-                                                "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
-                                                "Tatumella_ptyseos"))     # Removes the Mixta species since they are most likely ~ 0
-
-M_gav_dist <- mutate(M_gav_dist,
-                     Sig_Species = case_when(
-                       M_gav_dist$Gene %in% M_gaviniae_S_sig$Gene_name ~ TRUE,
-                       TRUE ~ FALSE
-                     ),
-                     Sig_Genus = case_when(
-                       M_gav_dist$Gene %in% M_gaviniae_G_sig$Gene_name ~ TRUE,
-                       TRUE ~ FALSE
-                     ),
-                     spp_gen_check = case_when(
-                       Sig_Species == TRUE & Sig_Genus == TRUE ~ 1,
-                       Sig_Species == TRUE & Sig_Genus == FALSE ~ 2,
-                       Sig_Species == FALSE & Sig_Genus == TRUE ~ 3,
-                       TRUE ~ 4
-                     ))
-
-length(which(M_gav_dist$spp_gen_check == 0)) == 0 # If TRUE, then continue
-
-M_gav_dist <- subset(M_gav_dist, spp_gen_check %in% c(1, 3), select = ID:Sig_Genus)
-
-M_gav_dist <- mutate(M_gav_dist,
-                     DistanceN = Distance * -1,
-                     Both = case_when(
-                       M_gav_dist$Sig_Species == M_gav_dist$Sig_Genus ~ "Both",
-                       TRUE ~ "Genus Only"
-                     ),
-                     upper = DistanceN + (Std_Errors * 1.96),
-                     lower = DistanceN - (Std_Errors * 1.96))
-# dtst
+# No longer doing plots
 ### Usual Relative Order ##################################################################################################################################
 M_calida_L <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", 
                        stringsAsFactors = FALSE)
