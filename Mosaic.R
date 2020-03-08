@@ -1481,13 +1481,13 @@ for(row in 1:nrow(patt_MG)) {
 }
 write.csv(x = M_gav_patterns, file = "8Results/M_gaviniae_Relative_Pattern.csv", row.names = FALSE)
 #
-### General gene names ####################################################################################################################################
+### Nucleotide numbers ####################################################################################################################################
+### Mixta calida ###
 M_cal <- read.csv(file = "8Results/M_calida_Distances.csv", stringsAsFactors = FALSE)
 M_cal <- subset(M_cal, select = ID:Gene)
 
 M_cal$Gene_name <- substring(M_cal$Gene, 7)
 
-### Let's retrieve gene nucleotide numbers
 fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
                                        pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
 colnames(fastaFiles) <- "File_name"                                       # Changes the column name
@@ -1505,50 +1505,149 @@ fastaFiles <- subset(fastaFiles, Check == TRUE, select = File_name:Gene)
 
 nucl_calida <- as.data.frame(matrix(ncol = 0, nrow = 0))
 for(row in 1:nrow(fastaFiles)) {
-  calida <- as.data.frame(matrix(ncol = 0, nrow = 1))
-  
   path <- fastaFiles$Path_name[row]
   file <- as.character(fastaFiles$File_name[row])
   
   gene_file <- read.table(file = path, header = FALSE, sep = "\n", stringsAsFactors = FALSE)
   
-  calida <- gene_file[11, ]
+  calida <- as.data.frame(gene_file[11, ])
   colnames(calida) <- "nucleotides"
   
-  #calida <- substring(calida, first = 110, last = 130)
+  calida$gene <- fastaFiles$Gene[row]
   
   nucl_calida <- rbind(nucl_calida, calida)
 }
+rm(gene_file, calida, file, path, row)
+
+nucl_calida$ID <- M_cal$ID
+nucl_calida$nucleotides <- as.character(nucl_calida$nucleotides)
+
+nucl_calida <- separate(data = nucl_calida, col = nucleotides, into = paste("V", 1:8, sep = ""), sep = ":", remove = FALSE, extra = "merge")
+nucl_calida <- subset(nucl_calida, select = c(nucleotides, V3, gene, ID))
+
+nucl_calida <- separate(data = nucl_calida, col = V3, into = c("Beg", "End"), sep = "-", remove = TRUE)
+nucl_calida <- mutate(nucl_calida, 
+                      Beg = as.numeric(Beg),
+                      End = as.numeric(End))
+
+nucl_calida <- nucl_calida[order(nucl_calida$ID),]
+
+nucl_calida <- subset(nucl_calida, select = Beg:ID)
+
+write.csv(x = nucl_calida, file = "8Results/M_calida_Nucleotide.csv", row.names = FALSE)
 
 
+### Mixta gaviniae ###
+M_gav <- read.csv(file = "8Results/M_gaviniae_Distances.csv", stringsAsFactors = FALSE)
+M_gav <- subset(M_gav, select = ID:Gene)
 
+M_gav$Gene_name <- substring(M_gav$Gene, 7)
 
-ID_calida <- as.data.frame(matrix(ncol = 2, nrow = 0))
-ID_gaviniae <- as.data.frame(matrix(ncol = 2, nrow = 0))
-for(row in 1:nrow(fastaFiles)) {                                          # Lets pass genes that meet requirements
+fastaFiles <- as.data.frame(list.files(path = "3Homologues_10/",
+                                       pattern = ".fasta"))               # Makes a dataframe where the first column is a list of fasta gene files
+colnames(fastaFiles) <- "File_name"                                       # Changes the column name
+fastaFiles$Path_name <- paste("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/3Homologues_10/", 
+                              fastaFiles$File_name, sep = "")             # Creates a file pathway for each gene
+
+fastaFiles <- mutate(fastaFiles,
+                     Gene = gsub(pattern = ".fasta", replacement = "", x = fastaFiles$File_name),
+                     Check = case_when(
+                       Gene %in% M_gav$Gene ~ TRUE,
+                       TRUE ~ FALSE
+                     ))
+
+fastaFiles <- subset(fastaFiles, Check == TRUE, select = File_name:Gene)
+
+nucl_gaviniae <- as.data.frame(matrix(ncol = 0, nrow = 0))
+for(row in 1:nrow(fastaFiles)) {
   path <- fastaFiles$Path_name[row]
   file <- as.character(fastaFiles$File_name[row])
-  gene_file <- read.table(file = path, header = FALSE, sep = "\n", 
-                          stringsAsFactors = FALSE)                       # Reads in the gene file according to the pathway, separation is newline
   
-  calida <- gene_file[11, ]                                               # Get M. calida info row
-  calida <- gsub(pattern = "\\|.*", replacement = "", x = calida)         # Remove everything after the "|" symbol
-  calida <- gsub(pattern = ">ID:MLHGDOMH_", replacement = "", x = calida) # Remove the ID code
-  calida <- cbind(file, calida)                                           # Combine file name with ID
-  ID_calida <- rbind(ID_calida, calida)                                   # Combine everything
+  gene_file <- read.table(file = path, header = FALSE, sep = "\n", stringsAsFactors = FALSE)
   
-  gaviniae <- gene_file[13, ]                                             # Get M. gaviniae info row
-  gaviniae <- gsub(pattern = "\\|.*", replacement = "", x = gaviniae)     # Remove everything after the "|" symbol
-  gaviniae <- gsub(pattern = ">ID:MHMNNPCM_", replacement = "", 
-                   x = gaviniae)                                          # Remove the ID code
-  gaviniae <- cbind(file, gaviniae)                                       # Combine file name with ID
-  ID_gaviniae <- rbind(ID_gaviniae, gaviniae)                             # Combine everything
+  gaviniae <- as.data.frame(gene_file[11, ])
+  colnames(gaviniae) <- "nucleotides"
+  
+  gaviniae$gene <- fastaFiles$Gene[row]
+  
+  nucl_gaviniae <- rbind(nucl_gaviniae, gaviniae)
 }
-rm(calida, gaviniae, gene_file, file, path, row)
+rm(gene_file, gaviniae, file, path, row)
+
+nucl_gaviniae$ID <- M_gav$ID
+nucl_gaviniae$nucleotides <- as.character(nucl_gaviniae$nucleotides)
+
+nucl_gaviniae <- separate(data = nucl_gaviniae, col = nucleotides, into = paste("V", 1:8, sep = ""), sep = ":", remove = FALSE, extra = "merge")
+nucl_gaviniae <- subset(nucl_gaviniae, select = c(nucleotides, V3, gene, ID))
+
+nucl_gaviniae <- separate(data = nucl_gaviniae, col = V3, into = c("Beg", "End"), sep = "-", remove = TRUE)
+nucl_gaviniae <- mutate(nucl_gaviniae, 
+                      Beg = as.numeric(Beg),
+                      End = as.numeric(End))
+
+nucl_gaviniae <- nucl_gaviniae[order(nucl_gaviniae$ID),]
+
+nucl_gaviniae <- subset(nucl_gaviniae, select = Beg:ID)
+
+write.csv(x = nucl_gaviniae, file = "8Results/M_gaviniae_Nucleotide.csv", row.names = FALSE)
+#
+### Genes for MEGAX analysis ##############################################################################################################################
+M_cal <- read.csv(file = "8Results/M_calida_Distances.csv", stringsAsFactors = FALSE)
+M_cal <- subset(M_cal, select = ID:Gene)
+
+rlvnt_cal <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", stringsAsFactors = FALSE)
+rlvnt_cal <- subset(rlvnt_cal, select = c(Gene, Mean, Rela_Pattern))
+
+unique(M_cal$Gene == rlvnt_cal$Gene) # If TRUE, then continue
+rlvnt_cal$ID <- M_cal$ID
+
+nucl_calida <- read.csv(file = "8Results/M_calida_Nucleotide.csv", stringsAsFactors = FALSE)
+nucl_calida$Gene_name <- substring(nucl_calida$gene, 7)
+
+rel_genes1 <- data.frame(gene = c("38003_rsmG", "38735_rsmJ", "39935_rsmD", "38555_rsmB", 
+                                  "39397_rsmA", "39418_rsmH", 
+                                  
+                                  "40004_rpsL", "40005_rpsG", "38586_rpsJ", "38581_rpsS", 
+                                  "38579_rpsC", "38576_rpsQ", "38572_rpsN", "38571_rpsH", 
+                                  "38568_rpsE", "38561_rpsD", "38441_rpsI", "38498_rpsO", 
+                                  "37935_rpsB", "38812_rpsA", "40035_rpsP", "37746_rpsU", 
+                                  "37893_rpsR", "37891_rpsF",
+                                  
+                                  "38585_rplC", "38584_rplD", "38583_rplW", "38582_rplB",
+                                  "38580_rplV", "38578_rplP", "38577_rpmC", "38575_rplN",
+                                  "38574_rplX", "38573_rplE", "38570_rplF", "38567_rpmD",
+                                  "38566_rplO", "38559_rplQ", 
+                                  
+                                  "38413_prmA", 
+                                  
+                                  "38440_rplM", "38470_rpmA", "38613_rpmF", "", 
+                                  "", "", "", "",
+                                  "", "", "", "",
+                                  "", "", "", "",
+                                  "", "", "", "",
+                                  "", "", "", "",
+                                  "", "", "", "",
+                                  "", "", "", "",
+                                  "", "", "", "",),
+                         product = c(rep("16S rRNA guanine methyltransferase", 3), "16S rRNA cytosine methyltransferase",
+                                     "16S rRNA adenine dimethyltransferase", "16S rRNA cytosine methyltransferase",
+                                     rep("30S ribosomal protein", 18), 
+                                     rep("50S ribosomal protein", 14),
+                                     "50S ribosomal protein L11 methyltransferase",
+                                     rep("50S ribosomal protein", 3), 
+                                     "", 
+                                     "", "",
+                                     "", "", 
+                                     "", "",
+                                     "", "", 
+                                     "", "",
+                                     "", "", 
+                                     "", "",
+                                     "", "", 
+                                     "", "",
+                                     "", "", 
+                                     "", "",))
+
 #
 ### Kittens ###############################################################################################################################################
 showmekittens()
-
-
-# c("Tatumella_saanichensis", "Citrobacter_freundii",	"Enterobacter_cloacae", "Erwinia_amylovora", "Erwinia_tasmaniensis", 
-#                               "Mixta_calida", "Mixta_gaviniae", "Pantoea_agglomerans", "Pantoea_septica", "Tatumella_ptyseos")
