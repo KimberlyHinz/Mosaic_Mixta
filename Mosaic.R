@@ -1582,8 +1582,8 @@ nucl_gaviniae <- subset(nucl_gaviniae, select = c(nucleotides, V3, gene, ID))
 
 nucl_gaviniae <- separate(data = nucl_gaviniae, col = V3, into = c("Beg", "End"), sep = "-", remove = TRUE)
 nucl_gaviniae <- mutate(nucl_gaviniae, 
-                      Beg = as.numeric(Beg),
-                      End = as.numeric(End))
+                        Beg = as.numeric(Beg),
+                        End = as.numeric(End))
 
 nucl_gaviniae <- nucl_gaviniae[order(nucl_gaviniae$ID),]
 
@@ -1595,58 +1595,97 @@ write.csv(x = nucl_gaviniae, file = "8Results/M_gaviniae_Nucleotide.csv", row.na
 M_cal <- read.csv(file = "8Results/M_calida_Distances.csv", stringsAsFactors = FALSE)
 M_cal <- subset(M_cal, select = ID:Gene)
 
-rlvnt_cal <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", stringsAsFactors = FALSE)
-rlvnt_cal <- subset(rlvnt_cal, select = c(Gene, Mean, Rela_Pattern))
+M_gav <- read.csv(file = "8Results/M_gaviniae_Distances.csv", stringsAsFactors = FALSE)
+M_gav <- subset(M_gav, select = ID:Gene)
 
-unique(M_cal$Gene == rlvnt_cal$Gene) # If TRUE, then continue
-rlvnt_cal$ID <- M_cal$ID
+M_cal_RL <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", stringsAsFactors = FALSE)
+M_cal_RL <- subset(M_cal_RL, select = c(Gene, Mean, Rela_Pattern))
+
+M_gav_RL <- read.csv(file = "8Results/M_gaviniae_Relatives_Length.csv", stringsAsFactors = FALSE)
+M_gav_RL <- subset(M_gav_RL, select = c(Gene, Mean, Rela_Pattern))
+
+unique(M_cal$Gene == c(M_cal_RL$Gene, M_gav$Gene, M_gav_RL$Gene)) # If TRUE, then continue
+
+rlvnt_genes <- data.frame(matrix(ncol = 0, nrow = 1035))
+rlvnt_genes <- mutate(rlvnt_genes,
+                     Gene = M_cal$Gene,
+                     cal_ID = M_cal$ID,
+                     Mean_gene_length = M_cal_RL$Mean,
+                     cal_rel = M_cal_RL$Rela_Pattern, 
+                     gav_rel = M_gav_RL$Rela_Pattern)
+
+rm(M_cal, M_cal_RL, M_gav, M_gav_RL)
+
+rlvnt_genes$cal_rel <- substring(rlvnt_genes$cal_rel, 7)
+rlvnt_genes$gav_rel <- substring(rlvnt_genes$gav_rel, 7)
+
+rlvnt_genes$Same_rel_patt <- case_when(
+  rlvnt_genes$cal_rel == rlvnt_genes$gav_rel ~ TRUE,
+  TRUE ~ FALSE
+)
+
+# rRNA genes
+rel_rRNA_TIF <- data.frame(Gene = c("38003_rsmG", "38735_rsmJ", "39935_rsmD", 
+                                      "38555_rsmB", 
+                                      "39397_rsmA", 
+                                      "39418_rsmH", 
+                                      "40004_rpsL", "40005_rpsG", "38586_rpsJ", "38581_rpsS", "38579_rpsC", "38576_rpsQ", "38572_rpsN", "38571_rpsH", 
+                                      "38568_rpsE", "38561_rpsD", "38441_rpsI", "38498_rpsO", "37935_rpsB", "38812_rpsA", "40035_rpsP", "37746_rpsU", 
+                                      "37893_rpsR", "37891_rpsF",
+                                      "38585_rplC", "38584_rplD", "38583_rplW", "38582_rplB", "38580_rplV", "38578_rplP", "38577_rpmC", "38575_rplN",
+                                      "38574_rplX", "38573_rplE", "38570_rplF", "38567_rpmD", "38566_rplO", "38559_rplQ", 
+                                      "38413_prmA", 
+                                      "38440_rplM", "38470_rpmA", "38613_rpmF", "38895_rpmI", "38896_rplT", "40096_rplY", "37894_rplI", "40394_rplL",
+                                      "40393_rplJ", "40392_rplA", "40391_rplK", "39858_rpmE", "39815_rpmG", "39814_rpmB",
+                                      "38495_infB"),
+                             Product = c(rep("16S rRNA guanine methyltransferase", 3), 
+                                         "16S rRNA cytosine methyltransferase",
+                                         "16S rRNA adenine dimethyltransferase", 
+                                         "16S rRNA cytosine methyltransferase",
+                                         rep("30S ribosomal protein", 18), 
+                                         rep("50S ribosomal protein", 14),
+                                         "50S ribosomal protein L11 methyltransferase",
+                                         rep("50S ribosomal protein", 14),
+                                         "Translation initiation factor"))
+rel_rRNA_TIF <- rel_rRNA_TIF[order(rel_rRNA_TIF$Gene), ]
+
+rlvnt_genes$rRNA_TIF <- case_when(
+  rlvnt_genes$Gene %in% rel_rRNA_TIF$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+rlvnt_rRNA_TIF <- subset(rlvnt_genes, rRNA_TIF == TRUE, select = Gene:Same_rel_patt)
+
+unique(rlvnt_rRNA_TIF$Gene == rel_rRNA_TIF$Gene) #If TRUE, then continue
+rlvnt_rRNA_TIF$Product <- rel_rRNA_TIF$Product
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 nucl_calida <- read.csv(file = "8Results/M_calida_Nucleotide.csv", stringsAsFactors = FALSE)
 nucl_calida$Gene_name <- substring(nucl_calida$gene, 7)
-
-rel_genes1 <- data.frame(gene = c("38003_rsmG", "38735_rsmJ", "39935_rsmD", "38555_rsmB", 
-                                  "39397_rsmA", "39418_rsmH", 
-                                  
-                                  "40004_rpsL", "40005_rpsG", "38586_rpsJ", "38581_rpsS", 
-                                  "38579_rpsC", "38576_rpsQ", "38572_rpsN", "38571_rpsH", 
-                                  "38568_rpsE", "38561_rpsD", "38441_rpsI", "38498_rpsO", 
-                                  "37935_rpsB", "38812_rpsA", "40035_rpsP", "37746_rpsU", 
-                                  "37893_rpsR", "37891_rpsF",
-                                  
-                                  "38585_rplC", "38584_rplD", "38583_rplW", "38582_rplB",
-                                  "38580_rplV", "38578_rplP", "38577_rpmC", "38575_rplN",
-                                  "38574_rplX", "38573_rplE", "38570_rplF", "38567_rpmD",
-                                  "38566_rplO", "38559_rplQ", 
-                                  
-                                  "38413_prmA", 
-                                  
-                                  "38440_rplM", "38470_rpmA", "38613_rpmF", "", 
-                                  "", "", "", "",
-                                  "", "", "", "",
-                                  "", "", "", "",
-                                  "", "", "", "",
-                                  "", "", "", "",
-                                  "", "", "", "",
-                                  "", "", "", "",
-                                  "", "", "", "",),
-                         product = c(rep("16S rRNA guanine methyltransferase", 3), "16S rRNA cytosine methyltransferase",
-                                     "16S rRNA adenine dimethyltransferase", "16S rRNA cytosine methyltransferase",
-                                     rep("30S ribosomal protein", 18), 
-                                     rep("50S ribosomal protein", 14),
-                                     "50S ribosomal protein L11 methyltransferase",
-                                     rep("50S ribosomal protein", 3), 
-                                     "", 
-                                     "", "",
-                                     "", "", 
-                                     "", "",
-                                     "", "", 
-                                     "", "",
-                                     "", "", 
-                                     "", "",
-                                     "", "", 
-                                     "", "",
-                                     "", "", 
-                                     "", "",))
 
 #
 ### Kittens ###############################################################################################################################################
