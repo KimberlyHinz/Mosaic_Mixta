@@ -1618,6 +1618,8 @@ rlvnt_genes$Same_rel_patt <- case_when(
   rlvnt_genes$cal_rel == rlvnt_genes$gav_rel ~ TRUE,
   TRUE ~ FALSE
 )
+
+write.csv(x = rlvnt_genes, file = "8Results/MEGAX_Relevant_Genes.csv", row.names = FALSE)
 #
 ### MEGAX: rRNA genes #####################################################################################################################################
 rel_rRNA_TIF <- data.frame(Gene = c("38003_rsmG", "38735_rsmJ", "39935_rsmD", "38555_rsmB", "39397_rsmA", "39418_rsmH", "40004_rpsL", "40005_rpsG", 
@@ -1654,7 +1656,7 @@ BM_rRNA <- subset(BM, rRNA == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_rRNA, file = "8Results/Best_Model_rRNA-TIF.csv", row.names = FALSE)
 
-### MEGX: MLSA genes ######################################################################################################################################
+### MEGAX: MLSA genes ######################################################################################################################################
 rel_MLSA <- data.frame(Gene = c("38009_atpA", "38005_atpB", "38012_atpC", "38006_atpE", "38007_atpF", "38010_atpG", "38008_atpH", "38004_atpI", 
                                 "39382_dnaK", "39185_leuS", "38495_infB", "40044_recA", "39904_recF", "38360_recN", "38375_recO", "37521_recR", 
                                 "40043_recX", "38560_rpoA", "40395_rpoB", "40396_rpoC", "37744_rpoD", "39939_rpoH", "37484_rpoZ"),
@@ -1695,7 +1697,7 @@ BM_MLSA <- subset(BM, MLSA == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_MLSA, file = "8Results/Best_Model_MLSA.csv", row.names = FALSE)
 
-### MEGA: Genera ##########################################################################################################################################
+### MEGAX: Genera ##########################################################################################################################################
 gnr <- subset(rlvnt_genes, select = Gene:Same_rel_patt)
 gnr$first_cal <- substring(gnr$cal_rel, first = 1, last = 5)
 gnr$first_gav <- substring(gnr$gav_rel, first = 1, last = 5)
@@ -1755,29 +1757,29 @@ BM_Genera <- subset(BM, Genera == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_Genera, file = "8Results/Best_Model_Genera.csv", row.names = FALSE)
 
-### MEGA: First species is significantly different from next ##############################################################################################
-M_cal <- read.csv(file = "8Results/M_calida_Sig_Rel.csv", stringsAsFactors = FALSE)
-M_cal <- subset(M_cal, First_Species == TRUE)
-M_cal <- M_cal[order(M_cal$Gene_name), ]
+### MEGAX: First species is significantly different from next ##############################################################################################
+M_cal_SR <- read.csv(file = "8Results/M_calida_Sig_Rel.csv", stringsAsFactors = FALSE)
+M_cal_SR <- subset(M_cal_SR, First_Species == TRUE)
+M_cal_SR <- M_cal_SR[order(M_cal_SR$Gene_name), ]
 
-M_cal_rel <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", stringsAsFactors = FALSE)
-M_cal_rel <- subset(M_cal_rel, select = c(Gene, One, Two, Three, Four, Mean, Rela_Pattern))
+M_cal_RL <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", stringsAsFactors = FALSE)
+M_cal_RL <- subset(M_cal_RL, select = c(Gene, One, Two, Three, Four, Mean, Rela_Pattern))
 
-M_cal_rel$Same_Species <- case_when(
-  M_cal_rel$Gene %in% M_cal$Gene_name ~ TRUE,
+M_cal_RL$Same_Species <- case_when(
+  M_cal_RL$Gene %in% M_cal_SR$Gene_name ~ TRUE,
   TRUE ~ FALSE
 )
-M_cal_rel <- subset(M_cal_rel, Same_Species == TRUE)
-M_cal_rel$first <- substring(M_cal_rel$Three, first = 1, last = 7)
-M_cal_rel$second <- substring(M_cal_rel$Four, first = 1, last = 7)
-M_cal_rel$Same <- case_when(
-  M_cal_rel$first == M_cal_rel$second ~ TRUE,
+M_cal_RL <- subset(M_cal_RL, Same_Species == TRUE)
+M_cal_RL$first <- substring(M_cal_RL$Three, first = 1, last = 7)
+M_cal_RL$second <- substring(M_cal_RL$Four, first = 1, last = 7)
+M_cal_RL$Same <- case_when(
+  M_cal_RL$first == M_cal_RL$second ~ TRUE,
   TRUE ~ FALSE
 )
-M_cal_rel <- subset(M_cal_rel, Same == TRUE)
+M_cal_RL <- subset(M_cal_RL, Same == TRUE)
 
 rlvnt_genes$Sig_Species <- case_when(
-  rlvnt_genes$Gene %in% M_cal_rel$Gene ~ TRUE,
+  rlvnt_genes$Gene %in% M_cal_RL$Gene ~ TRUE,
   TRUE ~ FALSE
 )
 
@@ -1813,57 +1815,57 @@ write.csv(x = BM_Sig_Species, file = "8Results/Best_Model_Sig_Species_cal.csv", 
 
 
 # M. gaviniae #
-M_gav <- read.csv(file = "8Results/M_gaviniae_Sig_Rel.csv", stringsAsFactors = FALSE)
-M_gav <- subset(M_gav, First_Species == TRUE)
-M_gav <- M_gav[order(M_gav$Gene_name), ]
+M_gav_SR <- read.csv(file = "8Results/M_gaviniae_Sig_Rel.csv", stringsAsFactors = FALSE)
+M_gav_SR <- subset(M_gav_SR, First_Species == TRUE)
+M_gav_SR <- M_gav_SR[order(M_gav_SR$Gene_name), ]
 
-M_gav_rel <- read.csv(file = "8Results/M_gaviniae_Relatives_Length.csv", stringsAsFactors = FALSE)
-M_gav_rel <- subset(M_gav_rel, select = c(Gene, One, Two, Three, Four, Mean, Rela_Pattern))
+M_gav_RL <- read.csv(file = "8Results/M_gaviniae_Relatives_Length.csv", stringsAsFactors = FALSE)
+M_gav_RL <- subset(M_gav_RL, select = c(Gene, One, Two, Three, Four, Mean, Rela_Pattern))
 
-M_gav_rel$Same_Species <- case_when(
-  M_gav_rel$Gene %in% M_gav$Gene_name ~ TRUE,
+M_gav_RL$Same_Species <- case_when(
+  M_gav_RL$Gene %in% M_gav_SR$Gene_name ~ TRUE,
   TRUE ~ FALSE
 )
-M_gav_rel <- subset(M_gav_rel, Same_Species == TRUE)
+M_gav_RL <- subset(M_gav_RL, Same_Species == TRUE)
 
-M_gav_rel$first <- substring(M_gav_rel$Three, first = 1, last = 7)
-M_gav_rel$second <- substring(M_gav_rel$Four, first = 1, last = 7)
-M_gav_rel$Same <- case_when(
-  M_gav_rel$first == M_gav_rel$second ~ TRUE,
+M_gav_RL$first <- substring(M_gav_RL$Three, first = 1, last = 7)
+M_gav_RL$second <- substring(M_gav_RL$Four, first = 1, last = 7)
+M_gav_RL$Same <- case_when(
+  M_gav_RL$first == M_gav_RL$second ~ TRUE,
   TRUE ~ FALSE
 )
-M_gav_rel <- subset(M_gav_rel, Same == TRUE)
+M_gav_RL <- subset(M_gav_RL, Same == TRUE)
 
 rlvnt_genes$Sig_Species_gav <- case_when(
-  rlvnt_genes$Gene %in% M_gav_rel$Gene ~ TRUE,
+  rlvnt_genes$Gene %in% M_gav_RL$Gene ~ TRUE,
   TRUE ~ FALSE
 )
 
 rlvnt_Sig_Species_g <- subset(rlvnt_genes, Sig_Species_gav == TRUE, select = Gene:Same_rel_patt)
 
 rlvnt_Sig_Species_g <- mutate(rlvnt_Sig_Species_g,
-                            Product = c("Exopolyphosphatase", "Miniconductance mechanosensitive channel", "DNA topoisomerase IV subunit", 
-                                        "Superoxide dismutase [Mn]","23S rRNA (guanine(2445)-N(2))-methyltransferase", 
-                                        "Replication-associated recombination protein A", "Glutamate 5-kinase", "Class II glutamine amidotransferase", 
-                                        "Glycine betaine/L-proline ABC transporter ATP-binding protein", "Phenylalanine--tRNA ligase subunit",
-                                        "Leucine--tRNA ligase", "Peptidoglycan glycosyltransferase", "2-isopropylmalate synthase", 
-                                        "Undecaprenyldiphospho-muramoylpentapeptide beta-N-acetylglucosaminyltransferase",
-                                        "Bifunctional aconitate hydratase 2/2-methylisocitrate dehydratase", "ABC transporter permease",
-                                        "Ribonucleoside-diphosphate reductase subunit", "Ferredoxin--NADP(+) reductase", "Porphobilinogen synthase", 
-                                        "HlyC/CorC family transporter", "Histidinol dehydrogenase", "ATP phosphoribosyltransferase",
-                                        "Trifunctional transcriptional regulator/proline dehydrogenase/L-glutamate gamma-semialdehyde dehydrogenase"),
-                            Gene_check = c("37381_ppx", "37870_mscM",
-                                           "38070_parC", "38689_sodA",
-                                           "38788_rlmL", "38824_rarA",
-                                           "38841_proB", "38851_yafJ",
-                                           "38877_proV", "38898_pheT",
-                                           "39185_leuS", "39192_mrdB",
-                                           "39413_leuA", "39426_murG",
-                                           "39453_acnB", "39527_hisM",
-                                           "39557_nrdA", "39847_fpr",
-                                           "39927_hemB", "40038_hypothetical_protein",
-                                           "40162_hisD", "40163_hisG",
-                                           "40248_putA"))
+                              Product = c("Exopolyphosphatase", "Miniconductance mechanosensitive channel", "DNA topoisomerase IV subunit", 
+                                          "Superoxide dismutase [Mn]","23S rRNA (guanine(2445)-N(2))-methyltransferase", 
+                                          "Replication-associated recombination protein A", "Glutamate 5-kinase", "Class II glutamine amidotransferase", 
+                                          "Glycine betaine/L-proline ABC transporter ATP-binding protein", "Phenylalanine--tRNA ligase subunit",
+                                          "Leucine--tRNA ligase", "Peptidoglycan glycosyltransferase", "2-isopropylmalate synthase", 
+                                          "Undecaprenyldiphospho-muramoylpentapeptide beta-N-acetylglucosaminyltransferase",
+                                          "Bifunctional aconitate hydratase 2/2-methylisocitrate dehydratase", "ABC transporter permease",
+                                          "Ribonucleoside-diphosphate reductase subunit", "Ferredoxin--NADP(+) reductase", "Porphobilinogen synthase", 
+                                          "HlyC/CorC family transporter", "Histidinol dehydrogenase", "ATP phosphoribosyltransferase",
+                                          "Trifunctional transcriptional regulator/proline dehydrogenase/L-glutamate gamma-semialdehyde dehydrogenase"),
+                              Gene_check = c("37381_ppx", "37870_mscM",
+                                             "38070_parC", "38689_sodA",
+                                             "38788_rlmL", "38824_rarA",
+                                             "38841_proB", "38851_yafJ",
+                                             "38877_proV", "38898_pheT",
+                                             "39185_leuS", "39192_mrdB",
+                                             "39413_leuA", "39426_murG",
+                                             "39453_acnB", "39527_hisM",
+                                             "39557_nrdA", "39847_fpr",
+                                             "39927_hemB", "40038_hypothetical_protein",
+                                             "40162_hisD", "40163_hisG",
+                                             "40248_putA"))
 
 unique(rlvnt_Sig_Species_g$Gene == rlvnt_Sig_Species_g$Gene_check) # If TRUE, then continue
 rlvnt_Sig_Species_g <- subset(rlvnt_Sig_Species_g, select = Gene:Product)
@@ -1886,67 +1888,129 @@ test2 <- paste(test$Gene, ".fasta", sep = ""); test2
 
 nucl_g <- read.csv(file = "8Results/M_gaviniae_Nucleotide.csv", stringsAsFactors = FALSE)
 nucl_g$Gene_name <- substring(nucl_g$gene, 7)
-test <- M_gav_rel$Gene
-
+test <- M_gav_RL$Gene
 
 ### MEGAX: First genus is significantly different from next ###############################################################################################
+rlvnt_genes <- read.csv(file = "8Results/MEGAX_Relevant_Genes.csv", stringsAsFactors = FALSE)
+BM <- read.csv(file = "8Results/Best_Model.csv", stringsAsFactors = FALSE)
 
+M_cal_SR <- read.csv(file = "8Results/M_calida_Sig_Rel.csv", 
+                     stringsAsFactors = FALSE)
+M_cal_SR <- subset(M_cal_SR, First_Genus == TRUE)   
+M_cal_SR <- M_cal_SR[order(M_cal_SR$Gene_name), ]
 
-
-M_cal <- read.csv(file = "8Results/M_calida_Sig_Rel.csv", stringsAsFactors = FALSE)
-M_cal <- subset(M_cal, First_Species == TRUE)
-M_cal <- M_cal[order(M_cal$Gene_name), ]
-
-M_cal_rel <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", stringsAsFactors = FALSE)
-M_cal_rel <- subset(M_cal_rel, select = c(Gene, One, Two, Three, Four, Mean, Rela_Pattern))
-
-M_cal_rel$Same_Species <- case_when(
-  M_cal_rel$Gene %in% M_cal$Gene_name ~ TRUE,
-  TRUE ~ FALSE
-)
-M_cal_rel <- subset(M_cal_rel, Same_Species == TRUE)
-M_cal_rel$first <- substring(M_cal_rel$Three, first = 1, last = 7)
-M_cal_rel$second <- substring(M_cal_rel$Four, first = 1, last = 7)
-M_cal_rel$Same <- case_when(
-  M_cal_rel$first == M_cal_rel$second ~ TRUE,
-  TRUE ~ FALSE
-)
-M_cal_rel <- subset(M_cal_rel, Same == TRUE)
-
-rlvnt_genes$Sig_Species <- case_when(
-  rlvnt_genes$Gene %in% M_cal_rel$Gene ~ TRUE,
+M_cal_SR$weird <- case_when(
+  M_cal_SR$Gene_name %in% c("38235_csdA", "38434_hypothetical_protein", "38746_fhuA_1", "38985_ttuB", "39549_hypothetical_protein") ~ TRUE,
   TRUE ~ FALSE
 )
 
-rlvnt_Sig_Species <- subset(rlvnt_genes, Sig_Species == TRUE, select = Gene:Same_rel_patt)
+M_cal_SR <- subset(M_cal_SR, weird == FALSE, select = Gene_name:First_Genus)
 
-rlvnt_Sig_Species <- mutate(rlvnt_Sig_Species,
-                            Product = c("Histidine--tRNA ligase", "Exopolyphosphatase", "Glucokinase", "Miniconductance mechanosensitive channel",
-                                        "DNA topoisomerase IV", "Phosphoglucosamine mutase", "Superoxide dismutase [Mn]", "MFS transporter",
-                                        "Leucine--tRNA ligase", "Peptidoglycan glycosyltransferase", "2-isopropylmalate synthase", 
-                                        "UDP-3-O-acyl-N-acetylglucosamine deacetylase", "Pyridoxal phosphate-dependent aminotransferase", 
-                                        "NADH-quinone oxidoreductase subunit", "NADH-quinone oxidoreductase subunit", 
-                                        "NADH-quinone oxidoreductase subunit", "Ribonucleoside-diphosphate reductase subunit", "YdbH family protein",
-                                        "Aspartate-semialdehyde dehydrogenase", "Two-component system sensor histidine kinase", 
-                                        "Signal recognition particle protein", 
-                                        "Trifunctional transcriptional regulator/proline dehydrogenase/L-glutamate gamma-semialdehyde dehydrogenase",
-                                        "Carboxy terminal-processing peptidase"),
-                            Gene_check = c("37350_hisS", "37381_ppx", "37443_glk", "37870_mscM", "38070_parC", "38491_glmM", "38689_sodA", "38820_ycaD_2",
-                                           "39185_leuS", "39192_mrdB", "39413_leuA", "39431_lpxC", "39534_alaA", "39540_nuoF", "39541_nuoG", "39547_nuoM",
-                                           "39557_nrdA", "39682_hypothetical_protein", "39951_asd", "39964_envZ", "40036_ffh", "40248_putA", "40292_prc"))
-unique(rlvnt_Sig_Species$Gene == rlvnt_Sig_Species$Gene_check) # If TRUE, then continue
-rlvnt_Sig_Species <- subset(rlvnt_Sig_Species, select = Gene:Product)
+M_cal_RL <- read.csv(file = "8Results/M_calida_Relatives_Length.csv", stringsAsFactors = FALSE)
+M_cal_RL <- subset(M_cal_RL, select = c(Gene, One, Two, Three, Four, Mean, Rela_Pattern))
 
-write.csv(x = rlvnt_Sig_Species, file = "8Results/Sig_Species_Genes_cal.csv", row.names = FALSE)
+M_cal_RL$Same_Genus <- case_when(
+  M_cal_RL$Gene %in% M_cal_SR$Gene_name ~ TRUE,
+  TRUE ~ FALSE
+)
+M_cal_RL <- subset(M_cal_RL, Same_Genus == TRUE)
 
-BM$Sig_Species <- case_when(
-  BM$Gene %in% rlvnt_Sig_Species$Gene ~ TRUE,
+rlvnt_genes$Sig_Genus <- case_when(
+  rlvnt_genes$Gene %in% M_cal_RL$Gene ~ TRUE,
   TRUE ~ FALSE
 )
 
-BM_Sig_Species <- subset(BM, Sig_Species == TRUE, select = Gene:ModelCode)
+rlvnt_Sig_Genus <- subset(rlvnt_genes, Sig_Genus == TRUE, select = Gene:Same_rel_patt)
 
-write.csv(x = BM_Sig_Species, file = "8Results/Best_Model_Sig_Species_cal.csv", row.names = FALSE)
+rlvnt_Sig_Genus <- mutate(rlvnt_Sig_Genus,
+                            Product = c("Membrane-bound lytic murein transglycosylase", "Protein-disulfide reductase", "dGTPase", 
+                                        "ADP-ribose diphosphatase", "Unknown*", "Murein L,D-transpeptidase","YdgA family protein", 
+                                        "DUF1615 domain-containing protein", "PTS transporter subunit", "LPS assembly lipoprotein", 
+                                        "Proline-specific permease", "Branched-chain amino acid transporter carrier protein", "EamA family transporter", 
+                                        "NCS2 family permease"),
+                            Gene_check = c("37594_emtA", "37857_dsbD", "37929_dgt", "38062_nudF", "38683_pdeK", "38850_hypothetical_protein", "38936_ydgA", 
+                                           "39107_hypothetical_protein", "39169_nagE", "39186_lptE", "39562_proY", "39563_brnQ", "39916_eamA", 
+                                           "40196_adeP"))
+
+unique(rlvnt_Sig_Genus$Gene == rlvnt_Sig_Genus$Gene_check) # If TRUE, then continue
+rlvnt_Sig_Genus <- subset(rlvnt_Sig_Genus, select = Gene:Product)
+
+write.csv(x = rlvnt_Sig_Genus, file = "8Results/Sig_Genus_Genes_cal.csv", row.names = FALSE)
+
+BM$Sig_Genus <- case_when(
+  BM$Gene %in% rlvnt_Sig_Genus$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_Sig_Genus <- subset(BM, Sig_Genus == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_Sig_Genus, file = "8Results/Best_Model_Sig_Genus_cal.csv", row.names = FALSE)
+
+
+# M. gaviniae #
+M_gav_SR <- read.csv(file = "8Results/M_gaviniae_Sig_Rel.csv", 
+                     stringsAsFactors = FALSE)
+M_gav_SR <- subset(M_gav_SR, First_Genus == TRUE)   
+M_gav_SR <- M_gav_SR[order(M_gav_SR$Gene_name), ]
+
+M_gav_SR$weird <- case_when(
+  M_gav_SR$Gene_name %in% c("38235_csdA", "38434_hypothetical_protein", "38746_fhuA_1", "38985_ttuB", "39549_hypothetical_protein") ~ TRUE,
+  TRUE ~ FALSE
+)
+
+M_gav_SR <- subset(M_gav_SR, weird == FALSE, select = Gene_name:First_Genus)
+
+M_gav_RL <- read.csv(file = "8Results/M_gaviniae_Relatives_Length.csv", stringsAsFactors = FALSE)
+M_gav_RL <- subset(M_gav_RL, select = c(Gene, One, Two, Three, Four, Mean, Rela_Pattern))
+
+M_gav_RL$Same_Genus <- case_when(
+  M_gav_RL$Gene %in% M_gav_SR$Gene_name ~ TRUE,
+  TRUE ~ FALSE
+)
+M_gav_RL <- subset(M_gav_RL, Same_Genus == TRUE)
+
+rlvnt_genes$Sig_Genus <- case_when(
+  rlvnt_genes$Gene %in% M_gav_RL$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+rlvnt_Sig_Genus <- subset(rlvnt_genes, Sig_Genus == TRUE, select = Gene:Same_rel_patt)
+
+rlvnt_Sig_Genus <- mutate(rlvnt_Sig_Genus,
+                          Product = c("YchO/YchP family invasin", "dGTPase", "ADP-ribose diphosphatase", "Lipoprotein", "Unknown*", 
+                                      "DUF1615 domain-containing protein", "PTS transporter subunit", "LPS assembly protein", 
+                                      "Type II secretion system protein", "Proline-specific permease", 
+                                      "Branched-chain amino acid transporter carrier protein", "Phosphate regulon sensor histidine kinase",
+                                      "EamA family transporter", "NCS2 family permease", "Carboxy terminal-processing peptidase"),
+                          Gene_check = c("37315_hypothetical_protein", "37929_dgt", "38062_nudF", "38500_nlpI", "38683_pdeK", "39107_hypothetical_protein",
+                                         "39169_nagE", "39400_lptD", "39439_gspE", "39562_proY", "39563_brnQ", "39565_phoR", "39916_eamA", "40196_adeP",
+                                         "40292_prc"))
+
+unique(rlvnt_Sig_Genus$Gene == rlvnt_Sig_Genus$Gene_check) # If TRUE, then continue
+rlvnt_Sig_Genus <- subset(rlvnt_Sig_Genus, select = Gene:Product)
+
+write.csv(x = rlvnt_Sig_Genus, file = "8Results/Sig_Genus_Genes_gav.csv", row.names = FALSE)
+
+BM$Sig_Genus <- case_when(
+  BM$Gene %in% rlvnt_Sig_Genus$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_Sig_Genus <- subset(BM, Sig_Genus == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_Sig_Genus, file = "8Results/Best_Model_Sig_Genus_gav.csv", row.names = FALSE)
+
+#
+### MEGAX: First two relatives are NOT of the same genus ###################################################################################################
+rlvnt_genes <- read.csv(file = "8Results/MEGAX_Relevant_Genes.csv", stringsAsFactors = FALSE)
+BM <- read.csv(file = "8Results/Best_Model.csv", stringsAsFactors = FALSE)
+
+M_cal_SR <- read.csv(file = "8Results/M_calida_Sig_Rel.csv", 
+                     stringsAsFactors = FALSE)
+M_cal_SR <- subset(M_cal_SR, Two_Same_Genus == FALSE)   
+M_cal_SR <- M_cal_SR[order(M_cal_SR$Gene_name), ]
+
+
 #
 ### Kittens ###############################################################################################################################################
 showmekittens()
