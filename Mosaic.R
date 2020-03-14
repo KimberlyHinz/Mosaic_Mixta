@@ -300,11 +300,11 @@ relative <- function(number) {                                            # Retu
 
 M_cal_rel <- as.data.frame(matrix(ncol = 11, nrow = 0))                   # Dataframe for M. calida's closest relatives
 colnames(M_cal_rel) <- c("Gene", "Itself_check", "First_rel", "Second_rel", "Third_rel", "Fourth_rel", "Fifth_rel", "Sixth_rel", "Seventh_rel",
-                        "Eighth_rel", "Ninth_rel")                        # Changes the column names
+                         "Eighth_rel", "Ninth_rel")                        # Changes the column names
 
 M_gav_rel <- as.data.frame(matrix(ncol = 11, nrow = 0))                   # Dataframe for M. gaviniae's closest relatives
 colnames(M_gav_rel) <- c("Gene", "Itself_check", "First_rel", "Second_rel", "Third_rel", "Fourth_rel", "Fifth_rel", "Sixth_rel", "Seventh_rel",
-                          "Eighth_rel", "Ninth_rel")                      # Changes the column names
+                         "Eighth_rel", "Ninth_rel")                      # Changes the column names
 
 for(row in 1:nrow(megFiles)) {                                            # Finds the two closest relatives to Mixta species
   path <- megFiles$Path_name[row]                                         # Path name
@@ -364,7 +364,7 @@ write.csv(x = M_gav_rel, file = "8Results/M_gaviniae_Relatives.csv", row.names =
 # Identifying the closest non-Mixta relative allows me to see with which species Mixta has the most recent ancestor.
 
 M_cal_rel <- read.csv(file = "8Results/M_calida_Relatives.csv",           # Reads in the M. calida results
-                     stringsAsFactors = FALSE)
+                      stringsAsFactors = FALSE)
 
 M_cal_rel$Results_Mixta <- case_when(                                     # Grabs the closest Mixta relative that is not itself, used as a check
   M_cal_rel$One == "Mixta_calida" ~ M_cal_rel$Two,
@@ -372,16 +372,16 @@ M_cal_rel$Results_Mixta <- case_when(                                     # Grab
 )
 
 M_cal_rel$Results_Other <- case_when(
-    M_cal_rel$Two %in% c("Mixta_calida", "Mixta_gaviniae") ~ M_cal_rel$Three,
-    TRUE ~ M_cal_rel$Two
-  )
+  M_cal_rel$Two %in% c("Mixta_calida", "Mixta_gaviniae") ~ M_cal_rel$Three,
+  TRUE ~ M_cal_rel$Two
+)
 
 write.csv(x = M_cal_rel, file = "8Results/M_calida_Relatives.csv", 
           row.names = FALSE)                                              # Write the results to a csv file
 
 ####
 M_gav_rel <- read.csv(file = "8Results/M_gaviniae_Relatives.csv",         # Reads in the M. gaviniae results   
-                       stringsAsFactors = FALSE)
+                      stringsAsFactors = FALSE)
 
 for(row in 1:nrow(M_gav_rel)) {                                           # To check if the first closest relative is the other Mixta species
   M_gav_rel$Results_Mixta[row] <- case_when(
@@ -1333,8 +1333,8 @@ ggsave(MG_pred, file = "9_2Plots_gaviniae/MG_DGL_pred.png",
 # identifies genes wherein - given that the first two non-Mixta species are of the same genus - the first genus is significant different from the next
 # species. (3) It identifies genes wherein the first first two relatives are of the same genus.
 Species_noM <- c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
-             "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
-             "Tatumella_ptyseos")
+                 "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
+                 "Tatumella_ptyseos")
 
 M_calida_sdist <- read.csv(file = "8Results/M_calida_Sort_Dist.csv",
                            stringsAsFactors = FALSE)
@@ -1923,14 +1923,14 @@ rlvnt_genes$Sig_Genus <- case_when(
 rlvnt_Sig_Genus <- subset(rlvnt_genes, Sig_Genus == TRUE, select = Gene:Same_rel_patt)
 
 rlvnt_Sig_Genus <- mutate(rlvnt_Sig_Genus,
-                            Product = c("Membrane-bound lytic murein transglycosylase", "Protein-disulfide reductase", "dGTPase", 
-                                        "ADP-ribose diphosphatase", "Unknown*", "Murein L,D-transpeptidase","YdgA family protein", 
-                                        "DUF1615 domain-containing protein", "PTS transporter subunit", "LPS assembly lipoprotein", 
-                                        "Proline-specific permease", "Branched-chain amino acid transporter carrier protein", "EamA family transporter", 
-                                        "NCS2 family permease"),
-                            Gene_check = c("37594_emtA", "37857_dsbD", "37929_dgt", "38062_nudF", "38683_pdeK", "38850_hypothetical_protein", "38936_ydgA", 
-                                           "39107_hypothetical_protein", "39169_nagE", "39186_lptE", "39562_proY", "39563_brnQ", "39916_eamA", 
-                                           "40196_adeP"))
+                          Product = c("Membrane-bound lytic murein transglycosylase", "Protein-disulfide reductase", "dGTPase", 
+                                      "ADP-ribose diphosphatase", "Unknown*", "Murein L,D-transpeptidase","YdgA family protein", 
+                                      "DUF1615 domain-containing protein", "PTS transporter subunit", "LPS assembly lipoprotein", 
+                                      "Proline-specific permease", "Branched-chain amino acid transporter carrier protein", "EamA family transporter", 
+                                      "NCS2 family permease"),
+                          Gene_check = c("37594_emtA", "37857_dsbD", "37929_dgt", "38062_nudF", "38683_pdeK", "38850_hypothetical_protein", "38936_ydgA", 
+                                         "39107_hypothetical_protein", "39169_nagE", "39186_lptE", "39562_proY", "39563_brnQ", "39916_eamA", 
+                                         "40196_adeP"))
 
 unique(rlvnt_Sig_Genus$Gene == rlvnt_Sig_Genus$Gene_check) # If TRUE, then continue
 rlvnt_Sig_Genus <- subset(rlvnt_Sig_Genus, select = Gene:Product)
@@ -2002,15 +2002,62 @@ write.csv(x = BM_Sig_Genus, file = "8Results/Best_Model_Sig_Genus_gav.csv", row.
 
 #
 ### MEGAX: First two relatives are NOT of the same genus ###################################################################################################
+# Somehow, somewehere, I screwed up which genes had first relatives being of the same genus and which didn't
+
 rlvnt_genes <- read.csv(file = "8Results/MEGAX_Relevant_Genes.csv", stringsAsFactors = FALSE)
 BM <- read.csv(file = "8Results/Best_Model.csv", stringsAsFactors = FALSE)
 
-M_cal_SR <- read.csv(file = "8Results/M_calida_Sig_Rel.csv", 
-                     stringsAsFactors = FALSE)
-M_cal_SR <- subset(M_cal_SR, Two_Same_Genus == FALSE)   
-M_cal_SR <- M_cal_SR[order(M_cal_SR$Gene_name), ]
+rlvnt_Same_Genus <- rlvnt_genes
+rlvnt_Same_Genus$cal_two <- substring(rlvnt_Same_Genus$cal_rel, first = 1, last = 5)
+rlvnt_Same_Genus$gav_two <- substring(rlvnt_Same_Genus$gav_rel, first = 1, last = 5)
+
+rlvnt_Same_Genus$cal_check <- case_when(
+  rlvnt_Same_Genus$cal_two %in% c("PS_PA", "PA_PS", "ET_EA", "EA_ET", "TS_TP", "TP_TS", "EC_CF", "CF_EC") ~ FALSE,
+  TRUE ~ TRUE
+)
+
+rlvnt_Same_Genus <- subset(rlvnt_Same_Genus, cal_check == TRUE)
+
+rlvnt_Same_Genus$gav_check <- case_when(
+  rlvnt_Same_Genus$gav_two %in% c("PS_PA", "PA_PS", "ET_EA", "EA_ET", "TS_TP", "TP_TS", "EC_CF", "CF_EC") ~ FALSE,
+  TRUE ~ TRUE
+)
+
+rlvnt_Same_Genus <- subset(rlvnt_Same_Genus, gav_check == TRUE, select = Gene:gav_two)
+
+rlvnt_Same_Genus$Same <- case_when(
+  rlvnt_Same_Genus$cal_two == rlvnt_Same_Genus$gav_two ~ TRUE,
+  TRUE ~ FALSE
+)
+
+# Both Mixta species have the same first relative
 
 
+
+
+# rlvnt_Sig_Genus <- mutate(rlvnt_Sig_Genus,
+#                           Product = c("YchO/YchP family invasin", "dGTPase", "ADP-ribose diphosphatase", "Lipoprotein", "Unknown*", 
+#                                       "DUF1615 domain-containing protein", "PTS transporter subunit", "LPS assembly protein", 
+#                                       "Type II secretion system protein", "Proline-specific permease", 
+#                                       "Branched-chain amino acid transporter carrier protein", "Phosphate regulon sensor histidine kinase",
+#                                       "EamA family transporter", "NCS2 family permease", "Carboxy terminal-processing peptidase"),
+#                           Gene_check = c("37315_hypothetical_protein", "37929_dgt", "38062_nudF", "38500_nlpI", "38683_pdeK", "39107_hypothetical_protein",
+#                                          "39169_nagE", "39400_lptD", "39439_gspE", "39562_proY", "39563_brnQ", "39565_phoR", "39916_eamA", "40196_adeP",
+#                                          "40292_prc"))
+# 
+# unique(rlvnt_Sig_Genus$Gene == rlvnt_Sig_Genus$Gene_check) # If TRUE, then continue
+# rlvnt_Sig_Genus <- subset(rlvnt_Sig_Genus, select = Gene:Product)
+# 
+# write.csv(x = rlvnt_Sig_Genus, file = "8Results/Sig_Genus_Genes_gav.csv", row.names = FALSE)
+# 
+# BM$Sig_Genus <- case_when(
+#   BM$Gene %in% rlvnt_Sig_Genus$Gene ~ TRUE,
+#   TRUE ~ FALSE
+# )
+# 
+# BM_Sig_Genus <- subset(BM, Sig_Genus == TRUE, select = Gene:ModelCode)
+# 
+# write.csv(x = BM_Sig_Genus, file = "8Results/Best_Model_Sig_Genus_gav.csv", row.names = FALSE)
 #
 ### Kittens ###############################################################################################################################################
 showmekittens()
