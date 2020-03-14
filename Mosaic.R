@@ -2030,10 +2030,34 @@ rlvnt_Same_Genus$Same <- case_when(
   TRUE ~ FALSE
 )
 
-# Both Mixta species have the same first relative
+# Both Mixta species have the same first relatives
+same <- subset(rlvnt_Same_Genus, Same == TRUE)
+PS_ET <- subset(same, cal_two == "PS_ET", select = Gene:Same_rel_patt)
+PS_ET <- mutate(PS_ET,
+                Product = c("Inositol-1-monophosphatase", "YpfN family protein",
+                            "Glutamate--tRNA ligase", "YihA family ribosome biogenesis GTP-binding protein",
+                            "AsmA family protein", "Phosphate ABC transporter permease",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", ""),
+                Gene_check = c("37332_suhB", "37398_hypothetical_protein",
+                               "37438_gltX", "37467_engB",
+                               "37479_hypothetical_protein", "37488_pstA",
+                               "", "",
+                               "", "",
+                               "", "",
+                               "", ""))
 
 
 
+
+
+
+nuc_cal <- read.csv(file = "8Results/M_calida_Nucleotide.csv", stringsAsFactors = FALSE)
+test <- PS_ET$Gene
+
+# Gene	cal_ID	gav_ID	Mean_gene_length	cal_rel	gav_rel	Same_rel_patt	Product
 
 # rlvnt_Sig_Genus <- mutate(rlvnt_Sig_Genus,
 #                           Product = c("YchO/YchP family invasin", "dGTPase", "ADP-ribose diphosphatase", "Lipoprotein", "Unknown*", 
