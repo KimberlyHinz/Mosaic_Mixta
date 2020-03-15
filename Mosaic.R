@@ -2034,20 +2034,49 @@ rlvnt_Same_Genus$Same <- case_when(
 same <- subset(rlvnt_Same_Genus, Same == TRUE)
 PS_ET <- subset(same, cal_two == "PS_ET", select = Gene:Same_rel_patt)
 PS_ET <- mutate(PS_ET,
-                Product = c("Inositol-1-monophosphatase", "YpfN family protein",
-                            "Glutamate--tRNA ligase", "YihA family ribosome biogenesis GTP-binding protein",
-                            "AsmA family protein", "Phosphate ABC transporter permease",
+                Product = c("Inositol-1-monophosphatase", "YpfN family protein", "Glutamate--tRNA ligase", 
+                            "YihA family ribosome biogenesis GTP-binding protein", "AsmA family protein", "Phosphate ABC transporter permease",
+                            "5-(carboxyamino)imidazole ribonucleotide mutase", "Efflux RND transporter periplasmic adaptor subunit", "Unknown*", 
+                            "30S ribosomal protein",
+                            
+                            "Ribosome-associated protein", "1-deoxy-D-xylulose-5-phosphate reductoisomerase",
+                            "Acetyl-CoA carboxylase carboxyl transferase subunit", "YifB family Mg chelatase-like AAA ATPase",
                             "", "",
                             "", "",
                             "", "",
-                            "", ""),
-                Gene_check = c("37332_suhB", "37398_hypothetical_protein",
-                               "37438_gltX", "37467_engB",
-                               "37479_hypothetical_protein", "37488_pstA",
+                            
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",),
+                Gene_check = c("37332_suhB", "37398_hypothetical_protein", "37438_gltX", "37467_engB", "37479_hypothetical_protein", "37488_pstA", 
+                               "37509_purE", "37528_acrA", "37561_hypothetical_protein", "37893_rpsR",
+                               
+                               "37906_hypothetical_protein", "37939_dxr",
+                               "37951_accA", "37990_comM",
                                "", "",
                                "", "",
                                "", "",
-                               "", ""))
+                               
+                               "", "",
+                               "", "",
+                               "", "",
+                               "", "",
+                               "", "",
+                               
+                               "", "",
+                               "", "",
+                               "", "",
+                               "", "",
+                               "", "",
+                               "", "",))
 
 
 
