@@ -2026,91 +2026,339 @@ rlvnt_Same_Genus$gav_check <- case_when(
 rlvnt_Same_Genus <- subset(rlvnt_Same_Genus, gav_check == TRUE, select = Gene:gav_two)
 
 rlvnt_Same_Genus$Same <- case_when(
-  rlvnt_Same_Genus$cal_two == rlvnt_Same_Genus$gav_two ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("CF_ET", "ET_CF") & rlvnt_Same_Genus$gav_two %in% c("CF_ET", "ET_CF") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("CF_PA", "PA_CF") & rlvnt_Same_Genus$gav_two %in% c("CF_PA", "PA_CF") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("CF_PS", "PS_CF") & rlvnt_Same_Genus$gav_two %in% c("CF_PS", "PS_CF") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("CF_TS", "TS_CF") & rlvnt_Same_Genus$gav_two %in% c("CF_TS", "TS_CF") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("EA_PA", "PA_EA") & rlvnt_Same_Genus$gav_two %in% c("EA_PA", "PA_EA") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("EA_PS", "PS_EA") & rlvnt_Same_Genus$gav_two %in% c("EA_PS", "PS_EA") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("EC_EA", "EA_EC") & rlvnt_Same_Genus$gav_two %in% c("EC_EA", "EA_EC") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("EC_ET", "ET_EC") & rlvnt_Same_Genus$gav_two %in% c("EC_ET", "ET_EC") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("EC_PS", "PS_EC") & rlvnt_Same_Genus$gav_two %in% c("EC_PS", "PS_EC") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("ET_PA", "PA_ET") & rlvnt_Same_Genus$gav_two %in% c("ET_PA", "PA_ET") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("ET_PS", "PS_ET") & rlvnt_Same_Genus$gav_two %in% c("ET_PS", "PS_ET") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("PA_EC", "EC_PA") & rlvnt_Same_Genus$gav_two %in% c("PA_EC", "EC_PA") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("PS_TP", "TP_PS") & rlvnt_Same_Genus$gav_two %in% c("PS_TP", "TP_PS") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("PS_TS", "TS_PS") & rlvnt_Same_Genus$gav_two %in% c("PS_TS", "TS_PS") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("TP_EA", "EA_TP") & rlvnt_Same_Genus$gav_two %in% c("TP_EA", "EA_TP") ~ TRUE,
+  rlvnt_Same_Genus$cal_two %in% c("TP_ET", "ET_TP") & rlvnt_Same_Genus$gav_two %in% c("TP_ET", "ET_TP") ~ TRUE,
+  
   TRUE ~ FALSE
 )
 
-# Both Mixta species have the same first relatives
 same <- subset(rlvnt_Same_Genus, Same == TRUE)
-PS_ET <- subset(same, cal_two == "PS_ET", select = Gene:Same_rel_patt)
-PS_ET <- mutate(PS_ET,
-                Product = c("Inositol-1-monophosphatase", "YpfN family protein", "Glutamate--tRNA ligase", 
-                            "YihA family ribosome biogenesis GTP-binding protein", "AsmA family protein", "Phosphate ABC transporter permease",
-                            "5-(carboxyamino)imidazole ribonucleotide mutase", "Efflux RND transporter periplasmic adaptor subunit", "Unknown*", 
-                            "30S ribosomal protein",
+
+### Citrobacter freundii and Pantoea septica ####
+CF_PS <- subset(same, cal_two %in% c("CF_PS", "PS_CF"), select = Gene:Same_rel_patt)
+CF_PS <- mutate(CF_PS, 
+                Product = c("Trigger factor", "30S ribosomal protein", "Acetyl-CoA carboxylase biotin carboxyl carrier protein", 
+                            "Polyribonucleotide nucleotidyltransferase", "30S ribosomal protein", "30S ribosomal protein", "30S ribosomal protein", 
+                            "Beta-ketoacyl-ACP synthase I", "DoxX family protein", "50S ribosomal protein"),
+                Gene_check = c("37551_tig", "37891_rpsF", "38417_accB", "38499_pnp", "38568_rpsE", "38576_rpsQ", "38812_rpsA", "39508_fabB", "40023_yphA", 
+                               "40394_rplL"))
+
+unique(CF_PS$Gene == CF_PS$Gene_check) # If TRUE, then continue
+CF_PS <- subset(CF_PS, select = Gene:Product)
+
+write.csv(x = CF_PS, file = "8Results/CF_PS.csv", row.names = FALSE)
+
+BM$CF_PS <- case_when(
+  BM$Gene %in% CF_PS$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_CF_PS <- subset(BM, CF_PS == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_CF_PS, file = "8Results/Best_Model_CF_PS.csv", row.names = FALSE)
+
+### Enterobacter cloacae and Erwinia amylovora ####
+EC_EA <- subset(same, cal_two %in% c("EC_EA", "EA_EC"), select = Gene:Same_rel_patt)
+
+EC_EA <- mutate(EC_EA, 
+                Product = c("50S ribosomal protein", "ATP-dependent dethiobiotin synthetase"),
+                Gene_check = c("38574_rplX", "39664_bioD1"))
+
+unique(EC_EA$Gene == EC_EA$Gene_check) # If TRUE, then continue
+EC_EA <- subset(EC_EA, select = Gene:Product)
+
+write.csv(x = EC_EA, file = "8Results/EC_EA.csv", row.names = FALSE)
+
+BM$EC_EA <- case_when(
+  BM$Gene %in% EC_EA$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_EC_EA <- subset(BM, EC_EA == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_EC_EA, file = "8Results/Best_Model_EC_EA.csv", row.names = FALSE)
+
+### Enterobacter cloacae and Erwinia tasmaniensis ####
+EC_ET <- subset(same, cal_two %in% c("EC_ET", "ET_EC"), select = Gene:Same_rel_patt)
+
+EC_ET <- mutate(EC_ET, 
+                Product = c("Ribosome-associated protein", "GNAT family N-acetyltransferase"),
+                Gene_check = c("37505_ybcJ", "37628_aaaT"))
+
+unique(EC_ET$Gene == EC_ET$Gene_check) # If TRUE, then continue
+EC_ET <- subset(EC_ET, select = Gene:Product)
+
+write.csv(x = EC_ET, file = "8Results/EC_ET.csv", row.names = FALSE)
+
+BM$EC_ET <- case_when(
+  BM$Gene %in% EC_ET$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_EC_ET <- subset(BM, EC_ET == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_EC_EA, file = "8Results/Best_Model_EC_ET.csv", row.names = FALSE)
+
+### Enterobacter cloacae and Pantoea agglomerans ####
+EC_PA <- subset(same, cal_two %in% c("PA_EC", "EC_PA"), select = Gene:Same_rel_patt)
+
+EC_PA <- mutate(EC_PA, 
+                Product = c("Unknown*", "6-carboxytetrahydropterin synthase", "50S ribosomal protein"),
+                Gene_check = c("38045_nudK", "38254_queD", "38573_rplE"))
+
+unique(EC_PA$Gene == EC_PA$Gene_check) # If TRUE, then continue
+EC_PA <- subset(EC_PA, select = Gene:Product)
+
+write.csv(x = EC_PA, file = "8Results/EC_PA.csv", row.names = FALSE)
+
+BM$EC_PA <- case_when(
+  BM$Gene %in% EC_PA$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_EC_PA <- subset(BM, EC_PA == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_EC_PA, file = "8Results/Best_Model_EC_PA.csv", row.names = FALSE)
+
+### Enterobacter cloacae and Pantoea septica ####
+EC_PS <- subset(same, cal_two %in% c("EC_PS", "PS_EC"), select = Gene:Same_rel_patt)
+
+EC_PS <- mutate(EC_PS, 
+                Product = c("Recombination protein", "Spermidine/putrescine ABC transporter permease", 
+                            "Spermidine/putrescine ABC transporter substrate-binding protein", "VOC family protein", 
+                            "Class II fructose-bisphosphate aldolase", "Septum formation inhibitor", "30S ribosomal protein", "50S ribosomal protein", 
+                            "30S ribosomal protein", "23S rRNA pseudouridine(955/2504/2580) synthase", "ATP-dependent RNA helicase", 
+                            "50S ribosomal protein", "Phenylalanine--tRNA ligase subunit", "Ribonuclease T", "Pirin family protein", 
+                            "Two-component system response regulator", "Peptidoglycan-binding protein", "50S ribosomal protein", 
+                            "Carboxy-S-adenosyl-L-methionine synthase", "Transcription termination/antitermination protein"),
+                Gene_check = c("37521_recR", "37719_ydcV", "37720_potD", "37952_cetB", "38145_fbaA", "38426_yhdE", "38579_rpsC", "38580_rplV", 
+                               "38586_rpsJ", "38617_rluC", "38678_rhlB", "38895_rpmI", "38897_pheS", "38917_rnt", "39300_yhaK", "39373_arcA", "39771_ygaU", 
+                               "39814_rpmB", "40266_cmoA", "40390_nusG"))
+
+
+
+
+
+
+unique(EC_PS$Gene == EC_PS$Gene_check) # If TRUE, then continue
+EC_PS <- subset(EC_PS, select = Gene:Product)
+
+write.csv(x = EC_PS, file = "8Results/EC_PS.csv", row.names = FALSE)
+
+BM$EC_PS <- case_when(
+  BM$Gene %in% EC_PS$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_EC_PS <- subset(BM, EC_PS == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_EC_PS, file = "8Results/Best_Model_EC_PS.csv", row.names = FALSE)
+
+### Erwinia amylovora and Pantoea agglomerans ####
+EA_PA <- subset(same, cal_two %in% c("EA_PA", "PA_EA"), select = Gene:Same_rel_patt)
+EA_PA <- mutate(EA_PA, 
+                Product = c("DUF3561 family protein", "Succinate dehydrogenase membrane anchor subunit", "2Fe-2S ferredoxin-like protein"),
+                Gene_check = c("38262_ygbE", "39149_sdhD", "39555_hypothetical_protein"))
+
+unique(EA_PA$Gene == EA_PA$Gene_check) # If TRUE, then continue
+EA_PA <- subset(EA_PA, select = Gene:Product)
+
+write.csv(x = EA_PA, file = "8Results/EA_PA.csv", row.names = FALSE)
+
+BM$EA_PA <- case_when(
+  BM$Gene %in% EA_PA$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_EA_PA <- subset(BM, EA_PA == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_EA_PA, file = "8Results/Best_Model_EA_PA.csv", row.names = FALSE)
+
+### Erwinia amylovora and Pantoea septica ####
+EA_PS <- subset(same, cal_two %in% c("EA_PS", "PS_EA"), select = Gene:Same_rel_patt)
+EA_PS <- mutate(EA_PS, 
+                Product = c("PTS glucose transporter subunit", "Nitrogen regulation protein", "Glucose-1-phosphatase", 
+                            "Phosphate ABC transporter ATP-binding protein", "Conjugal transfer protein", "4-hydroxybenzoate octaprenyltransferase",
+                            "Quinone oxidoreductase", "Adenylosuccinate synthase", "Bifunctional glycosyl transferase/transpeptidase", 
+                            "D-glycero-beta-D-manno-heptose 1,7-bisphosphate 7-phosphatase", "Dihydroxy-acid dehydratase", "F0F1 ATP synthase subunit",
+                            "Arginine exporter", "Phosphoglycerate dehydrogenase", "2-octaprenyl-6-methoxyphenyl hydroxylase", 
+                            "Amino-acid N-acetyltransferase", "DNA polymerase III subunit", "NAD(+) kinase", "Nucleotide exchange factor", 
+                            "Acetyl-CoA carboxylase biotin carboxylase", "Metalloprotease", "Transcriptional regulator", 
+                            "Transcription-repair coupling factor", "3'-5' ssDNA/RNA exonuclease","Protoheme IX biogenesis protein", 
+                            "16S rRNA (guanine(1516)-N(2))-methyltransferase", "Transcriptional repressor", "YdiU family protein", 
+                            "D-lactate dehydrogenase", "Manganese-binding transcriptional regulator", "DNA-binding protein", 
+                            "Molybdopterin synthase sulfur carrier subunit", "GTP 3',8-cyclase", "Divisome-associated lipoprotein", 
+                            "2,3-diphosphoglycerate-dependent phosphoglycerate mutase", "Molecular chaperone", 
+                            "Division/cell wall cluster transcriptional repressor", "16S rRNA (cytosine(1402)-N(4))-methyltransferase", 
+                            "Dephospho-CoA kinase", "TSUP family transporter", "UbiX family flavin prenyltransferase", "DUF412 domain-containing protein", 
+                            "Bifunctional 2-polyprenyl-6-hydroxyphenol methylase/3-demethylubiquinol 3-O-methyltransferase", "Type I DNA topoisomerase", 
+                            "Oligopeptide ABC transporter permease", "YicC family protein", "Rhodanese-like domain-containing protein", 
+                            "YheU family protein", "Glutathione-regulated potassium-efflux system ancillary protein", "Sulfurtransferase complex subunit", 
+                            "Transcriptional regulator", "30S ribosomal protein", "GrxA family glutaredoxin", "Two-component system response regulator", 
+                            "Bifunctional phosphoribosyl-AMP cyclohydrolase/phosphoribosyl-ATP diphosphatase", "Hypothetical protein", 
+                            "DUF1315 family protein", "Glucans biosynthesis protein", "DNA-directed RNA polymerase subunit"),
+                Gene_check = c("37425_crr", "37471_glnG", "37475_yihX", "37489_pstB", "37515_hypothetical_protein", "37788_ubiA", "37796_qorA", 
+                               "37885_purA", "37924_mrcB", "37964_gmhB","37986_ilvD", "38007_atpF", "38147_argO", "38151_serA", "38156_ubiH", "38231_argA", 
+                               "38286_dnaQ", "38361_nadK", "38362_grpE", "38416_accC", "38429_tldD", "38435_argR", "38594_mfd", "38630_tatD", "38666_hemY",
+                               "38735_rsmJ", "38880_mprA", "38901_hypothetical_protein", "38954_dld", "39082_mntR", "39091_ybiB", "39109_moaD", "39112_moaA",
+                               "39299_osmY_2", "39370_cobC", "39382_dnaK", "39417_mraZ", "39418_rsmH", "39437_coaE", "39504_yfcA", "39524_ubiX", 
+                               "39532_hypothetical_protein", "39558_ubiG", "39717_topA_2", "39747_oppB", "39805_hypothetical_protein", "39832_yibN", 
+                               "39990_hypothetical_protein", "39994_ywrO", "40002_tusC", "40014_rcsB", "40035_rpsP", "40047_grxA", "40128_baeR", 
+                               "40156_hisI", "40294_hypothetical_protein", "40327_hypothetical_protein", "40377_mdoG", "40395_rpoB"))
+
+unique(EA_PS$Gene == EA_PS$Gene_check) # If TRUE, then continue
+EA_PS <- subset(EA_PS, select = Gene:Product)
+
+write.csv(x = EA_PS, file = "8Results/EA_PS.csv", row.names = FALSE)
+
+BM$EA_PS <- case_when(
+  BM$Gene %in% EA_PS$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_EA_PS <- subset(BM, EA_PS == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_EA_PS, file = "8Results/Best_Model_EA_PS.csv", row.names = FALSE)
+
+### Erwinia amylovora and Tatumella ptyseos ####
+EA_TP <- subset(same, cal_two %in% c("TP_EA", "EA_TP"), select = Gene:Same_rel_patt)
+EA_TP <- mutate(EA_TP, 
+                Product = c("50S ribosomal protein"),
+                Gene_check = c("38470_rpmA"))
+
+unique(EA_TP$Gene == EA_TP$Gene_check) # If TRUE, then continue
+EA_TP <- subset(EA_TP, select = Gene:Product)
+
+write.csv(x = EA_TP, file = "8Results/EA_TP.csv", row.names = FALSE)
+
+BM$EA_TP <- case_when(
+  BM$Gene %in% EA_TP$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_EA_TP <- subset(BM, EA_TP == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_EA_TP, file = "8Results/Best_Model_EA_TP.csv", row.names = FALSE)
+
+### Erwinia tasmaniensis and Pantoea amylovora ####
+ET_PA <- subset(same, cal_two %in% c("ET_PA", "PA_ET"), select = Gene:Same_rel_patt)
+ET_PA <- mutate(ET_PA, 
+                Product = c("Cytochrome o ubiquinol oxidase subunit", "YggL family protein", "NADH-quinone oxidoreductase subunit"),
+                Gene_check = c("37558_cyoD", "38125_hypothetical_protein", "39545_nuoK"))
+
+unique(ET_PA$Gene == ET_PA$Gene_check) # If TRUE, then continue
+ET_PA <- subset(ET_PA, select = Gene:Product)
+
+write.csv(x = ET_PA, file = "8Results/ET_PA.csv", row.names = FALSE)
+
+BM$ET_PA <- case_when(
+  BM$Gene %in% ET_PA$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_ET_PA <- subset(BM, ET_PA == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_ET_PA, file = "8Results/Best_Model_ET_PA.csv", row.names = FALSE)
+
+#### Erwinia tasmaniensis and Pantoea septica ####
+ET_PS <- subset(same, cal_two %in% c("ET_PS", "PS_ET"), select = Gene:Same_rel_patt)
+ET_PS <- mutate(ET_PS, 
+                Product = c("Inositol-1-monophosphatase", "YfgM family protein", 
+                            "YpfN family protein", "Sulfate/thiosulfate ABC transporter permease", 
+                            "Glutamate--tRNA ligase", 
                             
-                            "Ribosome-associated protein", "1-deoxy-D-xylulose-5-phosphate reductoisomerase",
-                            "Acetyl-CoA carboxylase carboxyl transferase subunit", "YifB family Mg chelatase-like AAA ATPase",
-                            "", "",
-                            "", "",
-                            "", "",
+                            "YihA family ribosome biogenesis GTP-binding protein", "AsmA family protein", 
+                            "Phosphate ABC transporter permease", "5-(carboxyamino)imidazole ribonucleotide mutase", 
+                            "Efflux RND transporter periplasmic adaptor subunit", 
                             
-                            "", "",
-                            "", "",
-                            "", "",
-                            "", "",
-                            "", "",
+                            "YajQ family cyclic di-GMP-binding protein", "Small ribosomal subunit biogenesis GTPase", 
+                            "30S ribosomal protein", "Ribosome-associated protein", 
+                            "1-deoxy-D-xylulose-5-phosphate reductoisomerase", 
                             
-                            "", "",
-                            "", "",
-                            "", "",
-                            "", "",
-                            "", "",),
-                Gene_check = c("37332_suhB", "37398_hypothetical_protein", "37438_gltX", "37467_engB", "37479_hypothetical_protein", "37488_pstA", 
-                               "37509_purE", "37528_acrA", "37561_hypothetical_protein", "37893_rpsR",
+                            "Acetyl-CoA carboxylase carboxyl transferase subunit", 
+                            "YifB family Mg chelatase-like AAA ATPase", 
+                            "3',5'-cyclic-AMP phosphodiesterase", 
+                            "Deoxyribose-phosphate aldolase", 
+                            "Purine-nucleoside phosphorylase", 
+                            
+                            
+                            ),
+                Gene_check = c("37332_suhB", "37351_hypothetical_protein", "37398_hypothetical_protein", "37411_cysT", "37438_gltX", 
                                
-                               "37906_hypothetical_protein", "37939_dxr",
-                               "37951_accA", "37990_comM",
-                               "", "",
-                               "", "",
-                               "", "",
+                               "37467_engB", "37479_hypothetical_protein", "37488_pstA", "37509_purE", "37528_acrA", 
                                
-                               "", "",
-                               "", "",
-                               "", "",
-                               "", "",
-                               "", "",
+                               "37561_hypothetical_protein", "37872_rsgA", "37893_rpsR", "37906_hypothetical_protein", "37939_dxr", 
                                
-                               "", "",
-                               "", "",
-                               "", "",
-                               "", "",
-                               "", "",
-                               "", "",))
+                               "37951_accA", 
+                               "37990_comM", 
+                               "38064_cpdA_1", 
+                               "38090_deoC", 
+                               "38093_deoD", 
+                               ))
 
 
 
 
+
+
+
+
+unique(ET_PS$Gene == ET_PS$Gene_check) # If TRUE, then continue
+ET_PS <- subset(ET_PS, select = Gene:Product)
+
+write.csv(x = ET_PS, file = "8Results/ET_PS.csv", row.names = FALSE)
+
+BM$ET_PS <- case_when(
+  BM$Gene %in% ET_PS$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_ET_PS <- subset(BM, ET_PS == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_ET_PS, file = "8Results/Best_Model_ET_PS.csv", row.names = FALSE)
+
+### Erwinia tasmaniensis and Tatumella ptyseos ####
+ET_TP <- subset(same, cal_two %in% c("TP_ET", "ET_TP"), select = Gene:Same_rel_patt)
+
+### Pantoea septica and Tatumella ptyseos ####
+PS_TP <- subset(same, cal_two %in% c("PS_TP", "TP_PS"), select = Gene:Same_rel_patt)
+
+### Pantoea septica and Tatumella saanichensis ####
+PS_TS <- subset(same, cal_two %in% c("PS_TS", "TS_PS"), select = Gene:Same_rel_patt)
+
+
+
+
+
+
+
+
+#################
 
 
 nuc_cal <- read.csv(file = "8Results/M_calida_Nucleotide.csv", stringsAsFactors = FALSE)
-test <- PS_ET$Gene
+test <- ET_PS$Gene
+length(test)
+nuc_cal[which(nuc_cal$gene == test[1]), ]
 
-# Gene	cal_ID	gav_ID	Mean_gene_length	cal_rel	gav_rel	Same_rel_patt	Product
 
-# rlvnt_Sig_Genus <- mutate(rlvnt_Sig_Genus,
-#                           Product = c("YchO/YchP family invasin", "dGTPase", "ADP-ribose diphosphatase", "Lipoprotein", "Unknown*", 
-#                                       "DUF1615 domain-containing protein", "PTS transporter subunit", "LPS assembly protein", 
-#                                       "Type II secretion system protein", "Proline-specific permease", 
-#                                       "Branched-chain amino acid transporter carrier protein", "Phosphate regulon sensor histidine kinase",
-#                                       "EamA family transporter", "NCS2 family permease", "Carboxy terminal-processing peptidase"),
-#                           Gene_check = c("37315_hypothetical_protein", "37929_dgt", "38062_nudF", "38500_nlpI", "38683_pdeK", "39107_hypothetical_protein",
-#                                          "39169_nagE", "39400_lptD", "39439_gspE", "39562_proY", "39563_brnQ", "39565_phoR", "39916_eamA", "40196_adeP",
-#                                          "40292_prc"))
-# 
-# unique(rlvnt_Sig_Genus$Gene == rlvnt_Sig_Genus$Gene_check) # If TRUE, then continue
-# rlvnt_Sig_Genus <- subset(rlvnt_Sig_Genus, select = Gene:Product)
-# 
-# write.csv(x = rlvnt_Sig_Genus, file = "8Results/Sig_Genus_Genes_gav.csv", row.names = FALSE)
-# 
-# BM$Sig_Genus <- case_when(
-#   BM$Gene %in% rlvnt_Sig_Genus$Gene ~ TRUE,
-#   TRUE ~ FALSE
-# )
-# 
-# BM_Sig_Genus <- subset(BM, Sig_Genus == TRUE, select = Gene:ModelCode)
-# 
-# write.csv(x = BM_Sig_Genus, file = "8Results/Best_Model_Sig_Genus_gav.csv", row.names = FALSE)
+check <- read.csv(file = "8Results/EA_PS.csv", stringsAsFactors = FALSE)
+paste(check$Gene, ".fasta", sep = "")
+
 #
 ### Kittens ###############################################################################################################################################
 showmekittens()
