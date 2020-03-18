@@ -2274,48 +2274,54 @@ BM_ET_PA <- subset(BM, ET_PA == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_ET_PA, file = "8Results/Best_Model_ET_PA.csv", row.names = FALSE)
 
-#### Erwinia tasmaniensis and Pantoea septica ####
+### Erwinia tasmaniensis and Pantoea septica ####
 ET_PS <- subset(same, cal_two %in% c("ET_PS", "PS_ET"), select = Gene:Same_rel_patt)
 ET_PS <- mutate(ET_PS, 
-                Product = c("Inositol-1-monophosphatase", "YfgM family protein", 
-                            "YpfN family protein", "Sulfate/thiosulfate ABC transporter permease", 
-                            "Glutamate--tRNA ligase", 
-                            
-                            "YihA family ribosome biogenesis GTP-binding protein", "AsmA family protein", 
+                Product = c("Inositol-1-monophosphatase", "YfgM family protein", "YpfN family protein", "Sulfate/thiosulfate ABC transporter permease", 
+                            "Glutamate--tRNA ligase", "YihA family ribosome biogenesis GTP-binding protein", "AsmA family protein", 
                             "Phosphate ABC transporter permease", "5-(carboxyamino)imidazole ribonucleotide mutase", 
-                            "Efflux RND transporter periplasmic adaptor subunit", 
-                            
-                            "YajQ family cyclic di-GMP-binding protein", "Small ribosomal subunit biogenesis GTPase", 
-                            "30S ribosomal protein", "Ribosome-associated protein", 
-                            "1-deoxy-D-xylulose-5-phosphate reductoisomerase", 
-                            
-                            "Acetyl-CoA carboxylase carboxyl transferase subunit", 
-                            "YifB family Mg chelatase-like AAA ATPase", 
-                            "3',5'-cyclic-AMP phosphodiesterase", 
-                            "Deoxyribose-phosphate aldolase", 
-                            "Purine-nucleoside phosphorylase", 
-                            
-                            
-                            ),
-                Gene_check = c("37332_suhB", "37351_hypothetical_protein", "37398_hypothetical_protein", "37411_cysT", "37438_gltX", 
-                               
-                               "37467_engB", "37479_hypothetical_protein", "37488_pstA", "37509_purE", "37528_acrA", 
-                               
-                               "37561_hypothetical_protein", "37872_rsgA", "37893_rpsR", "37906_hypothetical_protein", "37939_dxr", 
-                               
-                               "37951_accA", 
-                               "37990_comM", 
-                               "38064_cpdA_1", 
-                               "38090_deoC", 
-                               "38093_deoD", 
-                               ))
-
-
-
-
-
-
-
+                            "Efflux RND transporter periplasmic adaptor subunit", "YajQ family cyclic di-GMP-binding protein", 
+                            "Small ribosomal subunit biogenesis GTPase", "30S ribosomal protein", "Ribosome-associated protein", 
+                            "1-deoxy-D-xylulose-5-phosphate reductoisomerase", "Acetyl-CoA carboxylase carboxyl transferase subunit", 
+                            "YifB family Mg chelatase-like AAA ATPase", "3',5'-cyclic-AMP phosphodiesterase", "Deoxyribose-phosphate aldolase", 
+                            "Purine-nucleoside phosphorylase", "YqgE/AlgH family protein", "Glycine cleavage system protein", 
+                            "NADP(H)-dependent aldo-keto reductase", "GTPase Era", "Holo-ACP synthase", "DNA-binding transcriptional regulator", 
+                            "Rod shape-determining protein", "p-hydroxybenzoic acid efflux pump subunit", "Obg family GTPase", 
+                            "Transcription elongation factor", "DNA polymerase III subunit", "Beta-N-acetylhexosaminidase", 
+                            "Ribosomal protein S5-alanine N-acetyltransferase", "IMPACT family protein", "O-antigen assembly polymerase", 
+                            "Glycine--tRNA ligase subunit", "Universal stress protein", "Deferrochelatase/peroxidase", 
+                            "CDP-diacylglycerol--glycerol-3-phosphate 3-phosphatidyltransferase", "23S rRNA pseudouridine(1911/1915/1917) synthase", 
+                            "Outer membrane protein assembly factor", "Glutamate-5-semialdehyde dehydrogenase", 
+                            "Pyridoxal phosphate-dependent aminotransferase", "CDP-diacylglycerol--serine O-phosphatidyltransferase", 
+                            "Threonine--tRNA ligase", "Two-component system response regulator", "Fe3+-hydroxamate ABC transporter ATP-binding protein", 
+                            "DNA starvation/stationary phase protection protein", "Multidrug efflux pump-associated protein, AcrZ family", 
+                            "Glutamine--tRNA ligase", "YbeD family protein", "DUF883 domain-containing protein", 
+                            "Bifunctional riboflavin kinase/FAD synthetase", "Lipoprotein signal peptidase", "DedA family protein", 
+                            "Thiamine/thiamine pyrophosphate ABC transporter permease", "MFS transporter", "YacL family protein", 
+                            "Aspartate-semialdehyde dehydrogenase", "Colicin V production protein", "Phosphate acetyltransferase", 
+                            "Ribonucleotide-diphosphate reductase subunit", "M48 family metallopeptidase", "Exoribonuclease II", 
+                            "DUF1049 domain-containing protein", "PHP domain-containing protein", "Sulfate ABC transporter substrate-binding protein", 
+                            "Triose-phosphate isomerase", "Cell division protein", "Primosomal protein", "Cystathionine gamma-synthase", 
+                            "Acetylornithine deacetylase", "DNA replication/repair protein", "DUF3748 domain-containing protein", 
+                            "Glyoxylate/hydroxypyruvate reductase", "Fe-S biogenesis protein", "ABC transporter ATP-binding protein", 
+                            "Phi X174 lysis protein", "Carbon storage regulator", "Arginine ABC transporter ATP-binding protein", "YejL family protein", 
+                            "1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino]imidazole-4-carboxamide isomerase", 
+                            "Dihydroneopterin triphosphate diphosphatase", "GAF domain-containing protein", "ATP-dependent DNA helicase", 
+                            "tRNA (adenosine(37)-N6)-threonylcarbamoyltransferase complex dimerization subunit type 1", "Hypothetical protein", 
+                            "Asparaginase"),
+                Gene_check = c("37332_suhB", "37351_hypothetical_protein", "37398_hypothetical_protein", "37411_cysT", "37438_gltX", "37467_engB", 
+                               "37479_hypothetical_protein", "37488_pstA", "37509_purE", "37528_acrA", "37561_hypothetical_protein", "37872_rsgA", 
+                               "37893_rpsR", "37906_hypothetical_protein", "37939_dxr", "37951_accA", "37990_comM", "38064_cpdA_1", "38090_deoC", 
+                               "38093_deoD", "38132_yqgF", "38166_gcvH", "38216_tas_1", "38374_era", "38377_acpS", "38411_fis", "38424_mreC", "38432_aaeA", 
+                               "38471_obg", "38486_greA", "38527_holC", "38597_nagZ", "38620_hypothetical_protein", "38625_yigZ", "38668_wzyE", 
+                               "38693_glyS", "38733_uspB", "38756_efeN", "38759_pgsA", "38829_rluD", "38830_bamD", "38840_proA", "38857_ybdL_2", 
+                               "38887_pssA", "38893_thrS", "38960_basR", "38971_fhuC_2", "39089_dps", "39118_acrZ", "39168_glnS", 
+                               "39195_hypothetical_protein", "39305_yqjD", "39386_ribF", "39388_lspA", "39405_yabI", "39407_hypothetical_protein", 
+                               "39409_setA", "39454_hypothetical_protein", "39515_usg", "39522_cvpA", "39530_pta", "39556_nrdB", "39655_ygjP", "39705_rnb", 
+                               "39712_lapA", "39723_yciV", "39843_sbp", "39845_tpiA", "39851_zapB", "39857_priA", "39860_metB", "39863_argE_2", 
+                               "39904_recF", "39913_hypothetical_protein", "39918_tkrA", "39956_nfuA", "39993_yheS", "39998_slyX", "40041_csrA", 
+                               "40055_artP", "40094_hypothetical_protein", "40158_hisA", "40269_nudB", "40290_msrC", "40304_dinG_1", "40305_tsaB", 
+                               "40311_ycgL", "40328_ansA"))
 
 unique(ET_PS$Gene == ET_PS$Gene_check) # If TRUE, then continue
 ET_PS <- subset(ET_PS, select = Gene:Product)
@@ -2333,9 +2339,43 @@ write.csv(x = BM_ET_PS, file = "8Results/Best_Model_ET_PS.csv", row.names = FALS
 
 ### Erwinia tasmaniensis and Tatumella ptyseos ####
 ET_TP <- subset(same, cal_two %in% c("TP_ET", "ET_TP"), select = Gene:Same_rel_patt)
+ET_TP <- mutate(ET_TP, 
+                Product = c("50S ribosomal protein"),
+                Gene_check = c("38582_rplB"))
+
+unique(ET_TP$Gene == ET_TP$Gene_check) # If TRUE, then continue
+ET_TP <- subset(ET_TP, select = Gene:Product)
+
+write.csv(x = ET_TP, file = "8Results/ET_TP.csv", row.names = FALSE)
+
+BM$ET_TP <- case_when(
+  BM$Gene %in% ET_TP$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_ET_TP <- subset(BM, ET_TP == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_ET_TP, file = "8Results/Best_Model_ET_TP.csv", row.names = FALSE)
 
 ### Pantoea septica and Tatumella ptyseos ####
 PS_TP <- subset(same, cal_two %in% c("PS_TP", "TP_PS"), select = Gene:Same_rel_patt)
+ET_TP <- mutate(ET_TP, 
+                Product = c("50S ribosomal protein"),
+                Gene_check = c("38582_rplB"))
+
+unique(ET_TP$Gene == ET_TP$Gene_check) # If TRUE, then continue
+ET_TP <- subset(ET_TP, select = Gene:Product)
+
+write.csv(x = ET_TP, file = "8Results/ET_TP.csv", row.names = FALSE)
+
+BM$ET_TP <- case_when(
+  BM$Gene %in% ET_TP$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_ET_TP <- subset(BM, ET_TP == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_ET_TP, file = "8Results/Best_Model_ET_TP.csv", row.names = FALSE)
 
 ### Pantoea septica and Tatumella saanichensis ####
 PS_TS <- subset(same, cal_two %in% c("PS_TS", "TS_PS"), select = Gene:Same_rel_patt)
@@ -2351,7 +2391,7 @@ PS_TS <- subset(same, cal_two %in% c("PS_TS", "TS_PS"), select = Gene:Same_rel_p
 
 
 nuc_cal <- read.csv(file = "8Results/M_calida_Nucleotide.csv", stringsAsFactors = FALSE)
-test <- ET_PS$Gene
+test <- ET_TP$Gene
 length(test)
 nuc_cal[which(nuc_cal$gene == test[1]), ]
 
