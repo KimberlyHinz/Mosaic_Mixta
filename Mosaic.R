@@ -2047,8 +2047,8 @@ rlvnt_Same_Genus$Same <- case_when(
 )
 
 same <- subset(rlvnt_Same_Genus, Same == TRUE)
-
-### Citrobacter freundii and Pantoea septica ####
+#
+### Citrobacter freundii and Pantoea septica ###
 CF_PS <- subset(same, cal_two %in% c("CF_PS", "PS_CF"), select = Gene:Same_rel_patt)
 CF_PS <- mutate(CF_PS, 
                 Product = c("Trigger factor", "30S ribosomal protein", "Acetyl-CoA carboxylase biotin carboxyl carrier protein", 
@@ -2071,7 +2071,7 @@ BM_CF_PS <- subset(BM, CF_PS == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_CF_PS, file = "8Results/Best_Model_CF_PS.csv", row.names = FALSE)
 
-### Enterobacter cloacae and Erwinia amylovora ####
+### Enterobacter cloacae and Erwinia amylovora ###
 EC_EA <- subset(same, cal_two %in% c("EC_EA", "EA_EC"), select = Gene:Same_rel_patt)
 
 EC_EA <- mutate(EC_EA, 
@@ -2092,7 +2092,7 @@ BM_EC_EA <- subset(BM, EC_EA == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_EC_EA, file = "8Results/Best_Model_EC_EA.csv", row.names = FALSE)
 
-### Enterobacter cloacae and Erwinia tasmaniensis ####
+### Enterobacter cloacae and Erwinia tasmaniensis ###
 EC_ET <- subset(same, cal_two %in% c("EC_ET", "ET_EC"), select = Gene:Same_rel_patt)
 
 EC_ET <- mutate(EC_ET, 
@@ -2113,7 +2113,7 @@ BM_EC_ET <- subset(BM, EC_ET == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_EC_EA, file = "8Results/Best_Model_EC_ET.csv", row.names = FALSE)
 
-### Enterobacter cloacae and Pantoea agglomerans ####
+### Enterobacter cloacae and Pantoea agglomerans ###
 EC_PA <- subset(same, cal_two %in% c("PA_EC", "EC_PA"), select = Gene:Same_rel_patt)
 
 EC_PA <- mutate(EC_PA, 
@@ -2134,7 +2134,7 @@ BM_EC_PA <- subset(BM, EC_PA == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_EC_PA, file = "8Results/Best_Model_EC_PA.csv", row.names = FALSE)
 
-### Enterobacter cloacae and Pantoea septica ####
+### Enterobacter cloacae and Pantoea septica ###
 EC_PS <- subset(same, cal_two %in% c("EC_PS", "PS_EC"), select = Gene:Same_rel_patt)
 
 EC_PS <- mutate(EC_PS, 
@@ -2148,11 +2148,6 @@ EC_PS <- mutate(EC_PS,
                 Gene_check = c("37521_recR", "37719_ydcV", "37720_potD", "37952_cetB", "38145_fbaA", "38426_yhdE", "38579_rpsC", "38580_rplV", 
                                "38586_rpsJ", "38617_rluC", "38678_rhlB", "38895_rpmI", "38897_pheS", "38917_rnt", "39300_yhaK", "39373_arcA", "39771_ygaU", 
                                "39814_rpmB", "40266_cmoA", "40390_nusG"))
-
-
-
-
-
 
 unique(EC_PS$Gene == EC_PS$Gene_check) # If TRUE, then continue
 EC_PS <- subset(EC_PS, select = Gene:Product)
@@ -2168,7 +2163,7 @@ BM_EC_PS <- subset(BM, EC_PS == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_EC_PS, file = "8Results/Best_Model_EC_PS.csv", row.names = FALSE)
 
-### Erwinia amylovora and Pantoea agglomerans ####
+### Erwinia amylovora and Pantoea agglomerans ###
 EA_PA <- subset(same, cal_two %in% c("EA_PA", "PA_EA"), select = Gene:Same_rel_patt)
 EA_PA <- mutate(EA_PA, 
                 Product = c("DUF3561 family protein", "Succinate dehydrogenase membrane anchor subunit", "2Fe-2S ferredoxin-like protein"),
@@ -2188,7 +2183,7 @@ BM_EA_PA <- subset(BM, EA_PA == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_EA_PA, file = "8Results/Best_Model_EA_PA.csv", row.names = FALSE)
 
-### Erwinia amylovora and Pantoea septica ####
+### Erwinia amylovora and Pantoea septica ###
 EA_PS <- subset(same, cal_two %in% c("EA_PS", "PS_EA"), select = Gene:Same_rel_patt)
 EA_PS <- mutate(EA_PS, 
                 Product = c("PTS glucose transporter subunit", "Nitrogen regulation protein", "Glucose-1-phosphatase", 
@@ -2234,7 +2229,7 @@ BM_EA_PS <- subset(BM, EA_PS == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_EA_PS, file = "8Results/Best_Model_EA_PS.csv", row.names = FALSE)
 
-### Erwinia amylovora and Tatumella ptyseos ####
+### Erwinia amylovora and Tatumella ptyseos ###
 EA_TP <- subset(same, cal_two %in% c("TP_EA", "EA_TP"), select = Gene:Same_rel_patt)
 EA_TP <- mutate(EA_TP, 
                 Product = c("50S ribosomal protein"),
@@ -2254,7 +2249,7 @@ BM_EA_TP <- subset(BM, EA_TP == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_EA_TP, file = "8Results/Best_Model_EA_TP.csv", row.names = FALSE)
 
-### Erwinia tasmaniensis and Pantoea amylovora ####
+### Erwinia tasmaniensis and Pantoea amylovora ###
 ET_PA <- subset(same, cal_two %in% c("ET_PA", "PA_ET"), select = Gene:Same_rel_patt)
 ET_PA <- mutate(ET_PA, 
                 Product = c("Cytochrome o ubiquinol oxidase subunit", "YggL family protein", "NADH-quinone oxidoreductase subunit"),
@@ -2274,7 +2269,7 @@ BM_ET_PA <- subset(BM, ET_PA == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_ET_PA, file = "8Results/Best_Model_ET_PA.csv", row.names = FALSE)
 
-### Erwinia tasmaniensis and Pantoea septica ####
+### Erwinia tasmaniensis and Pantoea septica ###
 ET_PS <- subset(same, cal_two %in% c("ET_PS", "PS_ET"), select = Gene:Same_rel_patt)
 ET_PS <- mutate(ET_PS, 
                 Product = c("Inositol-1-monophosphatase", "YfgM family protein", "YpfN family protein", "Sulfate/thiosulfate ABC transporter permease", 
@@ -2337,7 +2332,7 @@ BM_ET_PS <- subset(BM, ET_PS == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_ET_PS, file = "8Results/Best_Model_ET_PS.csv", row.names = FALSE)
 
-### Erwinia tasmaniensis and Tatumella ptyseos ####
+### Erwinia tasmaniensis and Tatumella ptyseos ###
 ET_TP <- subset(same, cal_two %in% c("TP_ET", "ET_TP"), select = Gene:Same_rel_patt)
 ET_TP <- mutate(ET_TP, 
                 Product = c("50S ribosomal protein"),
@@ -2357,47 +2352,58 @@ BM_ET_TP <- subset(BM, ET_TP == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_ET_TP, file = "8Results/Best_Model_ET_TP.csv", row.names = FALSE)
 
-### Pantoea septica and Tatumella ptyseos ####
+### Pantoea septica and Tatumella ptyseos ###
 PS_TP <- subset(same, cal_two %in% c("PS_TP", "TP_PS"), select = Gene:Same_rel_patt)
-ET_TP <- mutate(ET_TP, 
-                Product = c("50S ribosomal protein"),
-                Gene_check = c("38582_rplB"))
+PS_TP <- mutate(PS_TP, 
+                Product = c("30S ribosomal protein", "DUF1992 domain-containing protein", "50S ribosomal protein"),
+                Gene_check = c("38498_rpsO", "38558_hypothetical_protein", "40393_rplJ"))
 
-unique(ET_TP$Gene == ET_TP$Gene_check) # If TRUE, then continue
-ET_TP <- subset(ET_TP, select = Gene:Product)
+unique(PS_TP$Gene == PS_TP$Gene_check) # If TRUE, then continue
+PS_TP <- subset(PS_TP, select = Gene:Product)
 
-write.csv(x = ET_TP, file = "8Results/ET_TP.csv", row.names = FALSE)
+write.csv(x = PS_TP, file = "8Results/PS_TP.csv", row.names = FALSE)
 
-BM$ET_TP <- case_when(
-  BM$Gene %in% ET_TP$Gene ~ TRUE,
+BM$PS_TP <- case_when(
+  BM$Gene %in% PS_TP$Gene ~ TRUE,
   TRUE ~ FALSE
 )
 
-BM_ET_TP <- subset(BM, ET_TP == TRUE, select = Gene:ModelCode)
+BM_PS_TP <- subset(BM, PS_TP == TRUE, select = Gene:ModelCode)
 
-write.csv(x = BM_ET_TP, file = "8Results/Best_Model_ET_TP.csv", row.names = FALSE)
+write.csv(x = BM_PS_TP, file = "8Results/Best_Model_PS_TP.csv", row.names = FALSE)
 
-### Pantoea septica and Tatumella saanichensis ####
+### Pantoea septica and Tatumella saanichensis ###
 PS_TS <- subset(same, cal_two %in% c("PS_TS", "TS_PS"), select = Gene:Same_rel_patt)
 
+PS_TS <- mutate(PS_TS, 
+                Product = c("F0F1 ATP synthase subunit", "DEAD/DEAH family ATP-dependent RNA helicase", "Protein translocase subunit"),
+                Gene_check = c("38010_atpG", "38501_deaD", "39769_secF"))
 
+unique(PS_TS$Gene == PS_TS$Gene_check) # If TRUE, then continue
+PS_TS <- subset(PS_TS, select = Gene:Product)
 
+write.csv(x = PS_TS, file = "8Results/PS_TS.csv", row.names = FALSE)
 
+BM$PS_TS <- case_when(
+  BM$Gene %in% PS_TS$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
 
+BM_PS_TS <- subset(BM, PS_TS == TRUE, select = Gene:ModelCode)
 
-
+write.csv(x = BM_PS_TS, file = "8Results/Best_Model_PS_TS.csv", row.names = FALSE)
 
 #################
 
 
 nuc_cal <- read.csv(file = "8Results/M_calida_Nucleotide.csv", stringsAsFactors = FALSE)
-test <- ET_TP$Gene
+test <- PS_TS$Gene
 length(test)
 nuc_cal[which(nuc_cal$gene == test[1]), ]
 
 
-check <- read.csv(file = "8Results/EA_PS.csv", stringsAsFactors = FALSE)
-paste(check$Gene, ".fasta", sep = "")
+check <- read.csv(file = "8Results/PS_TS.csv", stringsAsFactors = FALSE)
+check1 <- as.data.frame(paste(check$Gene, ".fasta", sep = ""))
 
 #
 ### Kittens ###############################################################################################################################################
