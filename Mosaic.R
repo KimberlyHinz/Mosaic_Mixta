@@ -2393,16 +2393,183 @@ BM_PS_TS <- subset(BM, PS_TS == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_PS_TS, file = "8Results/Best_Model_PS_TS.csv", row.names = FALSE)
 
-#################
+### MEGAX: Usual order of relatives ########################################################################################################################
+
+rlvnt_genes <- read.csv(file = "8Results/MEGAX_Relevant_Genes.csv", stringsAsFactors = FALSE)
+BM <- read.csv(file = "8Results/Best_Model.csv", stringsAsFactors = FALSE)
+
+name_rel <- function(column, fir, las) {
+  case_when(
+    substring(column, first = fir, last = las) %in% c("PA_PS", "PS_PA") ~ "Pantoea",
+    substring(column, first = fir, last = las) %in% c("EA_ET", "ET_EA") ~ "Erwinia",
+    substring(column, first = fir, last = las) %in% c("TP_TS", "TS_TP") ~ "Tatumella",
+    substring(column, first = fir, last = las) %in% c("CF_EC", "EC_CF") ~ "Outgroup",
+    TRUE ~ "Nope"
+  )
+}
+
+order_cal <- read.csv(file = "8Results/M_calida_Relative_Pattern.csv", stringsAsFactors = FALSE)
+order_cal <- order_cal[order(-order_cal$Number), ]
+order_cal$Pattern <- substring(order_cal$Relative_Pattern, first = 7)
+
+order_cal$first <- name_rel(order_cal$Pattern, 1, 5)
+order_cal$second <- name_rel(order_cal$Pattern, 7, 11)
+order_cal$third <- name_rel(order_cal$Pattern, 13, 17)
+order_cal$fourth <- name_rel(order_cal$Pattern, 19, 23)
+order_cal$rel <- paste(order_cal$first, order_cal$second, order_cal$third, order_cal$fourth, sep = "_")
+
+order_cal$check <- case_when(
+  order_cal$first == "Nope" | order_cal$second == "Nope" | order_cal$third == "Nope" | order_cal$fourth == "Nope" ~ FALSE,
+  TRUE ~ TRUE
+)
+
+order_cal <- subset(order_cal, check == TRUE, Relative_Pattern:rel)
+
+order_gav <- read.csv(file = "8Results/M_gaviniae_Relative_Pattern.csv", stringsAsFactors = FALSE)
+order_gav <- order_gav[order(-order_gav$Number), ]
+order_gav$Pattern <- substring(order_gav$Relative_Pattern, first = 7)
+
+order_gav$first <- name_rel(order_gav$Pattern, 1, 5)
+order_gav$second <- name_rel(order_gav$Pattern, 7, 11)
+order_gav$third <- name_rel(order_gav$Pattern, 13, 17)
+order_gav$fourth <- name_rel(order_gav$Pattern, 19, 23)
+order_gav$rel <- paste(order_gav$first, order_gav$second, order_gav$third, order_gav$fourth, sep = "_")
+
+order_gav$check <- case_when(
+  order_gav$first == "Nope" | order_gav$second == "Nope" | order_gav$third == "Nope" | order_gav$fourth == "Nope" ~ FALSE,
+  TRUE ~ TRUE
+)
+
+order_gav <- subset(order_gav, check == TRUE, Relative_Pattern:rel)
+
+### Pantoea, Erwinia, Outgroup, Tatumella ####
+PEOT_patterns <- data.frame(patterns = c("PS_PA_ET_EA_EC_CF_TP_TS", "PS_PA_EA_ET_EC_CF_TP_TS", "PS_PA_ET_EA_EC_CF_TS_TP", "PS_PA_EA_ET_EC_CF_TS_TP", 
+                                         "PS_PA_ET_EA_CF_EC_TP_TS", "PS_PA_EA_ET_CF_EC_TP_TS", "PS_PA_ET_EA_CF_EC_TS_TP", "PA_PS_EA_ET_EC_CF_TP_TS", 
+                                         "PA_PS_ET_EA_EC_CF_TP_TS", "PA_PS_ET_EA_EC_CF_TS_TP", "PA_PS_ET_EA_CF_EC_TP_TS", "PS_PA_EA_ET_CF_EC_TS_TP",
+                                         "PA_PS_EA_ET_CF_EC_TS_TP", "PA_PS_ET_EA_CF_EC_TS_TP", "PA_PS_EA_ET_EC_CF_TS_TP", "PA_PS_EA_ET_CF_EC_TP_TS"))
+
+rlvnt_genes$cal_check <- case_when(
+  rlvnt_genes$cal_rel %in% PEOT_patterns$patterns ~ TRUE, 
+  TRUE ~ FALSE
+)
+rlvnt_genes$gav_check <- case_when(
+  rlvnt_genes$gav_rel %in% PEOT_patterns$patterns ~ TRUE,
+  TRUE ~ FALSE
+)
+
+PEOT <- subset(rlvnt_genes, cal_check == TRUE & gav_check == TRUE, select = Gene:Same_rel_patt)
+
+PEOT <- mutate(PEOT, 
+               Product = c("Succinylglutamate-semialdehyde dehydrogenase", "Succinylglutamate desuccinylase", "Aminopeptidase", 
+                           "tRNA(Met) cytidine acetyltransferase",  "Sulfate/thiosulfate ABC transporter ATP-binding protein", 
+                           "Phosphoenolpyruvate-protein phosphotransferase", "Glucokinase", 
+                           "Bifunctional GTP diphosphokinase/guanosine-3',5'-bis pyrophosphate 3'-pyrophosphohydrolase", 
+                           "Phosphate ABC transporter permease", "2-dehydropantoate 2-reductase", "Na/Pi cotransporter family protein", 
+                           "Glutamate/aspartate:proton symporter", "Nucleoside-specific channel-forming protein", 
+                           "S-(hydroxymethyl)glutathione dehydrogenase/class III alcohol dehydrogenase", "Miniconductance mechanosensitive channel", 
+                           "Unknown*", "Ribonuclease HII", "HTH-type transcriptional activator", "DHA2 family efflux MFS transporter permease subunit", 
+                           "Glutathionylspermidine synthase family protein", "TonB system transport protein", "Deoxyribonuclease", 
+                           "tRNA (guanosine(46)-N7)-methyltransferase", "Erythrose-4-phosphate dehydrogenase", "Cell division protein", 
+                           "HTH-type transcriptional regulator", "Bifunctional acyl-ACP--phospholipid O-acyltransferase/long-chain-fatty-acid--ACP ligase", 
+                           "DNA mismatch repair endonuclease", "Phosphoenolpyruvate--protein phosphotransferase", 
+                           "tRNA cyclic N6-threonylcarbamoyladenosine(37) synthase", "23S rRNA (uracil(1939)-C(5))-methyltransferase", 
+                           "Nucleoside triphosphate pyrophosphohydrolase", "CTP synthase (glutamine hydrolyzing)", "Phosphopyruvate hydratase", 
+                           "Sulfate adenylyltransferase subunit", "Class I SAM-dependent methyltransferase", "Anti-sigma-E factor", 
+                           "Sigma-E factor regulatory protein", "Pyridoxine 5'-phosphate synthase", 
+                           "Lipopolysaccharide ABC transporter substrate-binding protein", "tRNA pseudouridine(55) synthase", 
+                           "Aspartate carbamoyltransferase regulatory subunit", "50S ribosomal protein", "Xaa-Pro dipeptidase", "Tyrosine recombinase", 
+                           "DUF484 domain-containing protein", "Class I adenylate cyclase", "Lipopolysaccharide N-acetylmannosaminouronosyltransferase", 
+                           "TDP-N-acetylfucosamine:lipid II N-acetylfucosaminyltransferase", "Lipid III flippase", 
+                           
+                           "DNA helicase", "Insulinase family protein", "DUF3053 domain-containing protein", "ABC transporter ATP-binding protein", 
+                           "MOSC domain-containing protein", "Aminopeptidase", "Nicotinate phosphoribosyltransferase", "L,D-transpeptidase", 
+                           "Chromosome partition protein", "Esterase", "Glycine betaine/L-proline ABC transporter substrate-binding protein", 
+                           "Multidrug efflux MFS transporter periplasmic adaptor subunit", 
+                           "Bifunctional acetate--CoA ligase family protein/GNAT family N-acetyltransferase", "YdgA family protein", 
+                           "DNA replication terminus site-binding protein", "Trimeric intracellular cation channel family protein", 
+                           "Glutathione ABC transporter permease", "Glutathione ABC transporter permease", "DUF1615 domain-containing protein", 
+                           "Pyridoxal phosphatase", "CDF family zinc transporter", "Peptidoglycan-associated lipoprotein", "Tol-Pal system protein", 
+                           "Apolipoprotein N-acyltransferase", "Endolytic peptidoglycan transglycosylase", "TerC family protein", 
+                           "23S rRNA (guanine(1835)-N(2))-methyltransferase", 
+                           "Multifunctional transcriptional regulator/nicotinamide-nucleotide adenylyltransferase/ribosylnicotinamide kinase", 
+                           "Bifunctional aspartate kinase/homoserine dehydrogenase", "4-hydroxy-3-methylbut-2-enyl diphosphate reductase", 
+                           "Type 3 dihydrofolate reductase", "Pyruvate dehydrogenase complex transcriptional repressor", "Multicopper oxidase", 
+                           "ABC transporter permease", "Fructosamine kinase family protein", "Amidophosphoribosyltransferase", 
+                           "ABC transporter permease subunit", "NADH-quinone oxidoreductase subunit", "NADH-quinone oxidoreductase subunit", 
+                           "NADH-quinone oxidoreductase subunit", "Lipocalin family protein", "Nicotinamide mononucleotide deamidase-related protein", 
+                           "Phosphate regulon sensor histidine kinase", "Phosphate response regulator transcription factor", "YdbH family protein", 
+                           "TIGR01620 family protein", "Lipopolysaccharide assembly protein", "ABC transporter ATP-binding protein", 
+                           "Protein translocase subunit", 
+                           "Bifunctional diaminohydroxyphosphoribosylaminopyrimidine deaminase/5-amino-6-(5-phosphoribosylamino)uracil reductase", 
+                           
+                           "(2E,6E)-farnesyl diphosphate synthase", 
+                           "Bifunctional DNA-formamidopyrimidine glycosylase/DNA-(apurinic or apyrimidinic site) lyase", 
+                           "tRNA (uridine(54)-C5)-methyltransferase", "LacI family DNA-binding transcriptional regulator", "DcrB family lipoprotein", 
+                           "7-cyano-7-deazaguanine/7-aminomethyl-7-deazaguanine transporter", "Cell division ATP-binding protein", 
+                           "sn-glycerol-3-phosphate ABC transporter permease", "sn-glycerol-3-phosphate import ATP-binding protein", 
+                           "Glycerophosphodiester phosphodiesterase", "Pirin family protein", "Glycerol-3-phosphate dehydrogenase", 
+                           "DeoR/GlpR family transcriptional regulator", "Two-component system sensor histidine kinase", 
+                           "YheV family putative metal-binding protein", "FKBP-type peptidyl-prolyl cis-trans isomerase", "Glutamate--cysteine ligase", 
+                           "YbjN domain-containing protein", "Arginine ABC transporter permease", "Bcr/CflA family multidrug efflux MFS transporter", 
+                           "YeiH family putative sulfate export transporter", "Two-component system sensor histidine kinase", 
+                           "Imidazole glycerol phosphate synthase subunit", "Bifunctional histidinol-phosphatase/imidazoleglycerol-phosphate dehydratase", 
+                           "Histidinol dehydrogenase", "ATP phosphoribosyltransferase", "SDR family oxidoreductase", "Transcriptional regulator", 
+                           "Phosphate starvation-inducible protein", "Zinc ABC transporter permease subunit", "PqiB family protein", 
+                           "Carboxy terminal-processing peptidase", "Signal peptide peptidase", "N-methyl-L-tryptophan oxidase"),
+               Gene_check = c("37317_astD", "37319_astE", "37342_pepB", "37396_tmcA", "37413_cysA", "37426_ptsI", "37443_glk", "37483_spoT", "37487_pstC", 
+                              "37562_panE_1", "37781_hypothetical_protein", "37820_gltP", "37829_tsx", "37840_frmA", "37870_mscM", 
+                              "37923_hypothetical_protein", "37949_rnhB", "37984_gltC_2", "37996_hsrA_1", "38059_ygiC", "38077_exbD", "38089_yjjV", 
+                              "38124_trmB", "38143_epd", "38153_zapA", "38207_galR", "38214_aas", "38219_mutH", "38221_ptsP", "38233_tcdA", "38247_rlmD", 
+                              "38249_mazG", "38251_pyrG", "38252_eno", "38260_cysN", "38284_hypothetical_protein", "38368_rseA", "38369_rseB", "38376_pdxJ",
+                              "38455_lptA", "38497_truB", "38512_pyrI", "38578_rplP", "38626_pepQ", "38657_xerC", "38658_hypothetical_protein", 
+                              "38662_cyaA", "38667_wecG", "38669_wecF", "38670_wzxE", 
+                              
+                              "38680_rep", "38682_yhjJ", "38686_hypothetical_protein", "38787_uup", "38789_ycbX", "38792_pepN", "38793_pncB", 
+                              "38799_hypothetical_protein", "38802_mukF", "38844_hypothetical_protein", "38879_proX", "38881_emrA_2", "38886_pat", 
+                              "38936_ydgA", "38937_tus", "38956_hypothetical_protein", "39028_gsiD_1", "39029_gsiC_1", "39107_hypothetical_protein", 
+                              "39117_ybhA", "39126_zitB", "39133_pal", "39134_tolB", "39180_lnt", "39193_rlpA", "39309_alx", "39311_rlmG", "39364_nadR", 
+                              "39375_thrA", "39390_ispH", "39394_folA", "39448_pdhR", "39458_cueO", "39461_yadH", "39464_hypothetical_protein", 
+                              "39523_purF", "39526_hisQ", "39541_nuoG", "39547_nuoM", "39548_nuoN", "39550_blc", "39554_hypothetical_protein", "39565_phoR",
+                              "39566_phoB", "39682_hypothetical_protein", "39689_hypothetical_protein", "39711_lapB", "39745_oppD", "39768_secD", 
+                              "39773_ribD", 
+                              
+                              "39779_ispA", "39816_mutM", "39873_trmA", "39920_kdgR", "39929_hypothetical_protein", "39930_yhhQ", "39937_ftsE", 
+                              "39942_lacG", "39943_ugpC_1", "39944_ugpQ", "39946_yhhW_1", "39952_glpD", "39955_glpR", "39964_envZ", 
+                              "39996_hypothetical_protein", "39999_fkpA", "40040_gshA", "40050_ybjN", "40052_artM_3", "40099_bcr_4", 
+                              "40110_hypothetical_protein", "40129_baeS", "40159_hisH", "40160_hisB", "40162_hisD", "40163_hisG", "40164_yeeZ", 
+                              "40242_rcsA", "40252_phoH", "40274_znuB", "40288_hypothetical_protein", "40292_prc", "40329_sppA_2", "40384_solA"))
+
+unique(PEOT$Gene == PEOT$Gene_check) # If TRUE, then continue
+PEOT <- subset(PEOT, select = Gene:Product)
+
+write.csv(x = PEOT, file = "8Results/PEOT_pattern.csv", row.names = FALSE)
+
+BM$PEOT <- case_when(
+  BM$Gene %in% PEOT$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_PEOT <- subset(BM, PEOT == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_PEOT, file = "8Results/Best_Model_PEOT.csv", row.names = FALSE)
+
+### Next ####
+
+
+
+
+
+
+
 
 
 nuc_cal <- read.csv(file = "8Results/M_calida_Nucleotide.csv", stringsAsFactors = FALSE)
-test <- PS_TS$Gene
+test <- PEOT$Gene
 length(test)
 nuc_cal[which(nuc_cal$gene == test[1]), ]
 
 
-check <- read.csv(file = "8Results/PS_TS.csv", stringsAsFactors = FALSE)
+check <- read.csv(file = "8Results/PEOT_pattern.csv", stringsAsFactors = FALSE)
 check1 <- as.data.frame(paste(check$Gene, ".fasta", sep = ""))
 
 #
