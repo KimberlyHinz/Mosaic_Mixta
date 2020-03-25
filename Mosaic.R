@@ -1661,19 +1661,11 @@ rel_MLSA <- data.frame(Gene = c("38009_atpA", "38005_atpB", "38012_atpC", "38006
                                 "39382_dnaK", "39185_leuS", "38495_infB", "40044_recA", "39904_recF", "38360_recN", "38375_recO", "37521_recR", 
                                 "40043_recX", "38560_rpoA", "40395_rpoB", "40396_rpoC", "37744_rpoD", "39939_rpoH", "37484_rpoZ"),
                        Product = c("F0F1 ATP synthase", "F0F1 ATP synthase", "F0F1 ATP synthase", "F0F1 ATP synthase", "F0F1 ATP synthase", 
-                                   "F0F1 ATP synthase", "F0F1 ATP synthase", "F0F1 ATP synthase", 
-                                   
-                                   "Molecular chaperone", 
-                                   
-                                   "leucine--tRNA ligase",
-                                   
-                                   "Translation initiation factor", 
-                                   
-                                   "Recombinase", "DNA replication/repair protein", "DNA repair protein", "DNA repair protein", 
-                                   "Recombination protein", "Regulatory protein", 
-                                   
-                                   "DNA-directed RNA polymerase", "DNA-directed RNA polymerase", "DNA-directed RNA polymerase", 
-                                   "RNA polymerase sigma factor", "RNA polymerase sigma factor", "DNA-directed RNA polymerase"))
+                                   "F0F1 ATP synthase", "F0F1 ATP synthase", "F0F1 ATP synthase", "Molecular chaperone", "leucine--tRNA ligase",
+                                   "Translation initiation factor", "Recombinase", "DNA replication/repair protein", "DNA repair protein", 
+                                   "DNA repair protein", "Recombination protein", "Regulatory protein", "DNA-directed RNA polymerase", 
+                                   "DNA-directed RNA polymerase", "DNA-directed RNA polymerase", "RNA polymerase sigma factor", 
+                                   "RNA polymerase sigma factor", "DNA-directed RNA polymerase"))
 rel_MLSA <- rel_MLSA[order(rel_MLSA$Gene), ]
 
 rlvnt_genes$MLSA <- case_when(
