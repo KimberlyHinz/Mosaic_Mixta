@@ -46,7 +46,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Abstract
 
-**Rationale:**
+**Rationale and purpose:**
 
 **Methods:** 
 
@@ -116,26 +116,26 @@ kable(abbrevs)
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 # Introduction
-**Background**
-*Mixta species*
+## Background
+### Mixta species
 
 
-*Mosaic genomes*
+### Mosaic genomes?
 
 
-*Horizontal gene transfer*
+### Horizontal gene transfer
 
 
-
-**Brief study description**
-
-**Purpose**
+## Purpose
 The purpose of my honours thesis is to determine the cause behind the contentious phylogenetic results for two of the *Mixta* species and identify genomic mosaicism and horizontal gene transfer events.
+
+## Brief study description
+Ten complete or partial genomes – two each for *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, and outgroup – were retrieved from the National Centre for Biotechnology Information (NCBI; http://www.ncbi.nlm.nig.gov/). The genomes were annotated with Prokka v1.14.1 [@Seemann2014] and homologous genes were extracted using GET_HOMOLOGUES software package [@Contreras-Moreira2013]. A filter pipeline was written in `R` to remove any files containing truncated, missing, or paralogous genes. The genes were then aligned using the ClustalW algorithm with the `msaClustalW()` [@Bodenhofer2015] function in `R` (package: `msa`). Model testing and distance matrices were computed using MEGA-CC [@Kumar2012].
 
 
 # Materials and Methods
 ## Genomes and Homologous Genes
-Publicly available full genomes were retrieved from the National Centre for Biotechnology Information (NCBI) comprising of ten type strains from *Mixta*, *Pantoae*, *Erwinia*, *Tatumella*, *Citrobacter*, and *Enterobacter*. A list of these strains follows:
+Publicly available full genomes were retrieved from NCBI comprising of ten type strains from *Mixta*, *Pantoae*, *Erwinia*, *Tatumella*, *Citrobacter*, and *Enterobacter*. A list of these strains follows:
 
 ```{r echo = FALSE, message = FALSE, fig.cap=TRUE}
 library("dplyr")
