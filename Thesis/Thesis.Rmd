@@ -46,9 +46,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Abstract
 
-**Rationale and purpose:**
+**Rationale:** Depending on the genes and method used, the genus with which *Mixta* shares the most recent ancestor differs when phylogenetic analysis is done. This study aims to determine the cause behind these contentious results and identify genes that resulted from horizontal gene transfer.
 
-**Methods:** 
+**Methods:** Ten complete or partial genomes – two *Mixta* species, six species from other *Erwinicieae* genera, and two outgroups – were retrieved from NCBI and annotated. Homologous genes were extracted. The ClustalW algorithm was used for the alignment and model testing and distance matrices were computed through MEGA-CC.
 
 **Results**
 
