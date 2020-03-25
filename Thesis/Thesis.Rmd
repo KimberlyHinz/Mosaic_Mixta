@@ -1,5 +1,5 @@
 ---
-title: "A tale of two genomes: Phylogenetic analyses of contentious relationships with two *Mixta* species (*Erwiniaceae*) and identification of horizontal gene transfer events"
+title: "A tale of two genomes: Phylogenetic analyses of contentious relationships with two *Mixta* species (*Erwiniaceae*) and identification of horizontal gene transfer events OR A tale of two genomes: the identification of mosaicism in two *Mixta* species and horizontal gene transfer events using phylogenetic analyses"
 output:
   word_document:
     reference_docx: Styles1.docx
@@ -46,7 +46,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Abstract
 
-This is the abstract for my honours thesis.
+**Rationale:**
+
+**Methods:** 
+
+**Results**
+
+**Conclusions:** 
 
 <!-- ```{=openxml} -->
 <!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
@@ -110,7 +116,12 @@ kable(abbrevs)
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 # Introduction
+**Background**
 
+**Brief study description**
+
+**Purpose**
+The purpose of my honours thesis is to determine the cause behind the contentious phylogenetic results for two of the *Mixta* species and identify genomic mosaicism and horizontal gene transfer events.
 
 
 # Materials and Methods
