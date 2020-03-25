@@ -117,6 +117,15 @@ kable(abbrevs)
 ```
 # Introduction
 **Background**
+*Mixta species*
+
+
+*Mosaic genomes*
+
+
+*Horizontal gene transfer*
+
+
 
 **Brief study description**
 
