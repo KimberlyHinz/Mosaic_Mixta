@@ -2425,6 +2425,22 @@ order_cal$check <- case_when(
 
 order_cal <- subset(order_cal, check == TRUE, Relative_Pattern:rel)
 
+patt_MC <- data.frame(Rel_Pattern = unique(order_cal$rel))
+
+M_cal_patterns <- as.data.frame(matrix(nrow = 0, ncol = 0))
+for(row in 1:nrow(patt_MC)) {
+  pat <- subset(order_cal, rel == patt_MC$Rel_Pattern[row])
+  
+  pat2 <- as.data.frame(matrix(ncol = 0, nrow = 1))
+  pat2 <- mutate(pat2,
+                 pattern = patt_MC$Rel_Pattern[row],
+                 sum_genes = sum(pat$Number))
+  M_cal_patterns <- rbind(M_cal_patterns, pat2)
+}
+rm(pat, pat2, patt_MC, row)
+M_cal_patterns <- subset(M_cal_patterns, sum_genes >= 10)
+
+
 order_gav <- read.csv(file = "8Results/M_gaviniae_Relative_Pattern.csv", stringsAsFactors = FALSE)
 order_gav <- order_gav[order(-order_gav$Number), ]
 order_gav$Pattern <- substring(order_gav$Relative_Pattern, first = 7)
@@ -2442,7 +2458,22 @@ order_gav$check <- case_when(
 
 order_gav <- subset(order_gav, check == TRUE, Relative_Pattern:rel)
 
-### Pantoea, Erwinia, Outgroup, Tatumella ####
+patt_MG <- data.frame(Rel_Pattern = unique(order_gav$rel))
+
+M_gav_patterns <- as.data.frame(matrix(nrow = 0, ncol = 0))
+for(row in 1:nrow(patt_MG)) {
+  pat <- subset(order_cal, rel == patt_MG$Rel_Pattern[row])
+  
+  pat2 <- as.data.frame(matrix(ncol = 0, nrow = 1))
+  pat2 <- mutate(pat2,
+                 pattern = patt_MG$Rel_Pattern[row],
+                 sum_genes = sum(pat$Number))
+  M_gav_patterns <- rbind(M_gav_patterns, pat2)
+}
+rm(pat, pat2, patt_MG, row)
+M_gav_patterns <- subset(M_gav_patterns, sum_genes >= 10)
+
+### Pantoea, Erwinia, Outgroup, Tatumella ###
 PEOT_patterns <- data.frame(patterns = c("PS_PA_ET_EA_EC_CF_TP_TS", "PS_PA_EA_ET_EC_CF_TP_TS", "PS_PA_ET_EA_EC_CF_TS_TP", "PS_PA_EA_ET_EC_CF_TS_TP", 
                                          "PS_PA_ET_EA_CF_EC_TP_TS", "PS_PA_EA_ET_CF_EC_TP_TS", "PS_PA_ET_EA_CF_EC_TS_TP", "PA_PS_EA_ET_EC_CF_TP_TS", 
                                          "PA_PS_ET_EA_EC_CF_TP_TS", "PA_PS_ET_EA_EC_CF_TS_TP", "PA_PS_ET_EA_CF_EC_TP_TS", "PS_PA_EA_ET_CF_EC_TS_TP",
@@ -2553,24 +2584,122 @@ BM_PEOT <- subset(BM, PEOT == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_PEOT, file = "8Results/Best_Model_PEOT.csv", row.names = FALSE)
 
-### Next ####
+### Pantoea, Erwinia, Tatumella, Outgroup ###
+PETO_patterns <- data.frame(patterns = c("PS_PA_ET_EA_TS_TP_EC_CF", "PS_PA_EA_ET_TP_TS_EC_CF", "PS_PA_ET_EA_TP_TS_EC_CF", "PS_PA_ET_EA_TP_TS_CF_EC", 
+                                         "PS_PA_EA_ET_TS_TP_EC_CF", "PS_PA_EA_ET_TS_TP_CF_EC", "PA_PS_EA_ET_TP_TS_EC_CF", "PA_PS_EA_ET_TS_TP_CF_EC", 
+                                         "PA_PS_ET_EA_TP_TS_EC_CF", "PS_PA_EA_ET_TP_TS_CF_EC", "PA_PS_EA_ET_TS_TP_EC_CF", "PA_PS_ET_EA_TS_TP_EC_CF", 
+                                         "PA_PS_ET_EA_TS_TP_CF_EC", "PS_PA_ET_EA_TS_TP_CF_EC", "PA_PS_EA_ET_TP_TS_CF_EC"))
+
+rlvnt_genes$cal_check <- case_when(
+  rlvnt_genes$cal_rel %in% PETO_patterns$patterns ~ TRUE, 
+  TRUE ~ FALSE
+)
+rlvnt_genes$gav_check <- case_when(
+  rlvnt_genes$gav_rel %in% PETO_patterns$patterns ~ TRUE,
+  TRUE ~ FALSE
+)
+
+PETO <- subset(rlvnt_genes, cal_check == TRUE & gav_check == TRUE, select = Gene:Same_rel_patt)
+
+PETO <- mutate(PETO, 
+               Product = c("Bile acid:sodium symporter", "Ferrochelatase", "Cytochrome o ubiquinol oxidase subunit", "Porin", "Molecular chaperone", 
+                           "Transcriptional regulator", "F0F1 ATP synthase subunit", "Membrane-bound lytic murein transglycosylase", 
+                           "Phosphoglycerate kinase", "Cell division protein", "SoxR-reducing system protein", "YhdT family protein", 
+                           "LPS export ABC transporter periplasmic protein", "Thiamine kinase", 
+                           "Bifunctional demethylmenaquinone methyltransferase/2-methoxy-6-polyprenyl-1,4-benzoquinol methylase", "Porin", 
+                           "Electron transport complex subunit", "Deaminated glutathione amidase", "Isopentenyl-diphosphate Delta-isomerase", 
+                           "ATP-binding cassette domain-containing protein", "Co-chaperone", "DUF481 domain-containing protein", 
+                           "Transporter substrate-binding domain-containing protein", "Outer membrane protein", "Cell division protein", 
+                           "UDP-glucose 4-epimerase", "Holliday junction branch migration protein"),
+               Gene_check = c("37436_hypothetical_protein", "37518_hemH", "37557_cyoC", "37818_hypothetical_protein", "37944_skp", "38000_asnC", 
+                              "38004_atpI", "38121_mltC", "38144_pgk", "38263_ftsB", "38370_rseC", "38415_yhdT", "38456_lptC", "38598_thiK", "38636_ubiE", 
+                              "38778_ompA", "38929_rsxG", "39033_ybeM", "39095_idi", "39115_livF", "39401_djlA", "39463_hypothetical_protein", 
+                              "39525_argT_5", "39731_ompW", "39938_ftsX", "40142_galE", "40272_ruvA"))
+
+unique(PETO$Gene == PETO$Gene_check) # If TRUE, then continue
+PETO <- subset(PETO, select = Gene:Product)
+
+write.csv(x = PETO, file = "8Results/PETO_pattern.csv", row.names = FALSE)
+
+BM$PETO <- case_when(
+  BM$Gene %in% PETO$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_PETO <- subset(BM, PETO == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_PETO, file = "8Results/Best_Model_PETO.csv", row.names = FALSE)
+
+### Pantoea, Outgroup, Erwinia, and Tatumella ###
+POET_patterns <- data.frame(patterns = c("PS_PA_EC_CF_ET_EA_TP_TS", "PS_PA_EC_CF_EA_ET_TP_TS", "PS_PA_EC_CF_ET_EA_TS_TP", "PS_PA_CF_EC_EA_ET_TP_TS", 
+                                         "PS_PA_EC_CF_EA_ET_TS_TP", "PS_PA_CF_EC_ET_EA_TS_TP", "PS_PA_CF_EC_ET_EA_TP_TS", "PS_PA_CF_EC_EA_ET_TS_TP", 
+                                         "PA_PS_CF_EC_EA_ET_TP_TS", "PA_PS_EC_CF_ET_EA_TP_TS"))
+
+rlvnt_genes$cal_check <- case_when(
+  rlvnt_genes$cal_rel %in% POET_patterns$patterns ~ TRUE, 
+  TRUE ~ FALSE
+)
+rlvnt_genes$gav_check <- case_when(
+  rlvnt_genes$gav_rel %in% POET_patterns$patterns ~ TRUE,
+  TRUE ~ FALSE
+)
+
+POET <- subset(rlvnt_genes, cal_check == TRUE & gav_check == TRUE, select = Gene:Same_rel_patt)
+
+POET <- mutate(POET, 
+               Product = c("Cysteine synthase", "30S ribosomal protein", "UDP-N-acetyl-D-mannosamine dehydrogenase", "Phenylalanine--tRNA ligase subunit", 
+                           "3-deoxy-7-phosphoheptulonate synthase", "Carbamoyl-phosphate synthase large subunit", "Ferredoxin--NADP(+) reductase", 
+                           "Murein DD-endopeptidase", "Disulfide bond formation protein"),
+               Gene_check = c("37428_cysK", "38571_rpsH", "38673_wecC", "38898_pheT", "39125_aroG", "39393_carB", "39847_fpr", "40277_mepM", "40314_dsbB"))
+
+unique(POET$Gene == POET$Gene_check) # If TRUE, then continue
+POET <- subset(POET, select = Gene:Product)
+
+write.csv(x = POET, file = "8Results/POET_pattern.csv", row.names = FALSE)
+
+BM$POET <- case_when(
+  BM$Gene %in% POET$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
+
+BM_POET <- subset(BM, POET == TRUE, select = Gene:ModelCode)
+
+write.csv(x = BM_POET, file = "8Results/Best_Model_POET.csv", row.names = FALSE)
+
+#
+### MEGAX: Weird genes ####################################################################################################################################
+
+rlvnt_genes <- read.csv(file = "8Results/MEGAX_Relevant_Genes.csv", stringsAsFactors = FALSE)
+BM <- read.csv(file = "8Results/Best_Model.csv", stringsAsFactors = FALSE)
+
+rlvnt_genes$weird <- case_when(
+  rlvnt_genes$Gene %in% c("38235_csdA", "38434_hypothetical_protein", "38747_fhuA_1", "38985_ttuB", "39549_hypothetical_protein") ~ TRUE,
+  TRUE ~ FALSE
+)
+
+weird <- subset(rlvnt_genes, weird == TRUE, Gene:Same_rel_patt)
+
+weird <- mutate(weird, 
+                Product = c("Cysteine desulfurase", "Peroxide/acid stress response protein", "TonB-dependent siderophore receptor", "MFS transporter", 
+                            "Cold shock domain-containing protein"),
+                Gene_check = c("38235_csdA", "38434_hypothetical_protein", "38747_fhuA_1", "38985_ttuB", "39549_hypothetical_protein"))
 
 
 
 
+unique(weird$Gene == weird$Gene_check) # If TRUE, then continue
+weird <- subset(weird, select = Gene:Product)
 
+write.csv(x = weird, file = "8Results/weird.csv", row.names = FALSE)
 
+BM$weird <- case_when(
+  BM$Gene %in% weird$Gene ~ TRUE,
+  TRUE ~ FALSE
+)
 
+BM_weird <- subset(BM, weird == TRUE, select = Gene:ModelCode)
 
-
-nuc_cal <- read.csv(file = "8Results/M_calida_Nucleotide.csv", stringsAsFactors = FALSE)
-test <- PEOT$Gene
-length(test)
-nuc_cal[which(nuc_cal$gene == test[1]), ]
-
-
-check <- read.csv(file = "8Results/PEOT_pattern.csv", stringsAsFactors = FALSE)
-check1 <- as.data.frame(paste(check$Gene, ".fasta", sep = ""))
+write.csv(x = BM_weird, file = "8Results/Best_Model_weird.csv", row.names = FALSE)
 
 #
 ### Kittens ###############################################################################################################################################
