@@ -1,5 +1,5 @@
 ---
-title: "A tale of two genomes: Phylogenetic analyses of contentious relationships with two *Mixta* species (*Erwiniaceae*) and identification of horizontal gene transfer events OR A tale of two genomes: the identification of mosaicism in two *Mixta* species and horizontal gene transfer events using phylogenetic analyses"
+title: "A tale of two genomes: Phylogenetic analyses of contentious relationships with two *Mixta* species (*Erwiniaceae*) and identification of horizontal gene transfer events"
 output:
   word_document:
     reference_docx: Styles1.docx
@@ -54,6 +54,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Conclusions:** 
 
+# Other stuff
 <!-- ```{=openxml} -->
 <!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
 <!-- ``` -->
@@ -120,14 +121,12 @@ kable(abbrevs)
 ### Mixta species
 
 
-### Mosaic genomes?
-
 
 ### Horizontal gene transfer
 
 
 ## Purpose
-The purpose of my honours thesis is to determine the cause behind the contentious phylogenetic results for two of the *Mixta* species and identify genomic mosaicism and horizontal gene transfer events.
+The purpose of my honours thesis is to determine the cause behind the contentious phylogenetic results for two of the *Mixta* species and identify gene transfer events.
 
 ## Brief study description
 Ten complete or partial genomes – two each for *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, and outgroup – were retrieved from the National Centre for Biotechnology Information (NCBI; http://www.ncbi.nlm.nig.gov/). The genomes were annotated with Prokka v1.14.1 [@Seemann2014] and homologous genes were extracted using GET_HOMOLOGUES software package [@Contreras-Moreira2013]. A filter pipeline was written in `R` to remove any files containing truncated, missing, or paralogous genes. The genes were then aligned using the ClustalW algorithm with the `msaClustalW()` [@Bodenhofer2015] function in `R` (package: `msa`). Model testing and distance matrices were computed using MEGA-CC [@Kumar2012].
@@ -176,6 +175,7 @@ All `R` code written for the analysis of the 10 genomes, homologous genes, align
 
 # Conclusion
 
+Future: looking into this as a mosaic genome.
 # Tips
 
 For hyperlinks: <http://rmarkdown.rstudio.com>
