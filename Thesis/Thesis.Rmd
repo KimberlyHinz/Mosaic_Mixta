@@ -119,17 +119,18 @@ kable(abbrevs)
 # Introduction
 ## Background
 ### Mixta species
-
+The bacterial family Erwiniaceae includes diverse Gram-negative [Winslow et  al. 1917; Prakash et al. 2015 organisms including, at the time of this writing, the genera Mixta, Pantoea, Erwinia, Tatumella, Buchnera, Wigglesworthia, Phaseolibacter, Kalamiella (LPSN, http://www.bacterio.net/). For example, the genus Erwinia contains plant pathogens (e.g. E. amylovora) [Hauben & Swings, 2005; López et  al. 2011; Matsuura et  al. 2012], epiphytes (e.g. E. tasmaniensis) [Geider et  al. 2006; Mergaert et  al. 1999], species that may contribute to plant disease [Buonaurio et  al. 2015], and insect-associated bacteria [Campillo et  al. 2015; Harada et  al. 1997; Skrodenyte-Arbaciauskiene et  al. 2012]. Similarly, Pantoea, a genus reported by Gavini et al. [1989], includes species that inhabit a variety of environments [Gavini et  al. 1989; Popp et  al. 2010; Liu et  al. 2013] and include known human and plant pathogens [Prakash et al. 2015; De Baere et al. 2004; Fullerton et al. 2007; Kratz et al. 2003; Lim et al. 2006; Schmid et al. 2003; Van Rostenberghe et al. 2006] as well as species associated with plant growth [Smits et al. 2011; Kim et al. 2012], with insects [Palmer et al. 2016], and with fungi [Ma et al. 2016, Rong et al. 2016]. Mixta, originally Pantoea, is a novel genus first suggested by Palmer et al. [Palmer et al. 2017] and then later proposed by the same researchers in 2018 [Palmer et al. 2018]. Two species, M. calida and M. gaviniae (the Pantoea), were originally found in infant formula and its production environment [Popp et al. 2010] and Fritz et al. [Fritz et al. 2014] demonstrated that some strains of M. calida were linked with post-surgical meningitis in humans. Currently, there are only five Mixta species validly published (LPSN, http://www.bacterio.net/).
 
 
 ### Horizontal gene transfer
 
+### Analyses
 
 ## Purpose
 The purpose of my honours thesis is to determine the cause behind the contentious phylogenetic results for two of the *Mixta* species and identify gene transfer events.
 
 ## Brief study description
-Ten complete or partial genomes – two each for *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, and outgroup – were retrieved from the National Centre for Biotechnology Information (NCBI; http://www.ncbi.nlm.nig.gov/). The genomes were annotated with Prokka v1.14.1 [@Seemann2014] and homologous genes were extracted using GET_HOMOLOGUES software package [@Contreras-Moreira2013]. A filter pipeline was written in `R` to remove any files containing truncated, missing, or paralogous genes. The genes were then aligned using the ClustalW algorithm with the `msaClustalW()` [@Bodenhofer2015] function in `R` (package: `msa`). Model testing and distance matrices were computed using MEGA-CC [@Kumar2012].
+Ten complete or partial genomes – two each for *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, and outgroup – were retrieved from the National Centre for Biotechnology Information (NCBI; http://www.ncbi.nlm.nig.gov/). The genomes were annotated with Prokka v1.14.1 [@Seemann2014] and homologous genes were extracted using GET_HOMOLOGUES software package [@Contreras-Moreira2013]. A filter pipeline was written in `R` [@RCore2019] to remove any files containing truncated, missing, or paralogous genes. The genes were then aligned using the ClustalW algorithm with the `msaClustalW()` [@Bodenhofer2015] function in `R` (package: `msa`). Model testing and distance matrices were computed using MEGA-CC [@Kumar2012].
 
 
 # Materials and Methods
@@ -156,13 +157,13 @@ kable(strain, caption = "Table __. Species' names, strains, and assembly levels 
 
 The genomes were annotated with Prokka v1.14.1 [@Seemann2014] using default parameters and homologous genes were extracted using GET_HOMOLOGUES software package [@Contreras-Moreira2013] with the bidirectional best-hit search algorithm using default parameters. GET_HOMOLOGUES extracted 1284 genes that were common between the ten species. 
 
-Within `R`, a filtering function was created to pass forward fasta files with ten, non-truncated sequences. The minimum gene length to pass through the filter was 90% of the length of the longest sequence in that file. This filter ensured that files containing split, missing, or paralogous genes were not included in the analysis. As a result, 1035 files of the 1284 were passed through. 
+Within `R` [@RCore2019], a filtering function was created to pass forward fasta files with ten, non-truncated sequences. The minimum gene length to pass through the filter was 90% of the length of the longest sequence in that file. This filter ensured that files containing split, missing, or paralogous genes were not included in the analysis. As a result, 1035 files of the 1284 were passed through. 
 
 ## Gene Alignment
 Gene alignments were done in `R` with a few software packages. The fasta files were read in using the `readDNAStringSet()` function [@Aboyoun2018] (package: `Biostrings`). The alignments were done using the ClustalW algorithm with the `msaClustalW()` [@Bodenhofer2015] (package: `msa`). The number of maximum iterations was set to 100 and the other parameters were kept at default settings [@Bodenhofer2015]. Alignments were then converted into a readable format using `msaConvert` [@Bodenhofer2015] (package: `msa`) and then written as fasta files using `write.fasta()` [@Jordan2007] (package: `seqinr`).
 
 ## Distance Matrices
-Prior to computing distance matrices, model testing was done for each of the 1035 gene files through MEGA-CC [@Kumar2012] by calling a text file containing the file pathways and a MAO file detailing the analysis preferences. These results were exported as comma-separated values (CSV) and read into `R`. The best model was chosen based on the lowest BIC and if it was available for distance matrices in MEGAX [@Kumar2012]. General Time Reversible (GTR) models and Hasegawa-Kishino-Yano (HKY) models were not available for distance matrices and so these models were not considered during model testing. Furthermore, the rates among sites option invariant sites (+I) was also not available for distance matrices and were subsequently ignored.
+Prior to computing distance matrices, model testing was done for each of the 1035 gene files through MEGA-CC [@Kumar2012] by calling a text file containing the file pathways and a MAO file detailing the analysis preferences. These results were exported as comma-separated values (CSV) and read into `R`. The best model was chosen based on the lowest BIC and if it was available for distance matrices in MEGAX [@Kumar2018]. General Time Reversible (GTR) models and Hasegawa-Kishino-Yano (HKY) models were not available for distance matrices and so these models were not considered during model testing. Furthermore, the rates among sites option invariant sites (+I) was also not available for distance matrices and were subsequently ignored.
 
 The gene files were separated into groups according to the suggested model and text files were created with their file pathways. These text files were called in turn along with a corresponding MAO file through MEGA-CC to compute the distance matrices for each gene. Variance was estimated with 500 bootstraps, transitions and transversions were allowed, and gaps and missing data were treated with pairwise deletion.
 
