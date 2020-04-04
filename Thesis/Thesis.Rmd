@@ -1,51 +1,49 @@
 ---
-title: "A tale of two genomes: Phylogenetic analyses of contentious relationships with two *Mixta* species (*Erwiniaceae*) and identification of horizontal gene transfer events"
+title: "A tale of two genomes: Analyses of contentious phylogenetic relationships of two *Mixta* species (*Erwiniaceae*) and identification of horizontal gene transfer events"
 output:
   word_document:
     reference_docx: Styles1.docx
     fig_caption: true
     toc: true
     toc_depth: 5
-# bibliography: References.bib
-# csl: nature-genetics.csl
+bibliography: References.bib
+csl: nature-genetics.csl
 ---
-# Title Page
-<!-- A Thesis -->
+# Beginning
+A Thesis
 
-<!-- Submitted to the Department of Biology -->
+Submitted to the Department of Biology
 
-<!-- In Partial Fulfillment of the Requirements -->
+In Partial Fulfillment of the Requirements
 
-<!-- For the Degree of -->
+For the Degree of
 
-<!-- <br> -->
+<br>
 
-<!-- Bachelor of Science -->
+Bachelor of Science
 
-<!-- in -->
+in
 
-<!-- Honours Biology -->
+Honours Biology
 
-<!-- University of Regina -->
+University of Regina
 
-<!-- <br> -->
+<br>
 
-<!-- By -->
+By
 
-<!-- Kimberly Hinz -->
+Kimberly Hinz
 
-<!-- Regina, Saskatchewan -->
+Regina, Saskatchewan
 
-<!-- April, 2020   -->
+April, 2020
 
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 # Abstract
 
-**Rationale:** Depending on the genes and method used, the genus with which *Mixta* shares the most recent ancestor differs when phylogenetic analysis is done. This study aims to determine the cause behind these contentious results and identify genes that resulted from horizontal gene transfer.
-
-**Methods:** Ten complete or partial genomes – two *Mixta* species, six species from other *Erwiniaceae* genera, and two outgroups – were retrieved from NCBI and annotated. Homologous genes were extracted. The ClustalW algorithm was used for the alignment and model testing and distance matrices were computed through MEGA-CC.
+*Mixta* is a recently described genus within the bacterial family *Erwiniaceae* that is closely related to *Pantoea*, *Erwinia*, and *Tatumella*. Depending on the genes and method used for phylogenetic analysis, the genus with which *Mixta* shares the most recent ancestor differs. This study aimed to determine the cause behind these contentious results, and identified genes that resulted from horizontal gene transfer. Ten complete or partial genomes – two *Mixta* species, six species from other *Erwiniaceae* genera, and two outgroups – were retrieved from NCBI and annotated. Homologous genes were extracted yielding a dataset of 1035 genes. The ClustalW algorithm was used for the alignment and model testing and distance matrices were computed through MEGA-CC.
 
 **Results**
 
@@ -76,21 +74,21 @@ output:
 
 <!-- To Christina Solinas, who sparked my passion for genetics all those years ago. I may not have realized it back then, but biology was what I was always meant to study. Thank you; you have changed my life. -->
 
-<!-- ```{=openxml} -->
-<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
-<!-- ``` -->
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
 # Table of Contents
 
 
-<!-- ```{=openxml} -->
-<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
-<!-- ``` -->
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
 # List of Figures
 
 
-<!-- ```{=openxml} -->
-<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
-<!-- ``` -->
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
 # List of Abbreviations
 ```{r echo = FALSE, message = FALSE, fig.cap=FALSE}
 abbrevs <- data.frame(Abbreviation = c("GTR", "HKY", "HGT", "MLSA", "NCBI", "rRNA"),
@@ -104,18 +102,25 @@ kable(abbrevs)
 <!-- ```{=openxml} -->
 <!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
 <!-- ``` -->
-# List of Appendices
+<!-- # List of Appendices -->
 
 
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 # Introduction
-The bacterial family *Erwiniaceae* includes diverse Gram-negative [@Winslow1917]\ [@Prakash2015] organisms including, at the time of this writing, the genera *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, Buchnera, Wigglesworthia, Phaseolibacter, Kalamiella (LPSN, http://www.bacterio.net/). For example, the genus *Erwinia* contains plant pathogens (e.g. *E. amylovora*) [@HaubenSwings2005]\ [@Lopez2011]\ [@Matsuura2012], epiphytes (e.g. *E. tasmaniensis*) [@Geider2006]\ [@Mergaert1999], species that may contribute to plant disease [@Buonaurio2015], and insect-associated bacteria [@Campillo2015]\ [@Harada1997]\ [@Skrodenyte-Arbaciauskiene2012]. Similarly, *Pantoea*, a genus reported by Gavini et al. [@Gavini1989], includes species that inhabit a variety of environments [@Gavini1989]\ [@Popp2010]\ [@Liu2013] and include known human and plant pathogens [@Prakash2015]\ [@deBaere2004]\ [@Fullerton2007]\ [@Kratz2003]\ [@Lim2006]\ [@Schmid2003]\ [@vanRostenberghe2006] as well as species associated with plant growth [@Smits2011]\ [@Kim2012], with insects [@Palmer2016], and with fungi [@Ma2016]\ [@Rong2016]. *Mixta*, originally *Pantoea*, is a novel genus first suggested by Palmer et al. [@Palmer2017] and then later proposed by the same researchers in 2018 [@Palmer2018]. Two species, *M. calida* and *M. gaviniae* (then *Pantoea*), were originally found in infant formula and its production environment [@Popp2010] and Fritz et al. [@Fritz2014] demonstrated that some strains of *M. calida* were linked with post-surgical meningitis in humans. Currently, there are only five *Mixta* species validly published (LPSN, http://www.bacterio.net/).
+The bacterial family *Erwiniaceae* includes diverse Gram-negative [@Winslow1917]\ [@Prakash2015] organisms including the genera *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, Buchnera, Wigglesworthia, Phaseolibacter, Kalamiella (LPSN, http://www.bacterio.net/). Three of these, *Mixta*, *Pantoea*, and *Erwinia* have been the focus of numerous studies given their relevance to plant and human pathogens. For example, the genus *Erwinia* contains plant pathogens (e.g. *E. amylovora*) [@HaubenSwings2005]\ [@Lopez2011]\ [@Matsuura2012], epiphytes (e.g. *E. tasmaniensis*) [@Geider2006]\ [@Mergaert1999], species that may contribute to plant disease [@Buonaurio2015], and others that are insect-associated [@Campillo2015]\ [@Harada1997]\ [@Skrodenyte-Arbaciauskiene2012]. Similarly, *Pantoea*, a genus reported by Gavini et al. [@Gavini1989], includes species that inhabit a variety of environments [@Gavini1989]\ [@Popp2010]\ [@Liu2013], including human and plant pathogens [@Prakash2015]\ [@deBaere2004]\ [@Fullerton2007]\ [@Kratz2003]\ [@Lim2006]\ [@Schmid2003]\ [@vanRostenberghe2006] as well as species associated with plant growth [@Smits2011]\ [@Kim2012], insects [@Palmer2016], and fungi [@Ma2016]\ [@Rong2016]. *Mixta*, originally *Pantoea*, is a novel genus first suggested by Palmer et al. [@Palmer2017] and then later proposed by the same researchers in 2018 [@Palmer2018]. Two species, *M. calida* and *M. gaviniae* (previously species of *Pantoea*), were originally found in infant formula and its production environment [@Popp2010] and Fritz et al. [@Fritz2014] demonstrated that some strains of *M. calida* were linked with post-surgical meningitis in humans. Currently, there are only five *Mixta* species validly published (LPSN, http://www.bacterio.net/).
 
-Understanding the phylogeny of bacterial species and genes allows researchers to investigate the evolutionary history of the species as a whole and the individual genes that allow the species to survive under various conditions [@Palmer2017]\ [@Bennett2012]\ [@PrasannaMehra2013]\ [@Angus2014]\ [@deMaayer2014]\ [@Fouts2016]. A robust phylogenetic method is thus required. Traditionally, species trees have been inferred using "housekeeping" genes [@Palmer2017]. These genes are required for the maintenance of basic cellular function. The most common methods in phylogenetic analysis are 16S ribosomal RNA (rRNA) sequences [@KonstantinidisTiedje2007], multi-locus sequence analysis (MLSA) with several housekeeping genes [@KonstantinidisTiedje2007]\ [@Gevers2005]\ [@GlaeserKampfer2015] and ribosomal MLSA with 53 structural ribosomal proteins [@Palmer2017]\ [@Bennett2012]\ [@Jolley2012]. However, the phylogenetic trees generated from these methods may not be very robust [@KonstantinidisTiedje2007]\ [@GlaeserKampfer2015]\ [@Brady2008] because of the lack of strong phylogenetic signal from the highly conserved genes [@KonstantinidisTiedje2007]\ [@Gevers2005]\ [@Fox1992]\ [@KonstantinidisTiedje2005]\ [@Staley2006]\ [@RichterRosselloMora2009]. Another issue that may arise is unknowingly including paralogues (i.e. genes originating from an intragenomic duplication event) or xenologues (i.e. genes originating from horizontal gene transfer) [@Palmer2017]\ [@Koonin2005].
+Understanding the phylogeny of bacterial species and genes allows researchers to investigate the evolutionary history of the species, their relatedness, and the individual genes that allow the species to survive under various conditions [@Palmer2017]\ [@Bennett2012]\ [@PrasannaMehra2013]\ [@Angus2014]\ [@deMaayer2014]\ [@Fouts2016]. Traditionally, species trees have been inferred using "housekeeping" genes [@Palmer2017]. These genes are required for the maintenance of basic cellular function. The most common methods in phylogenetic analysis are those involving 16S ribosomal RNA (rRNA) sequences [@KonstantinidisTiedje2007], multi-locus sequence analysis (MLSA) with several housekeeping genes [@KonstantinidisTiedje2007]\ [@Gevers2005]\ [@GlaeserKampfer2015] and ribosomal MLSA with 53 structural ribosomal proteins [@Palmer2017]\ [@Bennett2012]\ [@Jolley2012]. However, the phylogenetic trees generated from these methods may not be very robust [@KonstantinidisTiedje2007]\ [@GlaeserKampfer2015]\ [@Brady2008] because of the lower strong phylogenetic signal from the highly conserved genes [@KonstantinidisTiedje2007]\ [@Gevers2005]\ [@Fox1992]\ [@KonstantinidisTiedje2005]\ [@Staley2006]\ [@RichterRosselloMora2009]. Another issue that may arise is unknowingly including paralogues (i.e. genes originating from an intragenomic duplication event) or xenologues (i.e. genes originating from horizontal gene transfer) [@Palmer2017]\ [@Koonin2005].
 
-Most of our current understanding of the phylogeny and interrelationships within the order Enterobacteriales is based on 16S rRNA genes [@Francino2006]\ [@Hauben1998]\ [@Naum2008]\ [@Sproer1999]\ [@Adeolu2016]. This is primarily because it is ubiquitous in Bacteria and Archaea and has a necessary function. However, it has insufficient resolution at the species level [@GlaeserKampfer2015] and this is particularly the case within Enterobacteriales [@Hauben1998]\ [@Naum2008]\ [@OctaviaLan2014] and the genera within *Erwiniaceae* [@Brady2008]\ [@Brady2009]\ [@Brady2010]\ [@Brady2011]\ [@Rezzonico2016]. When using 16S rRNA gene sequences, the genera *Pantoea*, *Erwinia*, *Tatumella*, and *Mixta* are often not monophyletic [@Rezzonico2016].
+Most of our current understanding of the phylogeny and interrelationships within *Erwiniaceae* is based on 16S rRNA genes [@Francino2006]\ [@Hauben1998]\ [@Naum2008]\ [@Sproer1999]\ [@Adeolu2016]. This is primarily because it is ubiquitous in Bacteria and Archaea and has a necessary function. However, it has insufficient resolution at the species level [@GlaeserKampfer2015] and this is particularly the case within *Erwiniaceae* [@Hauben1998]\ [@Naum2008]\ [@OctaviaLan2014] and the genera within *Erwiniaceae* [@Brady2008]\ [@Brady2009]\ [@Brady2010]\ [@Brady2011]\ [@Rezzonico2016]. When using 16S rRNA gene sequences, the genera *Pantoea*, *Erwinia*, *Tatumella*, and *Mixta* are often not monophyletic [@Rezzonico2016].
+
+
+Understanding the phylogeny of bacterial species and genes allows researchers to investigate the evolutionary history of the species, their relatedness, and the individual genes that allow the species to survive under various conditions [@Palmer2017]\ [@Bennett2012]\ [@PrasannaMehra2013]\ [@Angus2014]\ [@deMaayer2014]\ [@Fouts2016]. 
+
+
+
+
 
 In contrast to 16S rRNA genes, protein-coding genes have been said to have a consistent evolution rate and have more phylogenetic resolution at the genus and/or species level [@GlaeserKampfer2015]. Multiple-gene-based phylogenies have been developed to overcome the bias of single-gene analysis [@GlaeserKampfer2015] and they are more likely to show the “true” phylogenetic relationships [@GlaeserKampfer2015]. This is because they reduce the possibility of ambiguities [@Hedegaard1999] by diluting the signal from potential xenologues. It is recommended that single copy, ubiquitous (within the studied taxa) genes are chosen for this type of analysis [@GlaeserKampfer2015]. Different combinations of genes have been employed in phylogenetic analyses of Enterobacteriales [@Adeolu2016], most commonly are the genes gyrB, rpoB, atpD, and infB [@Palmer2017]\ [@Palmer2018]\ [@GlaeserKampfer2015]\ [@Brady2008]\ [@Adeolu2016]\ [@Brady2011]\ [@Rezzonico2016]\ [@Brady2013]\ [@Brady2014]\ [@ZhangQiu2015]. These genes encode DNA topoisomerase (gyrase) subunit, DNA-directed RNA polymerase subunit, ATP synthase subunit, and initiation translation factor, respectively. They have also been shown to be more reliable than 16S rRNA gene sequences for determining intra- and intergeneric relationships [@Hedegaard1999]\ [@Dauga2002]\ [@Mollet1997]\ [@Paradis2005] and a robust method for the *Erwiniaceae* family [@Brady2010]. Furthermore, three genera within *Erwiniaceae* are monophyletic when concatenated partial gyrB, rpoB, atpD, and infB gene sequences are used [@Brady2008]\ [@Brady2009]\ [@Moretti2011].
 
@@ -156,35 +161,35 @@ Within `R` [@RCore2019], a filtering function was created to pass forward fasta 
 Gene alignments were done in `R` with a few software packages. The fasta files were read in using the `readDNAStringSet()` function [@Aboyoun2018] (package: `Biostrings`). The alignments were done using the ClustalW algorithm with the `msaClustalW()` [@Bodenhofer2015] (package: `msa`). The number of maximum iterations was set to 100 and the other parameters were kept at default settings [@Bodenhofer2015]. Alignments were then converted into a readable format using `msaConvert` [@Bodenhofer2015] (package: `msa`) and then written as fasta files using `write.fasta()` [@Jordan2007] (package: `seqinr`).
 
 ## Distance Matrices
-Prior to computing distance matrices, model testing was done for each of the 1035 gene files through MEGA-CC [@Kumar2012] by calling a text file containing the file pathways and a MAO file detailing the analysis preferences. These results were exported as comma-separated values (CSV) and read into `R`. The best model was chosen based on the lowest BIC and if it was available for distance matrices in MEGAX [@Kumar2018]. General Time Reversible (GTR) models and Hasegawa-Kishino-Yano (HKY) models were not available for distance matrices and so these models were not considered during model testing. Furthermore, the rates among sites option invariant sites (+I) was also not available for distance matrices and were subsequently ignored.
+Prior to computing distance matrices, model testing was done for each of the 1035 gene files through MEGA-CC [@Kumar2012] by calling a text file containing the file pathways and a MAO file detailing the analysis preferences. These results were exported as comma-separated values (CSV) and read into `R`. The best model was chosen based on the lowest BIC and if it was available for distance matrices in MEGAX [@Kumar2018]. General Time Reversible (GTR) models and Hasegawa-Kishino-Yano (HKY) models were not available for distance matrices and so these models were not considered during model testing. Furthermore, the rates among sites option invariant sites (+I) was also not available for distance matrices and were subsequently ignored. 
 
-The gene files were separated into groups according to the suggested model and text files were created with their file pathways. These text files were called in turn along with a corresponding MAO file through MEGA-CC to compute the distance matrices for each gene. Variance was estimated with 500 bootstraps, transitions and transversions were allowed, and gaps and missing data were treated with pairwise deletion.
+The gene files were separated into groups according to the suggested model and text files were created with their file pathways. A table containing the genes included in this study and the model used for each gene is available in **Supplementary Table 1 on Github**. These text files were called in turn along with a corresponding MAO file through MEGA-CC to compute the distance matrices for each gene. Variance was estimated with 500 bootstraps, transitions and transversions were allowed, and gaps and missing data were treated with pairwise deletion.
 
 The genetic distances and standard errors relative to *M. calida* and *M. gaviniae* were extracted to create plots in `R`, categorize the closest relatives, run generalized additive models to determine potential non-linear relationships between parameters and genetic distances, and identify genes for further analysis using phylogenetic trees. The phylogenetic trees were created using MEGAX and with a model suggested through model testing.
 
-All `R` code written for the analysis of the 10 genomes, homologous genes, aligned files, distance matrices, and other supplementary results are available on the Github repository associated with this paper (LINK!!!)
+All `R` code written for the analysis of the 10 genomes, homologous genes files, aligned gene files, distance matrices, and other supplementary results are available on the Github repository associated with this paper (**LINK!!!**)
 
 # Results and Discussion
 
 
 # Conclusion
 
-Future: looking into this as a mosaic genome.
+<!-- Future: looking into this as a mosaic genome. -->
 
-# Tips
+<!-- # Tips -->
 
-For hyperlinks: <http://rmarkdown.rstudio.com>
+<!-- For hyperlinks: <http://rmarkdown.rstudio.com> -->
 
-For bold: **Knit**
+<!-- For bold: **Knit** -->
 
-For italics: *Italy*
+<!-- For italics: *Italy* -->
 
-For code: `echo = FALSE`
+<!-- For code: `echo = FALSE` -->
 
-<!-- ```{=openxml} -->
-<!-- <w:p><w:r><w:br w:type="page"/></w:r></w:p> -->
-<!-- ``` -->
-<!-- # Literature Cited -->
+```{=openxml}
+<w:p><w:r><w:br w:type="page"/></w:r></w:p>
+```
+# Literature Cited
 
 
 <!-- # Appendix A -->
