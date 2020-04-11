@@ -1,4 +1,0 @@
-"Gene","cal_ID","gav_ID","Mean_gene_length","cal_rel","gav_rel","Same_rel_patt","Product"
-"37558_cyoD",1123,1141,330.9,"PA_ET_EA_PS_TS_TP_EC_CF","PA_ET_EA_TS_PS_TP_EC_CF",FALSE,"Cytochrome o ubiquinol oxidase subunit"
-"38125_hypothetical_protein",3450,3442,330.3,"PA_ET_PS_EA_TS_CF_EC_TP","PA_ET_PS_TP_EA_CF_TS_EC",FALSE,"YggL family protein"
-"39545_nuoK",2875,2847,303,"PA_ET_PS_EA_TP_CF_EC_TS","PA_ET_PS_EA_TP_CF_EC_TS",TRUE,"NADH-quinone oxidoreductase subunit"

@@ -1,4 +1,0 @@
-"Gene","cal_ID","gav_ID","Mean_gene_length","cal_rel","gav_rel","Same_rel_patt","Product"
-"38498_rpsO",556,551,270,"PS_TP_TS_PA_EA_ET_EC_CF","PS_TP_TS_PA_EA_ET_EC_CF",TRUE,"30S ribosomal protein"
-"38558_hypothetical_protein",451,440,371.4,"PS_TP_PA_TS_EC_EA_CF_ET","PS_TP_PA_TS_EC_EA_CF_ET",TRUE,"DUF1992 domain-containing protein"
-"40393_rplJ",3831,3941,499.2,"PS_TP_PA_TS_CF_EC_EA_ET","PS_TP_PA_TS_CF_EC_EA_ET",TRUE,"50S ribosomal protein"

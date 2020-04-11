@@ -159,9 +159,10 @@ kable(abbrevs)
 Generalized additive models (GAMs) were run to determine if gene length affected evolutionary distance from or the closest relative to the two *Mixta* species.
 
 ```{r echo = FALSE, message = FALSE, fig.cap = "Figure 1. The effect of gene length on evolutionary distances from (a) *M. calida* and (b) *M. gaviniae*. Graphs were made using the `draw()` function (package: `gratia`)."}
-library("here")
 library("knitr")
-knitr::include_graphics(here("./9_1Plots_calida/MC_DGL_draw.png"))
+# cal <- 
+
+knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/9_1Plots_calida/MC_DGL_draw.png", )
 ```
 
 

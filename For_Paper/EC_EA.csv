@@ -1,3 +1,0 @@
-"Gene","cal_ID","gav_ID","Mean_gene_length","cal_rel","gav_rel","Same_rel_patt","Product"
-"38574_rplX",436,425,315,"EC_EA_PS_PA_TP_ET_CF_TS","EA_EC_PA_PS_TP_ET_CF_TS",FALSE,"50S ribosomal protein"
-"39664_bioD1",2031,2005,687.3,"EC_EA_ET_CF_PA_PS_TP_TS","EC_EA_ET_PS_PA_CF_TS_TP",FALSE,"ATP-dependent dethiobiotin synthetase"
