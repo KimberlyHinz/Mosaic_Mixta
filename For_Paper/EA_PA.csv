@@ -1,0 +1,4 @@
+"Gene","cal_ID","gav_ID","Mean_gene_length","cal_rel","gav_rel","Same_rel_patt","Product"
+"38262_ygbE",3296,3309,325.5,"PA_EA_ET_PS_EC_TP_TS_CF","PA_EA_ET_PS_TP_EC_TS_CF",FALSE,"DUF3561 family protein"
+"39149_sdhD",1285,1309,348.3,"PA_EA_ET_PS_EC_CF_TP_TS","PA_EA_ET_PS_EC_CF_TP_TS",TRUE,"Succinate dehydrogenase membrane anchor subunit"
+"39555_hypothetical_protein",2856,2831,261.6,"EA_PA_ET_PS_EC_CF_TP_TS","PA_EA_ET_PS_EC_CF_TP_TS",FALSE,"2Fe-2S ferredoxin-like protein"

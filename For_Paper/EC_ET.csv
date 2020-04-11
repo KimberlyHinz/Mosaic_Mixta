@@ -1,0 +1,3 @@
+"Gene","cal_ID","gav_ID","Mean_gene_length","cal_rel","gav_rel","Same_rel_patt","Product"
+"37505_ybcJ",1197,1210,213,"EC_ET_PS_TP_CF_TS_EA_PA","EC_ET_PS_TP_CF_EA_TS_PA",FALSE,"Ribosome-associated protein"
+"37628_aaaT",331,319,500.1,"ET_EC_EA_CF_PA_PS_TS_TP","ET_EC_EA_CF_PA_PS_TP_TS",FALSE,"GNAT family N-acetyltransferase"

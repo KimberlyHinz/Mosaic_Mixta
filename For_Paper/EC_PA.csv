@@ -1,0 +1,4 @@
+"Gene","cal_ID","gav_ID","Mean_gene_length","cal_rel","gav_rel","Same_rel_patt","Product"
+"38045_nudK",3209,3232,594,"PA_EC_PS_TP_TS_ET_EA_CF","EC_PA_PS_TP_TS_ET_EA_CF",FALSE,"Unknown*"
+"38254_queD",3306,3320,362.4,"PA_EC_PS_ET_CF_EA_TS_TP","EC_PA_PS_EA_CF_ET_TS_TP",FALSE,"6-carboxytetrahydropterin synthase"
+"38573_rplE",437,426,540,"PA_EC_PS_CF_ET_TS_TP_EA","PA_EC_PS_CF_ET_TS_TP_EA",TRUE,"50S ribosomal protein"

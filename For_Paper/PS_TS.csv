@@ -1,0 +1,4 @@
+"Gene","cal_ID","gav_ID","Mean_gene_length","cal_rel","gav_rel","Same_rel_patt","Product"
+"38010_atpG",36,9,870.3,"PS_TS_PA_EA_ET_TP_CF_EC","PS_TS_PA_EA_ET_TP_CF_EC",TRUE,"F0F1 ATP synthase subunit"
+"38501_deaD",559,555,1905.9,"PS_TS_TP_EC_ET_PA_CF_EA","PS_TS_ET_EC_TP_CF_PA_EA",FALSE,"DEAD/DEAH family ATP-dependent RNA helicase"
+"39769_secF",1104,1124,969.6,"PS_TS_EA_CF_EC_ET_PA_TP","PS_TS_PA_TP_EC_ET_CF_EA",FALSE,"Protein translocase subunit"

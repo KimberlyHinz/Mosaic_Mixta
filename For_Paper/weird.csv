@@ -1,0 +1,6 @@
+"Gene","cal_ID","gav_ID","Mean_gene_length","cal_rel","gav_rel","Same_rel_patt","Product"
+"38235_csdA",1966,3348,1209.9,"MG_EA_PS_PA_EC_CF_TP_TS","PS_EA_ET_EC_CF_TP_TS_MC",FALSE,"Cysteine desulfurase"
+"38434_hypothetical_protein",501,491,264.9,"EC_ET_PA_EA_CF_MG_TP_TS","PS_EA_MC_EC_ET_CF_TP_TS",FALSE,"Peroxide/acid stress response protein"
+"38747_fhuA_1",1815,911,2155.5,"CF_PS_MG_PA_ET_EC_TP_TS","PS_PA_CF_MC_EA_EC_TP_TS",FALSE,"TonB-dependent siderophore receptor"
+"38985_ttuB",1377,56,1303.5,"TS_CF_EC_MG_PA_PS_ET_EA","PS_ET_EA_CF_EC_MC_TS_TP",FALSE,"MFS transporter"
+"39549_hypothetical_protein",1846,3003,480.3,"MG_PA_ET_PS_EC_CF_TP_TS","MC_CF_ET_PA_PS_EC_TS_TP",FALSE,"Cold shock domain-containing protein"
