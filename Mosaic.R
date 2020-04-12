@@ -918,6 +918,9 @@ extra_genes <- mutate(extra_genes,
 M_gaviniae <- rbind(M_gaviniae, extra_genes)                              # Combines M_calida with the extra genes
 
 # M. calida plot #
+M_calida <- subset(M_calida, select = c(ID, Results_Number, Results_Other))
+write.csv(x = M_calida, file = "For_Paper/Plots/MC_circle_data.csv", row.names = FALSE)
+
 png("9_1Plots_calida/MC_categ_results.png", width = 1000, height = 725)
 ggplot(data = M_calida, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results_Number, fill = Results_Other)) +
   geom_rect() +
@@ -930,11 +933,16 @@ ggplot(data = M_calida, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results_N
         axis.title.y = element_blank(), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(),
-        legend.text = element_text(face = "italic")) +
-  labs(fill = "Species")
+        legend.text = element_text(face = "italic"),
+        title = element_text(face = "italic"),
+        legend.title = element_text(face = "plain")) +
+  labs(fill = "Species", title = "M. calida")
 dev.off()
 
 # M. gaviniae plot #
+M_gaviniae <- subset(M_gaviniae, select = c(ID, Results_Number, Results_Other))
+write.csv(x = M_gaviniae, file = "For_Paper/Plots/MG_circle_data.csv", row.names = FALSE)
+
 png("9_2Plots_gaviniae/MG_categ_results.png", width = 1000, height = 725)
 ggplot(data = M_gaviniae, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results_Number, fill = Results_Other)) +
   geom_rect() +
@@ -947,8 +955,10 @@ ggplot(data = M_gaviniae, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results
         axis.title.y = element_blank(), 
         axis.text.y = element_blank(), 
         axis.ticks.y = element_blank(),
-        legend.text = element_text(face = "italic")) +
-  labs(fill = "Species")
+        legend.text = element_text(face = "italic"),
+        title = element_text(face = "italic"),
+        legend.title = element_text(face = "plain")) +
+  labs(fill = "Species", title = "M. gaviniae")
 dev.off()
 
 #
@@ -1153,13 +1163,13 @@ M_gaviniae_L <- mutate(M_gaviniae_L,
                        RP_Num = as.integer(Rela_Pattern) - 1)
 
 ### Closest relative vs gene length ###
-CR_GLc <- readRDS("10Models/MC_Clos_Rel.rds")
-CR_GLg <- readRDS("10Models/MG_Clos_Rel.rds")
+CR_GLc <- readRDS("10Gam_Models/MC_Clos_Rel.rds")
+CR_GLg <- readRDS("10Gam_Models/MG_Clos_Rel.rds")
 
 CR_GLc <- gam(list(ROther_Num ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean)),
               data = M_calida_L, family = multinom(K=7))                  # Model to determine if mean gene length has an affect on closest relative result
 
-saveRDS(CR_GLc, file = "10Models/MC_Clos_Rel.rds")                        # Saves the model
+saveRDS(CR_GLc, file = "10Gam_Models/MC_Clos_Rel.rds")                        # Saves the model
 
 layout(matrix(1:4, ncol = 2, byrow = TRUE))
 gam.check(CR_GLc)
@@ -1168,7 +1178,7 @@ draw(CR_GLc)
 CR_GLg <- gam(list(ROther_Num ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean), ~ s(Mean)),
               data = M_gaviniae_L, family = multinom(K=7))
 
-saveRDS(CR_GLg, file = "10Models/MG_Clos_Rel.rds")                        # Saves the model
+saveRDS(CR_GLg, file = "10Gam_Models/MG_Clos_Rel.rds")                        # Saves the model
 
 layout(matrix(1:4, ncol = 2, byrow = TRUE))
 gam.check(CR_GLg)
@@ -1201,6 +1211,9 @@ rm(tidy_MC, tidy_MC_se)
 M_cal_pred <- mutate(M_cal_pred,
                      upper = Fit + (Fit_SE * 1.96),
                      lower = Fit - (Fit_SE * 1.96))
+
+write.csv(x = M_cal_pred, file = "For_Paper/GAM_predictions_calida.csv",
+          row.names = FALSE)
 
 MC_pred <- ggplot(M_cal_pred, aes(x = Mean, y = Fit, colour = Species)) +
   geom_ribbon(aes(ymin = lower, ymax = upper, x = Mean), inherit.aes = FALSE, 
@@ -1245,6 +1258,9 @@ M_gav_pred <- mutate(M_gav_pred,
                      upper = Fit + (Fit_SE * 1.96),
                      lower = Fit - (Fit_SE * 1.96))
 
+write.csv(x = M_gav_pred, file = "For_Paper/GAM_predictions_gaviniae.csv",
+          row.names = FALSE)
+
 MG_pred <- ggplot(M_gav_pred, aes(x = Mean, y = Fit, colour = Species)) +
   geom_ribbon(aes(ymin = lower, ymax = upper, x = Mean), inherit.aes = FALSE, 
               data = M_gav_pred, alpha = 0.2) +
@@ -1261,8 +1277,8 @@ ggsave(MG_pred, file = "9_2Plots_gaviniae/MG_CR_pred.png",
        width = 16.51, height = 12.38, units = "cm")
 
 ### Distances vs gene length ###
-D_GLc <- readRDS("10Models/MC_Distance.rds")
-D_GLg <- readRDS("10Models/MG_Distance.rds")
+D_GLc <- readRDS("10Gam_Models/MC_Distance.rds")
+D_GLg <- readRDS("10Gam_Models/MG_Distance.rds")
 
 M_cal_DGL <- subset(M_calida_sdist_L, Species %in% c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
                                                      "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
@@ -1270,7 +1286,7 @@ M_cal_DGL <- subset(M_calida_sdist_L, Species %in% c("Tatumella_saanichensis", "
 D_GLc <- bam(Distance ~ s(Gene_Length, k = 42),
              data = M_cal_DGL, method = "fREML", control = ctrl, family = tw(link = "log"), discrete = TRUE)
 
-saveRDS(D_GLc, file = "10Models/MC_Distance.rds")                         # Saves the model
+saveRDS(D_GLc, file = "10Gam_Models/MC_Distance.rds")                         # Saves the model
 
 layout(matrix(1:4, ncol = 2, byrow = TRUE))
 gam.check(D_GLc)
@@ -1283,7 +1299,7 @@ M_gav_DGL <- subset(M_gaviniae_sdist_L, Species %in% c("Tatumella_saanichensis",
 D_GLg <- bam(Distance ~ s(Gene_Length, k = 42),
              data = M_gav_DGL, method = "fREML", control = ctrl, family = tw(link = "log"), discrete = TRUE)
 
-saveRDS(D_GLg, file = "10Models/MG_Distance.rds")                         # Saves the model
+saveRDS(D_GLg, file = "10Gam_Models/MG_Distance.rds")                         # Saves the model
 
 layout(matrix(1:4, ncol = 2, byrow = TRUE))
 gam.check(D_GLg)
