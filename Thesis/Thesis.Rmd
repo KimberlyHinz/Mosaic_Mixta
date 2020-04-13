@@ -319,7 +319,7 @@ knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/Fo
 ```
 
 ### Unusual Relative Patterns for *Mixta*
-Five genes had unusual relative patterns that were of interest. The first, csdA	(cysteine desulfurase), 
+Five genes had unusual relative patterns that were of interest. The first, csdA	(cysteine desulfurase), separates the two *Mixta* species (Figure 13). *M. calida* is most closely related to the *Tatumella* species
 
 ```{r FIGURE13, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 13. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura 3-parameter (1992) model and 500 boostraps for csdA	(cysteine desulfurase). Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G).", out.width = 450, fig.align = "center"}
 library("knitr")
@@ -329,32 +329,31 @@ knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/Fo
 
 The second, fhuA_1 (TonB-dependent siderophore receptor), 
 
-```{r FIGURE14, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 14. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura-Nei (1993) model and 500 boostraps for 134 genes that had relative pattern to *Mixta* of *Pantoea*, *Erwinia*, *Tatumella*, and then the outgroup. The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G) and the rate variation model allowed for some sites to be evolutionarily invariable ([+I]).", out.width = 450, fig.align = "center"}
+```{r FIGURE14, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 14. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura-Nei (1993) model and 500 boostraps for fhuA_1 (TonB-dependent siderophore receptor). The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G) and the rate variation model allowed for some sites to be evolutionarily invariable ([+I]).", out.width = 450, fig.align = "center"}
 library("knitr")
-knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_OR_PETO.png")
+knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_weird_fhuA_1.png")
 ```
 
 
 The third, ttuB (MFS transporter), 
 
-```{r FIGURE15, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 15. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura-Nei (1993) model and 500 boostraps for 134 genes that had relative pattern to *Mixta* of *Pantoea*, *Erwinia*, *Tatumella*, and then the outgroup. The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G) and the rate variation model allowed for some sites to be evolutionarily invariable ([+I]).", out.width = 450, fig.align = "center"}
+```{r FIGURE15, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 15. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura 3-parameter (1992) model and 500 boostraps for ttuB (MFS transporter). The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G).", out.width = 450, fig.align = "center"}
 library("knitr")
-knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_OR_PETO.png")
+knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_weird_ttuB.png")
 ```
+
 
 
 The last two are hypothetical proteins with the gene codes 38434 (peroxide/acid stress response protein) and 39549 (cold shock domain-containing protein).
 
-```{r FIGURE16, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 16. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura-Nei (1993) model and 500 boostraps for 134 genes that had relative pattern to *Mixta* of *Pantoea*, *Erwinia*, *Tatumella*, and then the outgroup. The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G) and the rate variation model allowed for some sites to be evolutionarily invariable ([+I]).", out.width = 450, fig.align = "center"}
+```{r FIGURE16, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 16. Unrooted maximum-likelihood phylogenetic tree inferred with the Kimura 2-parameter (1980) model and 500 boostraps for the hypothetical protein with gene code 38434 (peroxide/acid stress response protein). The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G).", out.width = 450, fig.align = "center"}
 library("knitr")
-knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_OR_PETO.png")
+knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_weird_38434_HP.png")
 ```
 
-
-
-```{r FIGURE17, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 17. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura-Nei (1993) model and 500 boostraps for 134 genes that had relative pattern to *Mixta* of *Pantoea*, *Erwinia*, *Tatumella*, and then the outgroup. The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G) and the rate variation model allowed for some sites to be evolutionarily invariable ([+I]).", out.width = 450, fig.align = "center"}
+```{r FIGURE17, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 17. Unrooted maximum-likelihood phylogenetic tree inferred with the Kimura 2-parameter (1980) model and 500 boostraps for the hypothetical protein with gene code 39549 (cold shock domain-containing protein). The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G) and the rate variation model allowed for some sites to be evolutionarily invariable ([+I]).", out.width = 450, fig.align = "center"}
 library("knitr")
-knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_OR_PETO.png")
+knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_weird_39549_HP.png")
 ```
 
 
