@@ -946,7 +946,7 @@ write.csv(x = M_gaviniae, file = "For_Paper/Plots/MG_circle_data.csv", row.names
 png("9_2Plots_gaviniae/MG_categ_results.png", width = 1000, height = 725)
 ggplot(data = M_gaviniae, aes(xmin = ID - 5, xmax = ID, ymin = 0, ymax = Results_Number, fill = Results_Other)) +
   geom_rect() +
-  scale_fill_manual(values = alpha(c("red", "orange", "green3", "darkgreen", "dodgerblue2", "blue3", "darkorchid", "violetred1")),
+  scale_fill_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
                     labels = c("Citrobacter freundii", "Enterobacter cloacae", "Erwinia amylovora", "Erwinia tasmaniensis", 
                                "Pantoea agglomerans", "Pantoea septica", "Tatumella ptyseos", "Tatumella saanichensis")) +
   coord_polar() +
