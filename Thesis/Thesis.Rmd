@@ -333,8 +333,7 @@ library("knitr")
 knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_weird_fhuA_1.png")
 ```
 
-
-The third, ttuB (MFS transporter), 
+Similar to the previous two genes, the two *Mixta* species are separated when phylogenetic analysis is done with the third gene, ttuB (MFS transporter). In this analysis, a large genetic distance divides *M. calida*, the *Tatumella* species, and the outgroup species from *M. gaviniae* and the *Pantoea* and *Erwinia* species. In this case, ttuB may have been vertically transfer to *M. gaviniae* because it has grouped so closely with *Pantoea*, but horizontally transferred to *M. calida* from a *Tatumella* species.
 
 ```{r FIGURE15, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 15. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura 3-parameter (1992) model and 500 boostraps for ttuB (MFS transporter). The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G).", out.width = 450, fig.align = "center"}
 library("knitr")
@@ -355,7 +354,7 @@ library("knitr")
 knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_weird_39549_HP.png")
 ```
 
-These five genes suggest that many HGT events have occurred for the same genes within species from different origins, thus creatng an intricate web of horizontal transfer rather than the straight lines of vertical transfer and single HGT events.
+These five genes suggest that many HGT events have occurred for the same genes within species from different origins, thus creating an intricate web of horizontal transfer rather than the straight lines of vertical transfer and single HGT events.
 
 
 ## Generalized Additive Models
