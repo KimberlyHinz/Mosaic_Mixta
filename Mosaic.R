@@ -1348,6 +1348,7 @@ ggsave(MG_pred, file = "9_2Plots_gaviniae/MG_DGL_pred.png",
 # This section does three things. (1) It identifies genes wherein the first non-Mixta relative is significantly different from the other species. (2) It
 # identifies genes wherein - given that the first two non-Mixta species are of the same genus - the first genus is significant different from the next
 # species. (3) It identifies genes wherein the first first two relatives are of the same genus.
+
 Species_noM <- c("Tatumella_saanichensis", "Citrobacter_freundii", "Enterobacter_cloacae", "Erwinia_amylovora", 
                  "Erwinia_tasmaniensis", "Pantoea_agglomerans", "Pantoea_septica", 
                  "Tatumella_ptyseos")
@@ -1862,17 +1863,9 @@ rlvnt_Sig_Species_g <- mutate(rlvnt_Sig_Species_g,
                                           "Ribonucleoside-diphosphate reductase subunit", "Ferredoxin--NADP(+) reductase", "Porphobilinogen synthase", 
                                           "HlyC/CorC family transporter", "Histidinol dehydrogenase", "ATP phosphoribosyltransferase",
                                           "Trifunctional transcriptional regulator/proline dehydrogenase/L-glutamate gamma-semialdehyde dehydrogenase"),
-                              Gene_check = c("37381_ppx", "37870_mscM",
-                                             "38070_parC", "38689_sodA",
-                                             "38788_rlmL", "38824_rarA",
-                                             "38841_proB", "38851_yafJ",
-                                             "38877_proV", "38898_pheT",
-                                             "39185_leuS", "39192_mrdB",
-                                             "39413_leuA", "39426_murG",
-                                             "39453_acnB", "39527_hisM",
-                                             "39557_nrdA", "39847_fpr",
-                                             "39927_hemB", "40038_hypothetical_protein",
-                                             "40162_hisD", "40163_hisG",
+                              Gene_check = c("37381_ppx", "37870_mscM", "38070_parC", "38689_sodA", "38788_rlmL", "38824_rarA", "38841_proB", "38851_yafJ", 
+                                             "38877_proV", "38898_pheT", "39185_leuS", "39192_mrdB", "39413_leuA", "39426_murG", "39453_acnB", "39527_hisM", 
+                                             "39557_nrdA", "39847_fpr", "39927_hemB", "40038_hypothetical_protein", "40162_hisD", "40163_hisG",
                                              "40248_putA"))
 
 unique(rlvnt_Sig_Species_g$Gene == rlvnt_Sig_Species_g$Gene_check) # If TRUE, then continue
@@ -1888,15 +1881,6 @@ BM$Sig_Species <- case_when(
 BM_Sig_Species <- subset(BM, Sig_Species == TRUE, select = Gene:ModelCode)
 
 write.csv(x = BM_Sig_Species, file = "8Results/Best_Model_Sig_Species_gav.csv", row.names = FALSE)
-
-
-test <- read.csv(file = "8Results/Sig_Species_Genes_gav.csv", stringsAsFactors = FALSE)
-test2 <- paste(test$Gene, ".fasta", sep = ""); test2
-
-
-nucl_g <- read.csv(file = "8Results/M_gaviniae_Nucleotide.csv", stringsAsFactors = FALSE)
-nucl_g$Gene_name <- substring(nucl_g$gene, 7)
-test <- M_gav_RL$Gene
 
 ### MEGAX: First genus is significantly different from next ###############################################################################################
 rlvnt_genes <- read.csv(file = "8Results/MEGAX_Relevant_Genes.csv", stringsAsFactors = FALSE)
