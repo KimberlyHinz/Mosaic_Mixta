@@ -319,15 +319,14 @@ knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/Fo
 ```
 
 ### Unusual Relative Patterns for *Mixta*
-Five genes had unusual relative patterns that were of interest. The first, csdA	(cysteine desulfurase), separates the two *Mixta* species (Figure 13). *M. calida* is most closely related to the *Tatumella* species
+Five genes had unusual relative patterns that were of interest. The first, csdA	(cysteine desulfurase), separates the two *Mixta* species (Figure 13). *M. calida* is most closely related to the *Tatumella* species, although it has gained many differences since diverging. *M. gaviniae*, however, is more closely related to *Erwinia*. Two independent HGT events may have occurred with *M. calida* receiving a gene copy from a *Tatumella* species and *M. gaviniae* receiving a copy from an *Erwinia* species.
 
 ```{r FIGURE13, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 13. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura 3-parameter (1992) model and 500 boostraps for csdA	(cysteine desulfurase). Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G).", out.width = 450, fig.align = "center"}
 library("knitr")
 knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_weird_csdA.png")
 ```
 
-
-The second, fhuA_1 (TonB-dependent siderophore receptor), 
+The second, fhuA_1 (TonB-dependent siderophore receptor), also separates the two *Mixta* species as well as the species from *Erwinia* and the outgroup (Figure 14). *M. calida* groups with *E. amylovora* with *C. freundii* as the next relative while *M. gaviniae* groups with *E. tasmaniensis* and the *Pantoea* species. This tree suggests that fhuA_1 is commonly horizontally transferred between species.
 
 ```{r FIGURE14, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 14. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura-Nei (1993) model and 500 boostraps for fhuA_1 (TonB-dependent siderophore receptor). The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G) and the rate variation model allowed for some sites to be evolutionarily invariable ([+I]).", out.width = 450, fig.align = "center"}
 library("knitr")
@@ -356,7 +355,7 @@ library("knitr")
 knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_weird_39549_HP.png")
 ```
 
-
+These five genes suggest that many HGT events have occurred for the same genes within species from different origins, thus creatng an intricate web of horizontal transfer rather than the straight lines of vertical transfer and single HGT events.
 
 
 ## Generalized Additive Models
