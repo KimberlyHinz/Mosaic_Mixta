@@ -111,127 +111,58 @@ kable(abbrevs)
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 # Introduction
-<!-- The bacterial family *Erwiniaceae* includes diverse Gram-negative *[@Winslow1917]*\ *[@Prakash2015]* organisms including the genera *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, Buchnera, Wigglesworthia, Phaseolibacter, Kalamiella (LPSN, http://www.bacterio.net/). Three of these, *Mixta*, *Pantoea*, and *Erwinia*, have been the focus of numerous studies given their relevance to plant and human pathogens. For example, the genus *Erwinia* contains plant pathogens (e.g. *E. amylovora*) *[@HaubenSwings2005]*\ *[@Lopez2011]*\ *[@Matsuura2012]*, epiphytes (e.g. *E. tasmaniensis*) *[@Geider2006]*\ *[@Mergaert1999]*, species that may contribute to plant disease *[@Buonaurio2015]*, and others that are insect-associated *[@Campillo2015]*\ *[@Harada1997]*\ *[@Skrodenyte-Arbaciauskiene2012]*. Similarly, *Pantoea*, a genus reported by Gavini et al. *[@Gavini1989]*, includes species that inhabit a variety of environments *[@Gavini1989]*\ *[@Popp2010]*\ *[@Liu2013]*, including human and plant pathogens *[@Prakash2015]*\ *[@deBaere2004]*\ *[@Fullerton2007]*\ *[@Kratz2003]*\ *[@Lim2006]*\ *[@Schmid2003]*\ *[@vanRostenberghe2006]* as well as species associated with plant growth *[@Smits2011]*\ *[@Kim2012]*, insects *[@Palmer2016]*, and fungi *[@Ma2016]*\ *[@Rong2016]*. *Mixta*, originally *Pantoea*, is a novel genus first suggested by Palmer et al. *[@Palmer2017]* and then later proposed by the same researchers in 2018 *[@Palmer2018]*. Two species, *M. calida* and *M. gaviniae* (previously species of *Pantoea*), were originally found in infant formula and its production environment *[@Popp2010]* and Fritz et al. *[@Fritz2014]* demonstrated that some strains of *M. calida* were linked with post-surgical meningitis in humans. Currently, there are only five *Mixta* species validly published (LPSN, http://www.bacterio.net/). -->
+The bacterial family *Erwiniaceae* includes diverse Gram-negative *[@Winslow1917]*\ *[@Prakash2015]* organisms including the genera *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, Buchnera, Wigglesworthia, Phaseolibacter, Kalamiella (LPSN, http://www.bacterio.net/). Three of these, *Mixta*, *Pantoea*, and *Erwinia*, have been the focus of numerous studies given their relevance to plant and human pathogens. For example, the genus *Erwinia* contains plant pathogens (e.g. *E. amylovora*) *[@HaubenSwings2005]*\ *[@Lopez2011]*\ *[@Matsuura2012]*, epiphytes (e.g. *E. tasmaniensis*) *[@Geider2006]*\ *[@Mergaert1999]*, species that may contribute to plant disease *[@Buonaurio2015]*, and others that are insect-associated *[@Campillo2015]*\ *[@Harada1997]*\ *[@Skrodenyte-Arbaciauskiene2012]*. Similarly, *Pantoea*, a genus reported by Gavini et al. *[@Gavini1989]*, includes species that inhabit a variety of environments *[@Gavini1989]*\ *[@Popp2010]*\ *[@Liu2013]*, including human and plant pathogens *[@Prakash2015]*\ *[@deBaere2004]*\ *[@Fullerton2007]*\ *[@Kratz2003]*\ *[@Lim2006]*\ *[@Schmid2003]*\ *[@vanRostenberghe2006]* as well as species associated with plant growth *[@Smits2011]*\ *[@Kim2012]*, insects *[@Palmer2016]*, and fungi *[@Ma2016]*\ *[@Rong2016]*. *Mixta*, originally *Pantoea*, is a novel genus first suggested by Palmer et al. *[@Palmer2017]* and then later proposed by the same researchers in 2018 *[@Palmer2018]*. Two species, *M. calida* and *M. gaviniae* (previously species of *Pantoea*), were originally found in infant formula and its production environment *[@Popp2010]* and Fritz et al. *[@Fritz2014]* demonstrated that some strains of *M. calida* were linked with post-surgical meningitis in humans. Currently, there are only five *Mixta* species validly published (LPSN, http://www.bacterio.net/).
 
-<!-- Understanding the phylogeny of bacterial species and genes allows researchers to investigate the evolutionary history of the species, their relatedness, and the individual genes that allow the species to survive under various conditions *[@Palmer2017]*\ *[@Bennett2012]*\ *[@Prasanna2013]*\ *[@Angus2014]*\ *[@deMaayer2014]*\ *[@Fouts2016]*. The most common methods in phylogenetic analysis are those including 16S ribosomal RNA (rRNA) sequences *[@Konstantinidis2007]*, multi-locus sequence analysis (MLSA) with several housekeeping genes *[@Konstantinidis2007]*\ *[@Gevers2005]*\ *[@Glaeser2015]*, and ribosomal MLSA with 53 structural ribosomal proteins *[@Palmer2017]*\ *[@Bennett2012]*\ *[@Jolley2012]*. However, the phylogenetic trees generated from these methods may not be very robust *[@Konstantinidis2007]*\ *[@Glaeser2015]*\ *[@Brady2008]* because of the lower phylogenetic signal from the highly conserved housekeeping genes *[@Konstantinidis2007]*\ *[@Gevers2005]*\ *[@Fox1992]*\ *[@Konstantinidis2005]*\ *[@Staley2006]*\ *[@RichterRosselloMora2009]*. This is particularly seen within *Erwiniaceae* wherein most of our understanding of the phylogeny and interrelationships are based on the 16S rRNA genes *[@Francino2006]*\ *[@Hauben1998]*\ *[@Naum2008]*\ *[@Sproer1999]*\ *[@Adeolu2016]* because of its ubiquity. However, it has insufficient resolution at the species level *[@Glaeser2015]* and the genera *Pantoea*, *Erwinia*, *Tatumella*, and *Mixta* are often not monophyletic *[@Rezzonico2016]*. Another issue that may arise with MLSA is unknowingly including paralogues (i.e. genes originating from an intragenomic duplication event) or xenologues (i.e. genes originating from horizontal gene transfer) *[@Palmer2017]*\ *[@Koonin2005]. -->
+Understanding the phylogeny of bacterial species and genes allows researchers to investigate the evolutionary history of the species, their relatedness, and the individual genes that allow the species to survive under various conditions *[@Palmer2017]*\ *[@Bennett2012]*\ *[@Prasanna2013]*\ *[@Angus2014]*\ *[@deMaayer2014]*\ *[@Fouts2016]*. The most common methods in phylogenetic analysis are those including 16S ribosomal RNA (rRNA) sequences *[@Konstantinidis2007]*, multi-locus sequence analysis (MLSA) with several housekeeping genes *[@Konstantinidis2007]*\ *[@Gevers2005]*\ *[@Glaeser2015]*, and ribosomal MLSA with 53 structural ribosomal proteins *[@Palmer2017]*\ *[@Bennett2012]*\ *[@Jolley2012]*. However, the phylogenetic trees generated from these methods may not be very robust *[@Konstantinidis2007]*\ *[@Glaeser2015]*\ *[@Brady2008]* because of the lower phylogenetic signal from the highly conserved housekeeping genes *[@Konstantinidis2007]*\ *[@Gevers2005]*\ *[@Fox1992]*\ *[@Konstantinidis2005]*\ *[@Staley2006]*\ *[@RichterRosselloMora2009]*. This is particularly seen within *Erwiniaceae* wherein most of our understanding of the phylogeny and interrelationships are based on the 16S rRNA genes *[@Francino2006]*\ *[@Hauben1998]*\ *[@Naum2008]*\ *[@Sproer1999]*\ *[@Adeolu2016]* because of its ubiquity. However, it has insufficient resolution at the species level *[@Glaeser2015]* and the genera *Pantoea*, *Erwinia*, *Tatumella*, and *Mixta* are often not monophyletic *[@Rezzonico2016]*. Another issue that may arise with MLSA is unknowingly including paralogues (i.e. genes originating from an intragenomic duplication event) or xenologues (i.e. genes originating from horizontal gene transfer) *[@Palmer2017]*\ *[@Koonin2005].
 
-<!-- The DNA topoisomerase (gyrase) subunit (gyrB), DNA-directed RNA polymerase subunit (rpoB), ATP synthase subunit (atpD), and initiation translation factor (infB) have been shown to be more reliable than 16S rRNA gene sequences for determining intra- and intergeneric relationships *[@Hedegaard1999]*\ *[@Dauga2002]*\ *[@Mollet1997]*\ *[@Paradis2005]* and a robust method for the *Erwiniaceae* family *[@Brady2010]*. The genera within *Erwiniaceae* are monophyletic when concatenated partial gyrB, rpoB, atpD, and infB gene sequences are used *[@Brady2008]*\ *[@Brady2009]*\ *[@Moretti2011]*. -->
+The DNA topoisomerase (gyrase) subunit (gyrB), DNA-directed RNA polymerase subunit (rpoB), ATP synthase subunit (atpD), and initiation translation factor (infB) have been shown to be more reliable than 16S rRNA gene sequences for determining intra- and intergeneric relationships *[@Hedegaard1999]*\ *[@Dauga2002]*\ *[@Mollet1997]*\ *[@Paradis2005]* and a robust method for the *Erwiniaceae* family *[@Brady2010]*. The genera within *Erwiniaceae* are monophyletic when concatenated partial gyrB, rpoB, atpD, and infB gene sequences are used *[@Brady2008]*\ *[@Brady2009]*\ *[@Moretti2011]*.
 
-<!-- Nevertheless, despite efforts to find a suitable method for identifying the species tree for *Erwiniaceae* genera, *Mixta*'s position with relation to *Pantoea*, *Erwinia*, and *Tatumella* vastly differs between studies *[@Prakash2015]*\ *[@Palmer2017]*\ *[@Palmer2018]*\ *[@Adeolu2016]*\ *[@Brady2011]*\ *[@Rezzonico2016]*\ *[@Brady2012]*\ *[@Gueule2015]*. Not only do different gene combinations provide different results, but different algorithms and models for alignments and phylogenetic trees also contribute the contentious results *[@Naum2008]*\ *[@Octavia2014]*. For example, Prakash et al. *[@Prakash2015]*, Palmer et al. *[@Palmer2017]*, Rezzonico et al. *[@Rezzonico2016]*, and Gueule et al. *[@Gueule2015]* all used gyrB, rpoB, atpD, and infB nucleotide gene sequences in their phylogenetic analyses. Prakash et al. conducted a neighbour-joining statistical method while the others used a maximum-likelihood method. Three of the studies – Rezzonico et al., Prakash et al., and Gueule et al. – placed the *Mixta* species within the *Pantoea* genera whereas the analysis in Palmer et al. places *Mixta* outside of the other three genera. Palmer et al. *[@Palmer2018]*, Rezzonico et al. *[@Rezzonico2016]*, and Brady et al. *[@Brady2012]* also ran analyses with the four MLSA genes as amino acid sequences. These three studies show contentious results as Rezzonico et al. shows that *Mixta* is related closest with *Tatumella*, Palmer et al. shows that *Mixta* is related closest with *Pantoea*, and Brady et al. shows *Mixta* within the *Pantoea* genus. In a separate study conducted by Palmer et al. *[@Palmer2017]*, two maximum-likelihood trees were computed, one with 1039 core amino acid sequence and the other with 52 ribosomal MLSA nucleotide genes. Both maximum-likelihood trees contained species from *Mixta*, *Pantoea*, *Erwinia*, and *Tatumella*; however, the analysis with the core genes placed *Pantoea* and *Tatumella* as sister taxa followed by two *Mixta* species whereas the analysis with ribosomal MLSA genes placed *Pantoea* and *Tatumella* as sister taxa followed by *Erwinia* and then by the *Mixta* species. A possible cause behind these contentious results may be horizontal gene transfer (HGT) events within the *Erwiniaceae* or from unrelated species. HGT events occur frequently within bacteria and often the genes provide the bacteria the ability to adapt to new environments and/or survive selective pressures. -->
+Nevertheless, despite efforts to find a suitable method for identifying the species tree for *Erwiniaceae* genera, *Mixta*'s position with relation to *Pantoea*, *Erwinia*, and *Tatumella* vastly differs between studies *[@Prakash2015]*\ *[@Palmer2017]*\ *[@Palmer2018]*\ *[@Adeolu2016]*\ *[@Brady2011]*\ *[@Rezzonico2016]*\ *[@Brady2012]*\ *[@Gueule2015]*. Not only do different gene combinations provide different results, but different algorithms and models for alignments and phylogenetic trees also contribute the contentious results *[@Naum2008]*\ *[@Octavia2014]*. For example, Prakash et al. *[@Prakash2015]*, Palmer et al. *[@Palmer2017]*, Rezzonico et al. *[@Rezzonico2016]*, and Gueule et al. *[@Gueule2015]* all used gyrB, rpoB, atpD, and infB nucleotide gene sequences in their phylogenetic analyses. Prakash et al. conducted a neighbour-joining statistical method while the others used a maximum-likelihood method. Three of the studies – Rezzonico et al., Prakash et al., and Gueule et al. – placed the *Mixta* species within the *Pantoea* genera whereas the analysis in Palmer et al. places *Mixta* outside of the other three genera. Palmer et al. *[@Palmer2018]*, Rezzonico et al. *[@Rezzonico2016]*, and Brady et al. *[@Brady2012]* also ran analyses with the four MLSA genes as amino acid sequences. These three studies show contentious results as Rezzonico et al. shows that *Mixta* is related closest with *Tatumella*, Palmer et al. shows that *Mixta* is related closest with *Pantoea*, and Brady et al. shows *Mixta* within the *Pantoea* genus. In a separate study conducted by Palmer et al. *[@Palmer2017]*, two maximum-likelihood trees were computed, one with 1039 core amino acid sequence and the other with 52 ribosomal MLSA nucleotide genes. Both maximum-likelihood trees contained species from *Mixta*, *Pantoea*, *Erwinia*, and *Tatumella*; however, the analysis with the core genes placed *Pantoea* and *Tatumella* as sister taxa followed by two *Mixta* species whereas the analysis with ribosomal MLSA genes placed *Pantoea* and *Tatumella* as sister taxa followed by *Erwinia* and then by the *Mixta* species. A possible cause behind these contentious results may be horizontal gene transfer (HGT) events within the *Erwiniaceae* or from unrelated species. HGT events occur frequently within bacteria and often the genes provide the bacteria the ability to adapt to new environments and/or survive selective pressures.
 
-<!-- The objective of my honours thesis was to determine the cause behind the contentious phylogenetic results for *Mixta* species. To accomplish this, ten complete or partial genomes – two each for *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, and outgroup – were retrieved from public databases, annotated, and homologous genes were extracted. Genes were used to make individual phylogenetic trees, and the trees were examined for expected and unusual relative patterns. -->
+The objective of my honours thesis was to determine the cause behind the contentious phylogenetic results for *Mixta* species. To accomplish this, ten complete or partial genomes – two each for *Mixta*, *Pantoea*, *Erwinia*, *Tatumella*, and outgroup – were retrieved from public databases, annotated, and homologous genes were extracted. Genes were used to make individual phylogenetic trees, and the trees were examined for inconsistent evolutionary histories.
 
 # Materials and Methods
-<!-- ## Genomes and Gene Sets -->
-<!-- Publicly available full genomes were retrieved from NCBI comprising of ten type strains from *Mixta*, *Pantoae*, *Erwinia*, *Tatumella*, *Citrobacter*, and *Enterobacter* (Table 1). The genomes were annotated with Prokka v1.14.1 *[@Seemann2014]* using default parameters and homologous genes were extracted using GET_HOMOLOGUES software package *[@Contreras-Moreira2013]* with the bidirectional best-hit search algorithm using default parameters. GET_HOMOLOGUES extracted 1284 genes that were common between the ten species. -->
+## Genomes and Gene Sets
+Publicly available full genomes were retrieved from NCBI comprising of ten type strains from *Mixta*, *Pantoae*, *Erwinia*, *Tatumella*, *Citrobacter*, and *Enterobacter* (Table 1). The genomes were annotated with Prokka v1.14.1 *[@Seemann2014]* using default parameters and homologous genes were extracted using GET_HOMOLOGUES software package *[@Contreras-Moreira2013]* with the bidirectional best-hit search algorithm using default parameters. GET_HOMOLOGUES extracted 1284 genes that were common between the ten species.
 
-<!-- ```{r TABLE1, echo = FALSE, message = FALSE, fig.cap=TRUE} -->
-<!-- strain <- data.frame(Species = c("Mixta calida", "Mixta gaviniae", "Pantoea agglomerans", -->
-<!--                                  "Pantoea septica", "Erwinia amylovora", "Erwinia tasmaniensis", -->
-<!--                                  "Tatumella ptyseos", "Tatumella saanichensis", "Citrobacter freundii", -->
-<!--                                  "Enterobacter cloacae subsp cloacae"), -->
-<!--                      Strain = c("DSM_22759", "DSM_22758", "NBRC_102470", "LMG_5345", "CFBP_1232", -->
-<!--                                 "ET1/99", "NCTC_11468", "NML_06-3099", "NCTC_9750", "ATCC_13047"), -->
-<!--                      GenBank = c("GCA_002953215.1", "GCA_002953195.1", "GCA_001598475.1", -->
-<!--                                  "GCA_002095575.1", "GCA_000367625.2", "GCA_000026185.1", -->
-<!--                                  "GCA_900478715.1", "GCA_000439375.1", "GCA_011064845.1", -->
-<!--                                  "GCA_000025565.1"), -->
-<!--                      Level = c("complete", "complete", "contigs", "contigs", "contigs", "complete", -->
-<!--                                "complete", "contigs", "complete", "complete")) -->
-<!-- colnames(strain)[3] <- "GenBank Accession Number" -->
+```{r TABLE1, echo = FALSE, message = FALSE, fig.cap=TRUE}
+strain <- data.frame(Species = c("Mixta calida", "Mixta gaviniae", "Pantoea agglomerans",
+                                 "Pantoea septica", "Erwinia amylovora", "Erwinia tasmaniensis",
+                                 "Tatumella ptyseos", "Tatumella saanichensis", "Citrobacter freundii",
+                                 "Enterobacter cloacae subsp cloacae"),
+                     Strain = c("DSM_22759", "DSM_22758", "NBRC_102470", "LMG_5345", "CFBP_1232",
+                                "ET1/99", "NCTC_11468", "NML_06-3099", "NCTC_9750", "ATCC_13047"),
+                     GenBank = c("GCA_002953215.1", "GCA_002953195.1", "GCA_001598475.1",
+                                 "GCA_002095575.1", "GCA_000367625.2", "GCA_000026185.1",
+                                 "GCA_900478715.1", "GCA_000439375.1", "GCA_011064845.1",
+                                 "GCA_000025565.1"),
+                     Level = c("complete", "complete", "contigs", "contigs", "contigs", "complete",
+                               "complete", "contigs", "complete", "complete"))
+colnames(strain)[3] <- "GenBank Accession Number"
 
-<!-- library("knitr") -->
-<!-- kable(strain, caption = "Table 1. Genomes used in the study.") -->
-<!-- ``` -->
+library("knitr")
+kable(strain, caption = "Table 1. Genomes used in the study.")
+```
 
-<!-- Within `R` *[@RCore2019]*, a filtering function was created to pass forward fasta files with ten, non-truncated sequences. The minimum gene length to pass through the filter was 90% of the length of the longest sequence in that file. This filter ensured that files containing split, missing, or paralogous genes were not included in the analysis. As a result, 1035 files of the 1284 passed this filtering stage. -->
+Within `R` *[@RCore2019]*, a filtering function was created to pass forward fasta files with ten, non-truncated sequences. The minimum gene length to pass through the filter was 90% of the length of the longest sequence in that file. This filter ensured that files containing split, missing, or paralogous genes were not included in the analysis. As a result, 1035 files of the 1284 passed this filtering stage.
 
-<!-- ## Gene Alignment -->
-<!-- Gene alignments were done in `R` with a few software packages. The fasta files were read in using the `readDNAStringSet()` function *[@Aboyoun2018]* (package: `Biostrings`). The alignments were made using the ClustalW algorithm with the `msaClustalW()` *[@Bodenhofer2015]* (package: `msa`). The number of maximum iterations was set to 100 and the other parameters were kept at default settings *[@Bodenhofer2015]*. Alignments were then converted into a readable format using `msaConvert` *[@Bodenhofer2015]* (package: `msa`) and then written as fasta files using `write.fasta()` *[@Jordan2007]* (package: `seqinr`). -->
+## Gene Alignment
+Gene alignments were done in `R` with a few software packages. The fasta files were read in using the `readDNAStringSet()` function *[@Aboyoun2018]* (package: `Biostrings`). The alignments were made using the ClustalW algorithm with the `msaClustalW()` *[@Bodenhofer2015]* (package: `msa`). The number of maximum iterations was set to 100 and the other parameters were kept at default settings *[@Bodenhofer2015]*. Alignments were then converted into a readable format using `msaConvert` *[@Bodenhofer2015]* (package: `msa`) and then written as fasta files using `write.fasta()` *[@Jordan2007]* (package: `seqinr`).
 
-<!-- ## Distance Matrices -->
-<!-- Prior to computing distance matrices, model testing was done for each of the 1035 gene files through MEGA-CC *[@Kumar2012]* by calling a text file containing the file pathways and a MAO file detailing the analysis preferences. These results were exported as comma-separated values (CSV) and read into `R`. The best model was chosen based on the lowest Bayesian Information Criterion (BIC) and if it was available for distance matrices in MEGAX *[@Kumar2018]*. General Time Reversible (GTR) models and Hasegawa-Kishino-Yano (HKY) models were not available for distance matrices and so these models were not considered during model testing. Furthermore, the rates among sites option invariant sites (+I) was also not available for distance matrices and were subsequently ignored. -->
+## Distance Matrices
+Prior to computing distance matrices, model testing was done for each of the 1035 gene files through MEGA-CC *[@Kumar2012]* by calling a text file containing the file pathways and a MAO file detailing the analysis preferences. These results were exported as comma-separated values (CSV) and read into `R`. The best model was chosen based on the lowest Bayesian Information Criterion (BIC) and if it was available for distance matrices in MEGAX *[@Kumar2018]*. General Time Reversible (GTR) models and Hasegawa-Kishino-Yano (HKY) models were not available for distance matrices and so these models were not considered during model testing. Furthermore, the rates among sites option invariant sites (+I) was also not available for distance matrices and were subsequently ignored.
 
-<!-- The gene files were separated into groups according to the suggested model and text files were created with their file pathways. A table containing the genes included in this study and the model used for each gene is available in **Supplementary Table 1 on Github**. These text files were called in turn along with a corresponding MAO file through MEGA-CC to compute the distance matrices for each gene. Variance was estimated with 500 bootstraps, transitions and transversions were allowed, and gaps and missing data were treated with pairwise deletion. -->
+The gene files were separated into groups according to the suggested model and text files were created with their file pathways. These text files were called in turn along with a corresponding MAO file through MEGA-CC to compute the distance matrices for each gene. Variance was estimated with 500 bootstraps, transitions and transversions were allowed, and gaps and missing data were treated with pairwise deletion.
 
-<!-- The genetic distances and standard errors relative to *M. calida* and *M. gaviniae* were extracted to create plots in `R`, categorize the closest relatives, run generalized additive models to determine potential non-linear relationships between parameters and genetic distances, and identify genes for further analysis using phylogenetic trees. The maximum-likelihood phylogenetic trees were created using MEGAX and with a model suggested through model testing. -->
+The genetic distances and standard errors relative to *M. calida* and *M. gaviniae* were extracted to create plots in `R`, categorize the closest relatives, run generalized additive models to determine potential non-linear relationships between parameters and genetic distances, and identify genes for further analysis using phylogenetic trees. The maximum-likelihood phylogenetic trees were created using MEGAX and with a model suggested through model testing.
 
 # Results and Discussion
-## Generalized Additive Models
-Generalized additive models (GAMs) were fit to determine if gene length affected evolutionary distance from or the closest relative to the two *Mixta* species. The effect of gene length on the evolutionary distances is shown in Figure 1. Genes with less than 300 base pairs (bp) have a negative effect so all species in the study clustered closely with *Mixta*. This is due to the very low phylogenetic signal of these genes. The effect is also negative for gene lengths between 2750 to 3250 bp and longer than 4000; however, this is due to lack of genes in the dataset with these lengths. This is also the case for gene lengths between 3500 and 3900 bp where there is a positive effect.
+After filtering, 1035 genes remained that had homologous copies between the 10 species. These genes ranged from rRNA genes, to housekeeping genes, to enzymes, to transporters and were scattered across the *M. calida* and *M. gaviniae* genomes. 
 
-```{r FIGURE1, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 1. The effect of gene length on evolutionary distances from (a) *M. calida* and (b) *M. gaviniae*. Zero is the average distance. Grey ribbon is the 95% confidence interval. Plots were made using the `draw()` function (package: `gratia`).", fig.height = 3.25, fig.width = 6.5, fig.align = "center"}
-# library("knitr")
-# library("gratia")
-# library("cowplot")
-# library("ggplot2")
-# theme_set(theme_bw())
-# 
-# D_GLc <- readRDS("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/10Gam_Models/MC_Distance.rds")
-# D_GLg <- readRDS("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/10Gam_Models/MG_Distance.rds")
-# 
-# cal <- draw(D_GLc)
-# gav <- draw(D_GLg)
-# 
-# plt <- plot_grid(cal, gav, ncol = 2, labels = "auto", align = "hv", axis = "tblr"); plt
-```
+## Closest Relative Based on Genetic Distance
+Genetic distance was calculated to have a numerical representation of which species were more closely related with each of the 1035 homologous genes. The first relative – the species with the lowest genetic distance – to both *Mixta* species, excluding each other, was determined from the distance matrices for each of the 1035 genes. *P. septica* was the closest relative for 80.0% and 81.0% of the genes for *M. calida* and *M. gaviniae*, respectively (Table 2). This further supports that *P. septica* is the closest relative to *Mixta* from the species in the analysis followed by *P. agglomerans*. The genes that are closely related to the *Erwinia* and *Tatumella* species may be HGT events that occurred within the *Erwiniaceae* while those related to the two outgroup species may be from HGT events outside of the *Erwiniaceae*.
 
-The second GAM modelled how the probability of the first non-*Mixta* relative to the *Mixta* species being a given species changed over the range of mean gene lengths (Figure 2). The closest relative is the species with the shortest evolutionary history from the *Mixta* species. Throughout the range of gene lengths, *P. septica* (light blue line) is the most likely species to be closely related to both *M. calida* and *M. gaviniae*. This suggests that the *Mixta* species are most closely related to *P. septica* and that most genes will show this pattern.
-
-```{r FIGURE2, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 2. The probability of the first relative to (a) *M. calida* and (b) *M. gaviniae* being any of the species in the study given mean gene length. Grey ribbons are the 95% confidence intervals. Plots were made using the `ggplot` function (package: `ggplot2`).", fig.height = 6.5, fig.width = 6.5, fig.align = "center"}
-# library("knitr")
-# library("dplyr")
-# library("gratia")
-# library("cowplot")
-# library("ggplot2")
-# theme_set(theme_bw())
-# 
-# M_cal_pred <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/GAM_predictions_calida.csv",
-#                        stringsAsFactors = FALSE)
-# M_cal_pred <- mutate(M_cal_pred,
-#                      lower_0 = case_when(lower > 0 ~ lower, lower < 0 ~ 0),
-#                      upper_1 = case_when(upper < 1 ~ upper, upper > 1 ~ 1))
-# 
-# MC_pred <- ggplot(M_cal_pred, aes(x = Mean, y = Fit, colour = Species)) +
-#   geom_ribbon(aes(ymin = lower_0, ymax = upper_1, x = Mean), inherit.aes = FALSE,
-#               data = M_cal_pred, alpha = 0.2) +
-#   geom_line() +
-#   scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1"))) +
-#   theme(text = element_text(size = 9),
-#         legend.title = element_blank(),
-#         legend.position = "none") +
-#   labs(x = "Gene Length Mean", y = "Probability",
-#        colour = "Species") +
-#   scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1),
-#                      limits = c(-0.01, 1.01), expand = c(0, 0))
-# 
-# M_gav_pred <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/GAM_predictions_gaviniae.csv",
-#                        stringsAsFactors = FALSE)
-# M_gav_pred <- mutate(M_gav_pred,
-#                      lower_0 = case_when(lower > 0 ~ lower, lower < 0 ~ 0),
-#                      upper_1 = case_when(upper < 1 ~ upper, upper > 1 ~ 1))
-# 
-# MG_pred <- ggplot(M_gav_pred, aes(x = Mean, y = Fit, colour = Species)) +
-#   geom_ribbon(aes(ymin = lower_0, ymax = upper_1, x = Mean), inherit.aes = FALSE,
-#               data = M_gav_pred, alpha = 0.2) +
-#   geom_line() +
-#   scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
-#                       labels = c("C. freundii", "E. cloacae", "E. amylovora", "E. tasmaniensis",
-#                                  "P. agglomerans", "P. septica", "T. ptyseos", "T. saanichensis")) +
-#   theme(legend.position = "bottom", text = element_text(size = 12),
-#         legend.text = element_text(face = "italic")) +
-#   labs(x = "Gene Length Mean", y = "Probability",
-#        colour = "Species") +
-#   scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1),
-#                      limits = c(-0.01, 1.01), expand = c(0, 0))
-# 
-# plt2 <- plot_grid(MC_pred, MG_pred, ncol = 1, labels = "auto", align = "hv", axis = "lr", rel_heights = c(1, 1.3)); plt2
-```
-
-## First Relative
-The first relative – the species with the lowest genetic distance – to both *Mixta* species, exluding each other, was extracted from the distance matrices for each gene. The total number and percentage of genes for each species is given in Table 2. *P. septica* was the closest relative for 80.0% and 81.0% of the genes for *M. calida* and *M. gaviniae*, respectively. This further supports that *P. septica* is the closest relative to *Mixta* from the species in the analysis followed by *P. agglomerans*.
-
-```{r TABLE1, echo = FALSE, message = FALSE, fig.cap = TRUE}
+```{r TABLE2, echo = FALSE, message = FALSE, fig.cap = TRUE}
 library("knitr")
 library("dplyr")
 library("gratia")
@@ -243,18 +174,23 @@ M_cal <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/F
                   stringsAsFactors = FALSE)
 M_cal <- subset(M_cal, Results_Number != "NA")
 M_cal <- mutate(M_cal,
-                Species = case_when(Results_Other == "Pantoea_agglomerans" ~ "P. agglomerans", Results_Other == "Pantoea_septica" ~ "P. septica",
-                                    Results_Other == "Erwinia_amylovora" ~ "E. amylovora", Results_Other == "Erwinia_tasmaniensis" ~ "E. tasmaniensis",
-                                    Results_Other == "Tatumella_ptyseos" ~ "T. ptyseos", Results_Other == "Tatumella_saanichensis" ~ "T. saanichensis",
-                                    Results_Other == "Citrobacter_freundii" ~ "C. freundii", Results_Other == "Enterobacter_cloacae" ~ "E. cloacae"))
+                Species = case_when(Results_Other == "Pantoea_agglomerans" ~ "P. agglomerans",
+                                    Results_Other == "Pantoea_septica" ~ "P. septica",
+                                    Results_Other == "Erwinia_amylovora" ~ "E. amylovora",
+                                    Results_Other == "Erwinia_tasmaniensis" ~ "E. tasmaniensis",
+                                    Results_Other == "Tatumella_ptyseos" ~ "T. ptyseos",
+                                    Results_Other == "Tatumella_saanichensis" ~ "T. saanichensis",
+                                    Results_Other == "Citrobacter_freundii" ~ "C. freundii",
+                                    Results_Other == "Enterobacter_cloacae" ~ "E. cloacae"))
 
-spcs <- data.frame(Species = c("P. septica", "P. agglomerans", "E. tasmaniensis", "E. amylovora", "T. ptyseos", "T. saanichensis", "C. freundii", "E. cloacae"))
+spcs <- data.frame(Species = c("P. septica", "P. agglomerans", "E. tasmaniensis", "E. amylovora", "T. ptyseos", "T. saanichensis",
+                               "C. freundii", "E. cloacae"))
 
 cal <- as.data.frame(matrix(nrow = 0, ncol = 0))
 for(row in 1:nrow(spcs)) {
   numspec <- data.frame(Species = spcs$Species[row],
                         Number = length(which(M_cal$Species == spcs$Species[row])))
-  
+
   cal <- rbind(cal, numspec)
 }
 rm(numspec, row)
@@ -263,16 +199,20 @@ M_gav <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/F
                   stringsAsFactors = FALSE)
 M_gav <- subset(M_gav, Results_Number != "NA")
 M_gav <- mutate(M_gav,
-                Species = case_when(Results_Other == "Pantoea_agglomerans" ~ "P. agglomerans", Results_Other == "Pantoea_septica" ~ "P. septica",
-                                    Results_Other == "Erwinia_amylovora" ~ "E. amylovora", Results_Other == "Erwinia_tasmaniensis" ~ "E. tasmaniensis",
-                                    Results_Other == "Tatumella_ptyseos" ~ "T. ptyseos", Results_Other == "Tatumella_saanichensis" ~ "T. saanichensis",
-                                    Results_Other == "Citrobacter_freundii" ~ "C. freundii", Results_Other == "Enterobacter_cloacae" ~ "E. cloacae"))
+                Species = case_when(Results_Other == "Pantoea_agglomerans" ~ "P. agglomerans",
+                                    Results_Other == "Pantoea_septica" ~ "P. septica",
+                                    Results_Other == "Erwinia_amylovora" ~ "E. amylovora",
+                                    Results_Other == "Erwinia_tasmaniensis" ~ "E. tasmaniensis",
+                                    Results_Other == "Tatumella_ptyseos" ~ "T. ptyseos",
+                                    Results_Other == "Tatumella_saanichensis" ~ "T. saanichensis",
+                                    Results_Other == "Citrobacter_freundii" ~ "C. freundii",
+                                    Results_Other == "Enterobacter_cloacae" ~ "E. cloacae"))
 
 gav <- as.data.frame(matrix(nrow = 0, ncol = 0))
 for(row in 1:nrow(spcs)) {
   numspec <- data.frame(Species = spcs$Species[row],
                         Number = length(which(M_gav$Species == spcs$Species[row])))
-  
+
   gav <- rbind(gav, numspec)
 }
 rm(numspec, row)
@@ -289,19 +229,126 @@ Num_Perc <- data.frame(Species = cal$Species,
 colnames(Num_Perc) <- c("Species", "M. calida", "M. gaviniae")
 
 
-kable(Num_Perc, caption = "Table 2. Number and percentages of genes with each species as the first relative to the Mixta species.")
+kable(Num_Perc, caption = "Table 2. Number and percentages of genes with each species as the first relative to the Mixta species based on genetic distance.")
 ```
 
-```{r FIGURE3, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 3. Circular representation of the first relative to *M. calida* across the genome. Numbers are the gene IDs, and colours and lengths of the lines represent the different species.", fig.align = "center"}
+To assess whether there were any positional effects of the genes, circular plots were generated using gene IDs for *M. calida* and *M. gaviniae* and the closest relatives (Figures 3 and 4). The genes showing greatest identity (lowest distance) to *P. septica* are distributed across the genome for both *M. calida* and *M. gaviniae* (Figures 3 and 4), further suggesting *Mixta* and *Pantoea* species have a recent common ancestor. If many genes were horizontally transferred in a single event, then large blocks of genes from a single species would be expected. However, the *Erwinia* lines (green) are fairly even throughout the genome and the outgroup lines (red and orange) are separated with genes in between. This suggests that *Mixta* underwent many HGT after speciation from *Pantoea*.
+
+```{r FIGURE3, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 3. Circular representation of the first relative to *M. calida* across the genome. Numbers are the gene IDs, and colours represent the different species. Line length has been varied for the different species only for clarity. The outer-most circle with red and orange lines are the outgroup species, purple and pink are *Tatumella* species, greens are *Erwinia* species, and the blues in the inner-most circle are *Pantoea* species.", fig.align = "center"}
 library("knitr")
 knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots/MC_categ_results.png")
 ```
 
-```{r FIGURE4, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 4. Circular representation of the first relative to *M. gaviniae* across the genome. Numbers are the gene IDs, and colours and lengths of the lines represent the different species.", fig.align = "center"}
+```{r FIGURE4, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 4. Circular representation of the first relative to *M. gaviniae* across the genome. Numbers are the gene IDs, and colours represent the different species. Line length has been varied for the different species only for clarity. The outer-most circle with red and orange lines are the outgroup species, purple and pink are *Tatumella* species, greens are *Erwinia* species, and the blues in the inner-most circle are *Pantoea* species.", fig.align = "center"}
 library("knitr")
 knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots/MG_categ_results.png")
 ```
 
+Positional effects of all of the species and range of the distances were also evaluated (Figures 5 and 6). For most genes, the genetic distance for each of the eight species ranged from 0 to 1.5 with only a few greater than 2. The cluster of genes around ID 425 in both *M. calida* and *M. gaviniae* have a very small range and so are highly conserved among all of the species. These genes were annotated as being ribosomal genes. Furthermore, *Pantoea* species (blue dots) are typically the closest relative to *Mixta*, followed by *Erwinia* (green). The *Tatumella* species (purple and pink) and the outgroup species (red and orange) vary as to which are the furthest relative to *Mixta*.
+
+Expanded versions of these plots are supplied in Appendix A where the differences between the distances are more discernible.
+
+```{r FIGURE5, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 5. Genetic distances of the eight species from *M. calida* across the genome. Dots are the distance and colours represent the different species. Distances are negative only for clarity with values closer to zero being shorter genetic distance.", fig.align = "center"}
+library("knitr")
+knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots/MC_Full_dist.png")
+```
+
+```{r FIGURE6, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 6. Genetic distances of the eight species from *M. gaviniae* across the genome. Dots are the distance and colours represent the different species. Distances are negative only for clarity with values closer to zero being shorter genetic distance.", fig.align = "center"}
+library("knitr")
+knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots/MG_Full_dist.png")
+```
+
+## Phylogenetic Trees
+Many phylogenetic trees were created using different subsets of the dataset in order to visualize the relationship patterns and demonstrate how different groups of genes will produce different, occasionally contentious, results. The full lists of the genes used for each analysis as well as more information on the ID, product, and model used for the individual distance matrices are available in Appendix B.
+
+### Ribosomal RNA and Translation Initiation Factor Genes
+53 ribosomal proteins and translation initiation factor genes were used to create a maximum-likelihood phylogenetic tree (Figure 7). These genes code for proteins that are associated with the 16S, 30S, and 50S rRNA subunits. With these genes, *Mixta* is most closely related with *Pantoea* and then *Erwinia* with *P. septica* having the shortest distance to both the *Mixta* species. While this is the expected pattern, these genes are typically highly conserved and may have resulted from HGT *[@Wang2000]*\ *[@Schouls2003]*\ *[@Acinas2004]*\ *[@Eardly2005]*\ *[@Miller2005]*\ *[@Kitahara2012]*. For example, the *M. calida* sequences for rplW and rplL, both of which are 50S ribosomal protein subunits, are most closely related with *C. freundii*. Therefore, care must be taken when selecting these genes for phylogenetic analysis as they may not provide robust results because of the lower phylogenetic signal and potential xenologous signal.
+
+```{r FIGURE7, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 7. Unrooted maximum-likelihood phylogenetic tree inferred with the Tamura-Nei (1993) model and 500 boostraps for rRNA and TIF genes. The numbers next to the nodes are the percentage of trees in which the associated taxa clustered together. Branch lengths correspond with the number of substitutions. A discrete Gamma distribution was used to model evolutionary rate differences among sites (+G) and the rate variation model allowed for some sites to be evolutionarily invariable ([+I]).", out.width = 450, fig.align = "center"}
+library("knitr")
+knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Trees/rad_rRNA-TIF.png")
+```
+
+### MLSA Genes
+
+
+
+
+
+
+
+## Generalized Additive Models
+To determine if gene length affected evolutionary distance from or the closest relative to the two *Mixta* species, generalized additive models (GAMs) were used. Genes with less than 300 base pairs (bp) have a negative effect whereas genes with lengths between 500 and 2500 bp have little or no effect (Figure 1). This is due to the very low phylogenetic signal of these genes. The effect is also negative for gene lengths between 2750 to 3250 bp and longer than 4000; however, this is due to lack of genes in the dataset with these lengths. This is also the case for gene lengths between 3500 and 3900 bp where there is a positive effect.
+
+```{r FIGURE1, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 1. The effect of gene length on evolutionary distances from (a) *M. calida* and (b) *M. gaviniae*. Zero is the average distance. Grey ribbon is the 95% confidence interval. The black ticks at the bottom represent the observations in the dataset. Plots were made using the `draw()` function (package: `gratia`).", fig.height = 3.25, fig.width = 6.5, fig.align = "center"}
+library("knitr")
+library("gratia")
+library("cowplot")
+library("ggplot2")
+theme_set(theme_bw())
+
+D_GLc <- readRDS("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/10Gam_Models/MC_Distance.rds")
+D_GLg <- readRDS("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/10Gam_Models/MG_Distance.rds")
+
+cal <- draw(D_GLc)
+gav <- draw(D_GLg)
+
+plt <- plot_grid(cal, gav, ncol = 2, labels = "auto", align = "hv", axis = "tblr"); plt
+```
+
+The second GAM modeled how the probability of the first non-*Mixta* relative to the *Mixta* species being a given species changed over the range of mean gene lengths (Figure 2). The closest relative is the species with the shortest evolutionary history from the *Mixta* species. Throughout the range of gene lengths, *P. septica* (light blue line) is the most likely species to be closely related to both *M. calida* and *M. gaviniae*. This suggests that the *Mixta* species are most closely related to *P. septica* and that most genes will show this pattern.
+
+```{r FIGURE2, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "Figure 2. The probability of the first relative to (a) *M. calida* and (b) *M. gaviniae* being any of the species in the study given mean gene length. Grey ribbons are the 95% confidence intervals. Plots were made using the `ggplot` function (package: `ggplot2`).", fig.height = 6.5, fig.width = 6.5, fig.align = "center"}
+library("knitr")
+library("dplyr")
+library("gratia")
+library("cowplot")
+library("ggplot2")
+theme_set(theme_bw())
+
+M_cal_pred <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/GAM_predictions_calida.csv",
+                       stringsAsFactors = FALSE)
+M_cal_pred <- mutate(M_cal_pred,
+                     lower_0 = case_when(lower > 0 ~ lower, lower < 0 ~ 0),
+                     upper_1 = case_when(upper < 1 ~ upper, upper > 1 ~ 1))
+
+MC_pred <- ggplot(M_cal_pred, aes(x = Mean, y = Fit, colour = Species)) +
+  geom_ribbon(aes(ymin = lower_0, ymax = upper_1, x = Mean), inherit.aes = FALSE,
+              data = M_cal_pred, alpha = 0.2) +
+  geom_line() +
+  scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1"))) +
+  theme(text = element_text(size = 9),
+        legend.title = element_blank(),
+        legend.position = "none") +
+  labs(x = "Gene Length Mean", y = "Probability",
+       colour = "Species") +
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1),
+                     limits = c(-0.01, 1.01), expand = c(0, 0))
+
+M_gav_pred <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/GAM_predictions_gaviniae.csv",
+                       stringsAsFactors = FALSE)
+M_gav_pred <- mutate(M_gav_pred,
+                     lower_0 = case_when(lower > 0 ~ lower, lower < 0 ~ 0),
+                     upper_1 = case_when(upper < 1 ~ upper, upper > 1 ~ 1))
+
+MG_pred <- ggplot(M_gav_pred, aes(x = Mean, y = Fit, colour = Species)) +
+  geom_ribbon(aes(ymin = lower_0, ymax = upper_1, x = Mean), inherit.aes = FALSE,
+              data = M_gav_pred, alpha = 0.2) +
+  geom_line() +
+  scale_colour_manual(values = alpha(c("red", "orange", "darkgreen", "green3", "blue3", "dodgerblue2", "darkorchid", "violetred1")),
+                      labels = c("C. freundii", "E. cloacae", "E. amylovora", "E. tasmaniensis",
+                                 "P. agglomerans", "P. septica", "T. ptyseos", "T. saanichensis")) +
+  theme(legend.position = "bottom", text = element_text(size = 12),
+        legend.text = element_text(face = "italic")) +
+  labs(x = "Gene Length Mean", y = "Probability",
+       colour = "Species") +
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1),
+                     limits = c(-0.01, 1.01), expand = c(0, 0))
+
+plt2 <- plot_grid(MC_pred, MG_pred, ncol = 1, labels = "auto", align = "hv", axis = "lr", rel_heights = c(1, 1.3)); plt2
+```
+
+## Extra discussion:
 * In contrast to 16S rRNA genes, protein-coding genes have been said to have a consistent evolution rate and have more phylogenetic resolution at the genus and/or species level *[@Glaeser2015]*. Multiple-gene-based phylogenies have been developed to overcome the bias of single-gene analysis *[@Glaeser2015]* and they are more likely to show the “true” phylogenetic relationships *[@Glaeser2015]*. This is because they reduce the possibility of ambiguities *[@Hedegaard1999]* by diluting the signal from potential xenologues. It is recommended that single copy, ubiquitous (within the studied taxa) genes are chosen for this type of analysis *[@Glaeser2015]*. 
 * Similar to MLSA is using the shared gene content between all taxa included in the study as these genes form the “core” genome *[@Daubin2002]*\ *[@Coenye2005]*\ *[@LanReeves2000]*. The core genome represents a small subset of the taxa’s whole genome *[@Makarova2006]*\ *[@Lukjancenko2012]* and its genes are recognized as essential for survival *[@Hacker2012]*. Additionally, the genes of the core genome are inherited primary through vertical gene transfer *[@Daubin2002]*\ *[@Coenye2005]*.
 
@@ -309,20 +356,119 @@ knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/Fo
 
 <!-- Future: looking into this as a mosaic genome. -->
 
-<!-- # Tips -->
-
-<!-- For hyperlinks: <http://rmarkdown.rstudio.com> -->
-
-<!-- For bold: **Knit** -->
-
-<!-- For italics: *Italy* -->
-
-<!-- For code: `echo = FALSE` -->
-
 ```{=openxml}
 <w:p><w:r><w:br w:type="page"/></w:r></w:p>
 ```
 # Literature Cited
 
 
-<!-- # Appendix A -->
+# Appendix A
+## *Mixta calida*
+<!-- ```{r FIGURE_A1i, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MC_distone_1_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A1ii, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MC_distone_2_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A1iii, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MC_distone_3_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A1iv, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MC_distone_4_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A1v, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MC_distone_5_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A1vi, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MC_distone_6_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A1vii, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MC_distone_7_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A1viii, echo = FALSE, message = FALSE, fig.cap = "Figure A1. Genetic distances between 0 and -1 of the eight species from *M. calida* across the genome. Dots are the distance with standard error bars and colours represent the different species. Distances are negative only for clarity with values closer to zero being shorter genetic distance.", fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MC_distone_8_8.png") -->
+<!-- ``` -->
+
+## *Mixta gaviniae*
+<!-- ```{r FIGURE_A2i, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MG_distone_1_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A2ii, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MG_distone_2_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A2iii, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MG_distone_3_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A2iv, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MG_distone_4_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A2v, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MG_distone_5_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A2vi, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MG_distone_6_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_A2vii, echo = FALSE, message = FALSE, fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MG_distone_7_8.png") -->
+<!-- ``` -->
+
+<!-- ```{r FIGURE_Aviii, echo = FALSE, message = FALSE, fig.cap = "Figure A1. Genetic distances between 0 and -1 of the eight species from *M. gaviniae* across the genome. Dots are the distance with standard error bars and colours represent the different species. Distances are negative only for clarity with values closer to zero being shorter genetic distance.", fig.align = "center"} -->
+<!-- library("knitr") -->
+<!-- knitr::include_graphics("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Plots2/MG_distone_8_8.png") -->
+<!-- ``` -->
+
+# Appendix B
+## Ribosomal RNA and Translation Initiation Factor Genes
+```{r TABLE, echo = FALSE, message = FALSE, fig.cap = TRUE}
+library("dplyr")
+library("knitr")
+
+info <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/rRNA-TIF_Genes.csv",
+                  stringsAsFactors = FALSE)
+bm <- read.csv(file = "C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/For_Paper/Best_Model_rRNA-TIF.csv",
+                  stringsAsFactors = FALSE)
+
+check <- unique(info$Gene == bm$Gene)
+
+if(check == TRUE) {
+  info$Model <- bm$ModelCode
+} else {stop}
+
+info <- subset(info, select = c(Gene, cal_ID, gav_ID, Mean_gene_length, Product, Model))
+info <- mutate(info,
+               Gene = substring(info$Gene, first = 7),
+               ID = paste(cal_ID, "/", gav_ID))
+info2 <- info[, c(1, 7, 4:6)]
+
+colnames(info2) <- c("Gene", "M. calida / M. gaviniae IDs", "Mean gene length (bp)", "Gene Product", "Distance Model")
+
+kable(info2, caption = "Table B1. Gene information, product, and model used for the distance matrices for genes included in the rRNA genes and TIF phylogenetic tree.")
+```
