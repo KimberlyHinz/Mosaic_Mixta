@@ -1,21 +1,11 @@
 ### Information ###############################################################################################################################
-Author: Kimberly Hinz
-Date of Study: 2019-09-05 -- 2020-04-
+# Author: Kimberly Hinz
+# Date of Study: 2019-09-05 -- 2020-04-24
+# Purpose: To determine the cause behind the contentious phylogenetic results for Mixta species.
 
-
-### Information ###########################################################################################################################################
-# Author: Kim Hinz
-# Date of study: 2019-09-05 -- 2020-04-01
-# Purpose: Phylogenetic analyses of Mixta genes to determine origination.
-# Name of study: Mosaic Mixta
-
-
-# The following code is for the phylogenetic study of two Mixta species (bacteria). Depending on the genes, model, and statistical method chosen for the 
-# phylogenetic tree, the Mixta species group with different genera (see Palmer et al. 2018 and Rezzonico et al. 2016 for an example). Primarily, Mixta 
-# appears to be a close relative to Pantoea with some leaning towards Erwinia. The purpose of my research is to determine why this might be the case by 
-# performing distance matrix analyses for the homologous genes between two Mixta species, two Pantoea species, two Erwinia species, two Tatumella species, 
-# one Citrobacter species, and one Enterobacter species. The Citrobacter and Enterobacter species form the outgroup.
-
+# The following code is for the phylogenetic study of two Mixta species (bacteria). Depending on the genes, model, and statistical method 
+# chosen for the phylogenetic tree, the Mixta species group with different genera (see Palmer et al. 2018 and Rezzonico et al. 2016 for an 
+# example). 
 
 # Publicly available genomes of the type strains of the species included in this study were retrieved from NCBI.
 # # Mixta calida DSM_22759 ----------------------------> complete genome
@@ -30,8 +20,8 @@ Date of Study: 2019-09-05 -- 2020-04-
 # # Enterobacter cloacae subsp cloacae ATCC_13047 -----> complete genome
 
 
-# These genomes were annotated using PROKKA version 1.14.1 and core genes were extracted using the GET_HOMOLOGUES software package with the bidirectional
-# best-hit search algorithm using default parameters.
+# These genomes were annotated using PROKKA version 1.14.1 and core genes were extracted using the GET_HOMOLOGUES software package with the 
+# bidirectional # best-hit search algorithm using default parameters.
 
 # The output file type of GET_HOMOLOGUES is .fna. Therefore, I used the terminal in BioLinux to change the extensions from .fna to .fasta
 #       for f in *.fna
@@ -39,7 +29,7 @@ Date of Study: 2019-09-05 -- 2020-04-
 #       [ -f "$f" ] && mv "$f" "${f%fna}fasta"
 #       done
 
-### Packages ##############################################################################################################################################
+### Packages ##################################################################################################################################
 library("seqinr")
 
 library("plyr")
@@ -59,7 +49,7 @@ theme_set(theme_bw())
 setwd("C:/Users/officePC/Documents/Kim_Honours/Mixta_Mosaic/")
 setwd("D:/")
 #
-### Selection for genes ###################################################################################################################################
+### Selection for genes #######################################################################################################################
 # This portion of the code acts as filter; it passes forward files that have full sequences (genes aren't split) and that don't have truncated sequences
 # (genes must be at least 90% of the length of the longest gene in each file). For example, if the longest sequence is 1000 bp, then the rest of the 
 # sequences in that file must be at least 900 bp. If at least one is shorter than 900 bp, the whole file is excluded.
